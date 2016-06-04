@@ -1,0 +1,409 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B57714EC1D0272470020E856 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57714EB1D0272470020E856 /* AppDelegate.swift */; };
+		B57714EE1D0272470020E856 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57714ED1D0272470020E856 /* ViewController.swift */; };
+		B57714F11D0272470020E856 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B57714EF1D0272470020E856 /* Main.storyboard */; };
+		B57714F31D0272470020E856 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B57714F21D0272470020E856 /* Assets.xcassets */; };
+		B57714F61D0272470020E856 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B57714F41D0272470020E856 /* LaunchScreen.storyboard */; };
+		B57715011D0272470020E856 /* SokolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57715001D0272470020E856 /* SokolTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B57714FD1D0272470020E856 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B57714E01D0272470020E856 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B57714E71D0272470020E856;
+			remoteInfo = Sokol;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		B57714E81D0272470020E856 /* Sokol.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sokol.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B57714EB1D0272470020E856 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B57714ED1D0272470020E856 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B57714F01D0272470020E856 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B57714F21D0272470020E856 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B57714F51D0272470020E856 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B57714F71D0272470020E856 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B57714FC1D0272470020E856 /* SokolTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SokolTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B57715001D0272470020E856 /* SokolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SokolTests.swift; sourceTree = "<group>"; };
+		B57715021D0272470020E856 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B57714E51D0272470020E856 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B57714F91D0272470020E856 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B57714DF1D0272470020E856 = {
+			isa = PBXGroup;
+			children = (
+				B57714EA1D0272470020E856 /* Sokol */,
+				B57714FF1D0272470020E856 /* SokolTests */,
+				B57714E91D0272470020E856 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B57714E91D0272470020E856 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B57714E81D0272470020E856 /* Sokol.app */,
+				B57714FC1D0272470020E856 /* SokolTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B57714EA1D0272470020E856 /* Sokol */ = {
+			isa = PBXGroup;
+			children = (
+				B57714EB1D0272470020E856 /* AppDelegate.swift */,
+				B57714ED1D0272470020E856 /* ViewController.swift */,
+				B57714EF1D0272470020E856 /* Main.storyboard */,
+				B57714F21D0272470020E856 /* Assets.xcassets */,
+				B57714F41D0272470020E856 /* LaunchScreen.storyboard */,
+				B57714F71D0272470020E856 /* Info.plist */,
+			);
+			path = Sokol;
+			sourceTree = "<group>";
+		};
+		B57714FF1D0272470020E856 /* SokolTests */ = {
+			isa = PBXGroup;
+			children = (
+				B57715001D0272470020E856 /* SokolTests.swift */,
+				B57715021D0272470020E856 /* Info.plist */,
+			);
+			path = SokolTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B57714E71D0272470020E856 /* Sokol */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B57715051D0272470020E856 /* Build configuration list for PBXNativeTarget "Sokol" */;
+			buildPhases = (
+				B57714E41D0272470020E856 /* Sources */,
+				B57714E51D0272470020E856 /* Frameworks */,
+				B57714E61D0272470020E856 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Sokol;
+			productName = Sokol;
+			productReference = B57714E81D0272470020E856 /* Sokol.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B57714FB1D0272470020E856 /* SokolTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B57715081D0272470020E856 /* Build configuration list for PBXNativeTarget "SokolTests" */;
+			buildPhases = (
+				B57714F81D0272470020E856 /* Sources */,
+				B57714F91D0272470020E856 /* Frameworks */,
+				B57714FA1D0272470020E856 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B57714FE1D0272470020E856 /* PBXTargetDependency */,
+			);
+			name = SokolTests;
+			productName = SokolTests;
+			productReference = B57714FC1D0272470020E856 /* SokolTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B57714E01D0272470020E856 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "Andres Rene Gutierrez";
+				TargetAttributes = {
+					B57714E71D0272470020E856 = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = 496CMHX85U;
+					};
+					B57714FB1D0272470020E856 = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = 496CMHX85U;
+						TestTargetID = B57714E71D0272470020E856;
+					};
+				};
+			};
+			buildConfigurationList = B57714E31D0272470020E856 /* Build configuration list for PBXProject "Sokol" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B57714DF1D0272470020E856;
+			productRefGroup = B57714E91D0272470020E856 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B57714E71D0272470020E856 /* Sokol */,
+				B57714FB1D0272470020E856 /* SokolTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B57714E61D0272470020E856 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B57714F61D0272470020E856 /* LaunchScreen.storyboard in Resources */,
+				B57714F31D0272470020E856 /* Assets.xcassets in Resources */,
+				B57714F11D0272470020E856 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B57714FA1D0272470020E856 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B57714E41D0272470020E856 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B57714EE1D0272470020E856 /* ViewController.swift in Sources */,
+				B57714EC1D0272470020E856 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B57714F81D0272470020E856 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B57715011D0272470020E856 /* SokolTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B57714FE1D0272470020E856 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B57714E71D0272470020E856 /* Sokol */;
+			targetProxy = B57714FD1D0272470020E856 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		B57714EF1D0272470020E856 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B57714F01D0272470020E856 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		B57714F41D0272470020E856 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B57714F51D0272470020E856 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		B57715031D0272470020E856 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B57715041D0272470020E856 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B57715061D0272470020E856 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Sokol/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = co.edu.unal.aguiterrezt.Sokol;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		B57715071D0272470020E856 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Sokol/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = co.edu.unal.aguiterrezt.Sokol;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		B57715091D0272470020E856 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = SokolTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = co.edu.unal.aguiterrezt.SokolTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sokol.app/Sokol";
+			};
+			name = Debug;
+		};
+		B577150A1D0272470020E856 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = SokolTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = co.edu.unal.aguiterrezt.SokolTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Sokol.app/Sokol";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B57714E31D0272470020E856 /* Build configuration list for PBXProject "Sokol" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B57715031D0272470020E856 /* Debug */,
+				B57715041D0272470020E856 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B57715051D0272470020E856 /* Build configuration list for PBXNativeTarget "Sokol" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B57715061D0272470020E856 /* Debug */,
+				B57715071D0272470020E856 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		B57715081D0272470020E856 /* Build configuration list for PBXNativeTarget "SokolTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B57715091D0272470020E856 /* Debug */,
+				B577150A1D0272470020E856 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B57714E01D0272470020E856 /* Project object */;
+}
