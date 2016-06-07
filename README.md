@@ -1,4 +1,5 @@
-#Sokol
+#Sokol 
+<img src="https://travis-ci.org/agutierreztIOS/Sokol.svg?branch=master"/> <br/>
 App, which allows us to track the routes in real time. This app will be developed in android and iOS.
 <h3>Developers</h3>
 <ou>
