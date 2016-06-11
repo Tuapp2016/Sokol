@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B56A73E61D0B8DEC00DF1F9B /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73E51D0B8DEC00DF1F9B /* Firebase.framework */; };
+		B56A73E71D0B8DEC00DF1F9B /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73E51D0B8DEC00DF1F9B /* Firebase.framework */; };
+		B56A73E91D0B8E1B00DF1F9B /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73E81D0B8E1B00DF1F9B /* libicucore.tbd */; };
+		B56A73EA1D0B8E2100DF1F9B /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73E81D0B8E1B00DF1F9B /* libicucore.tbd */; };
+		B56A73EC1D0B8E3400DF1F9B /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73EB1D0B8E3400DF1F9B /* libc++.tbd */; };
+		B56A73ED1D0B8E3B00DF1F9B /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73EB1D0B8E3400DF1F9B /* libc++.tbd */; };
+		B56A73EF1D0B8E4E00DF1F9B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73EE1D0B8E4E00DF1F9B /* CFNetwork.framework */; };
+		B56A73F01D0B8E5400DF1F9B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73EE1D0B8E4E00DF1F9B /* CFNetwork.framework */; };
+		B56A73F21D0B8E6200DF1F9B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73F11D0B8E6200DF1F9B /* Security.framework */; };
+		B56A73F31D0B8E6700DF1F9B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73F11D0B8E6200DF1F9B /* Security.framework */; };
+		B56A73F51D0B8E7100DF1F9B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73F41D0B8E7100DF1F9B /* SystemConfiguration.framework */; };
+		B56A73F61D0B8E7700DF1F9B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73F41D0B8E7100DF1F9B /* SystemConfiguration.framework */; };
 		B57714EC1D0272470020E856 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57714EB1D0272470020E856 /* AppDelegate.swift */; };
 		B57714EE1D0272470020E856 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57714ED1D0272470020E856 /* ViewController.swift */; };
 		B57714F11D0272470020E856 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B57714EF1D0272470020E856 /* Main.storyboard */; };
@@ -26,6 +38,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B56A73E51D0B8DEC00DF1F9B /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
+		B56A73E81D0B8E1B00DF1F9B /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
+		B56A73EB1D0B8E3400DF1F9B /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		B56A73EE1D0B8E4E00DF1F9B /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		B56A73F11D0B8E6200DF1F9B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		B56A73F41D0B8E7100DF1F9B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		B57714E81D0272470020E856 /* Sokol.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sokol.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B57714EB1D0272470020E856 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B57714ED1D0272470020E856 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -43,6 +61,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B56A73F51D0B8E7100DF1F9B /* SystemConfiguration.framework in Frameworks */,
+				B56A73F31D0B8E6700DF1F9B /* Security.framework in Frameworks */,
+				B56A73EF1D0B8E4E00DF1F9B /* CFNetwork.framework in Frameworks */,
+				B56A73ED1D0B8E3B00DF1F9B /* libc++.tbd in Frameworks */,
+				B56A73E91D0B8E1B00DF1F9B /* libicucore.tbd in Frameworks */,
+				B56A73E61D0B8DEC00DF1F9B /* Firebase.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,6 +74,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B56A73F61D0B8E7700DF1F9B /* SystemConfiguration.framework in Frameworks */,
+				B56A73F21D0B8E6200DF1F9B /* Security.framework in Frameworks */,
+				B56A73F01D0B8E5400DF1F9B /* CFNetwork.framework in Frameworks */,
+				B56A73EC1D0B8E3400DF1F9B /* libc++.tbd in Frameworks */,
+				B56A73EA1D0B8E2100DF1F9B /* libicucore.tbd in Frameworks */,
+				B56A73E71D0B8DEC00DF1F9B /* Firebase.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,6 +89,12 @@
 		B57714DF1D0272470020E856 = {
 			isa = PBXGroup;
 			children = (
+				B56A73F41D0B8E7100DF1F9B /* SystemConfiguration.framework */,
+				B56A73F11D0B8E6200DF1F9B /* Security.framework */,
+				B56A73EE1D0B8E4E00DF1F9B /* CFNetwork.framework */,
+				B56A73EB1D0B8E3400DF1F9B /* libc++.tbd */,
+				B56A73E81D0B8E1B00DF1F9B /* libicucore.tbd */,
+				B56A73E51D0B8DEC00DF1F9B /* Firebase.framework */,
 				B57714EA1D0272470020E856 /* Sokol */,
 				B57714FF1D0272470020E856 /* SokolTests */,
 				B57714E91D0272470020E856 /* Products */,
@@ -331,6 +367,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Sokol/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -343,6 +383,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Sokol/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -355,6 +399,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = SokolTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = co.edu.unal.aguiterrezt.SokolTests;
@@ -367,6 +415,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = SokolTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = co.edu.unal.aguiterrezt.SokolTests;
@@ -394,6 +446,7 @@
 				B57715071D0272470020E856 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B57715081D0272470020E856 /* Build configuration list for PBXNativeTarget "SokolTests" */ = {
 			isa = XCConfigurationList;
@@ -402,6 +455,7 @@
 				B577150A1D0272470020E856 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
