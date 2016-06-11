@@ -19,6 +19,12 @@
 		B56A73F31D0B8E6700DF1F9B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73F11D0B8E6200DF1F9B /* Security.framework */; };
 		B56A73F51D0B8E7100DF1F9B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73F41D0B8E7100DF1F9B /* SystemConfiguration.framework */; };
 		B56A73F61D0B8E7700DF1F9B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73F41D0B8E7100DF1F9B /* SystemConfiguration.framework */; };
+		B56A73FA1D0B908F00DF1F9B /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73F71D0B908F00DF1F9B /* FBSDKCoreKit.framework */; };
+		B56A73FB1D0B908F00DF1F9B /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73F71D0B908F00DF1F9B /* FBSDKCoreKit.framework */; };
+		B56A73FC1D0B908F00DF1F9B /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73F81D0B908F00DF1F9B /* FBSDKLoginKit.framework */; };
+		B56A73FD1D0B908F00DF1F9B /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73F81D0B908F00DF1F9B /* FBSDKLoginKit.framework */; };
+		B56A73FE1D0B908F00DF1F9B /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73F91D0B908F00DF1F9B /* FBSDKShareKit.framework */; };
+		B56A73FF1D0B908F00DF1F9B /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73F91D0B908F00DF1F9B /* FBSDKShareKit.framework */; };
 		B57714EC1D0272470020E856 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57714EB1D0272470020E856 /* AppDelegate.swift */; };
 		B57714EE1D0272470020E856 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57714ED1D0272470020E856 /* ViewController.swift */; };
 		B57714F11D0272470020E856 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B57714EF1D0272470020E856 /* Main.storyboard */; };
@@ -44,6 +50,9 @@
 		B56A73EE1D0B8E4E00DF1F9B /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		B56A73F11D0B8E6200DF1F9B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		B56A73F41D0B8E7100DF1F9B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		B56A73F71D0B908F00DF1F9B /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		B56A73F81D0B908F00DF1F9B /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		B56A73F91D0B908F00DF1F9B /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
 		B57714E81D0272470020E856 /* Sokol.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sokol.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B57714EB1D0272470020E856 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B57714ED1D0272470020E856 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -65,7 +74,10 @@
 				B56A73F31D0B8E6700DF1F9B /* Security.framework in Frameworks */,
 				B56A73EF1D0B8E4E00DF1F9B /* CFNetwork.framework in Frameworks */,
 				B56A73ED1D0B8E3B00DF1F9B /* libc++.tbd in Frameworks */,
+				B56A73FA1D0B908F00DF1F9B /* FBSDKCoreKit.framework in Frameworks */,
+				B56A73FE1D0B908F00DF1F9B /* FBSDKShareKit.framework in Frameworks */,
 				B56A73E91D0B8E1B00DF1F9B /* libicucore.tbd in Frameworks */,
+				B56A73FC1D0B908F00DF1F9B /* FBSDKLoginKit.framework in Frameworks */,
 				B56A73E61D0B8DEC00DF1F9B /* Firebase.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -78,7 +90,10 @@
 				B56A73F21D0B8E6200DF1F9B /* Security.framework in Frameworks */,
 				B56A73F01D0B8E5400DF1F9B /* CFNetwork.framework in Frameworks */,
 				B56A73EC1D0B8E3400DF1F9B /* libc++.tbd in Frameworks */,
+				B56A73FB1D0B908F00DF1F9B /* FBSDKCoreKit.framework in Frameworks */,
+				B56A73FF1D0B908F00DF1F9B /* FBSDKShareKit.framework in Frameworks */,
 				B56A73EA1D0B8E2100DF1F9B /* libicucore.tbd in Frameworks */,
+				B56A73FD1D0B908F00DF1F9B /* FBSDKLoginKit.framework in Frameworks */,
 				B56A73E71D0B8DEC00DF1F9B /* Firebase.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -94,6 +109,9 @@
 				B56A73EE1D0B8E4E00DF1F9B /* CFNetwork.framework */,
 				B56A73EB1D0B8E3400DF1F9B /* libc++.tbd */,
 				B56A73E81D0B8E1B00DF1F9B /* libicucore.tbd */,
+				B56A73F71D0B908F00DF1F9B /* FBSDKCoreKit.framework */,
+				B56A73F81D0B908F00DF1F9B /* FBSDKLoginKit.framework */,
+				B56A73F91D0B908F00DF1F9B /* FBSDKShareKit.framework */,
 				B56A73E51D0B8DEC00DF1F9B /* Firebase.framework */,
 				B57714EA1D0272470020E856 /* Sokol */,
 				B57714FF1D0272470020E856 /* SokolTests */,
@@ -315,7 +333,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -355,7 +373,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
