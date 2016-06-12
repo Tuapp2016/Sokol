@@ -216,6 +216,9 @@
 		B57714E01D0272470020E856 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					sokol,
+				);
 				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Andres Rene Gutierrez";
