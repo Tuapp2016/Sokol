@@ -29,7 +29,7 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func login(sender:UIButton){
+    @IBAction func logIn(sender:UIButton){
         switch sender.tag {
         case 0:
             print ("Login with sokol")
@@ -70,7 +70,9 @@ class ViewController: UIViewController {
             print ("We don't support this opertation")
         }
     }
-
+    @IBAction func unwindToHomeScreen(segue:UIStoryboardSegue) {
+        
+    }
     
 }
 

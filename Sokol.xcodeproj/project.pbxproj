@@ -37,6 +37,7 @@
 		B57714F31D0272470020E856 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B57714F21D0272470020E856 /* Assets.xcassets */; };
 		B57714F61D0272470020E856 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B57714F41D0272470020E856 /* LaunchScreen.storyboard */; };
 		B57715011D0272470020E856 /* SokolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57715001D0272470020E856 /* SokolTests.swift */; };
+		B5CEF7FB1D0E32D800A776C2 /* SignUpTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CEF7FA1D0E32D800A776C2 /* SignUpTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,7 @@
 		B57714FC1D0272470020E856 /* SokolTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SokolTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B57715001D0272470020E856 /* SokolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SokolTests.swift; sourceTree = "<group>"; };
 		B57715021D0272470020E856 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B5CEF7FA1D0E32D800A776C2 /* SignUpTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,6 +161,7 @@
 				B56A74091D0B954000DF1F9B /* TwitterAuthHelper.m */,
 				B56A74071D0B954000DF1F9B /* Sokol-Bridging-Header.h */,
 				B56A74081D0B954000DF1F9B /* SokolTests-Bridging-Header.h */,
+				B5CEF7FA1D0E32D800A776C2 /* SignUpTableViewController.swift */,
 			);
 			path = Sokol;
 			sourceTree = "<group>";
@@ -281,6 +284,7 @@
 				B57714EE1D0272470020E856 /* ViewController.swift in Sources */,
 				B56A740A1D0B954000DF1F9B /* TwitterAuthHelper.m in Sources */,
 				B57714EC1D0272470020E856 /* AppDelegate.swift in Sources */,
+				B5CEF7FB1D0E32D800A776C2 /* SignUpTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
