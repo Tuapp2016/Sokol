@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class SignUpTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @IBOutlet var imageView:UIImageView!
@@ -16,8 +17,12 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
     @IBOutlet var emailText:UITextField!
     @IBOutlet var passwordText:UITextField!
     
+    
+    var imageProfileSelected = false
     var alertController:UIAlertController?
     var datePicker:UIDatePicker?
+    
+    let ref = Firebase(url:"sokolunal.firebaseio.com")
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -124,7 +129,7 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
     */
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         
-        imageView.image = info[UIImagePickerControllerOriginalImage] as? UIImage
+        imageView.image = resizeImage(info[UIImagePickerControllerOriginalImage] as! UIImage, newWidth: 200.0, newHeight: 200.0)
         imageView.contentMode = .ScaleAspectFill
         imageView.clipsToBounds = true
         let leadingConstraint = NSLayoutConstraint(item: imageView, attribute:.Leading, relatedBy: .Equal, toItem: imageView.superview, attribute: .Leading, multiplier: 1, constant: 0)
@@ -135,15 +140,22 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
         topConstraint.active = true
         let bottomConstraint = NSLayoutConstraint(item: imageView, attribute:.Bottom, relatedBy: .Equal, toItem: imageView.superview, attribute:.Bottom, multiplier: 1, constant: 0)
         bottomConstraint.active = true
+        imageProfileSelected =  true
         dismissViewControllerAnimated(true, completion: nil)
     }
     
     
     @IBAction func dataPickerSelector(sender: AnyObject) {
+        view.endEditing(true)
         alertController = UIAlertController(title: "Date", message: "\n\n\n\n\n\n\n", preferredStyle: .ActionSheet)
+        let height:NSLayoutConstraint = NSLayoutConstraint(item: alertController!.view, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 250.0)
+        let width:NSLayoutConstraint = NSLayoutConstraint(item: alertController!.view, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 350.0)
         
-        let buttonsFrame:CGRect = CGRectMake(5.0, 10.0, 350.0, 40.0)
-        let buttonView = UIView(frame: buttonsFrame)
+        alertController!.view.addConstraint(height)
+        alertController!.view.addConstraint(width)
+        
+        let buttonsFrame:CGRect = CGRectMake(5.0, 10.0, 340.0, 40.0)
+        let buttonsView = UIView(frame: buttonsFrame)
         
         let buttonCancelFrame:CGRect = CGRectMake(5.0, 15.0, 100.0, 30.0)
         let buttonCancel:UIButton = UIButton(frame: buttonCancelFrame)
@@ -155,16 +167,16 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
         buttonDone.setTitle("Done",forState: .Normal)
         buttonDone.setTitleColor(UIColor.blueColor(), forState: .Normal)
         buttonDone.addTarget(self, action: "setBirthdayDate", forControlEvents: .TouchUpInside)
-        buttonView.addSubview(buttonCancel)
-        buttonView.addSubview(buttonDone)
+        buttonsView.addSubview(buttonCancel)
+        buttonsView.addSubview(buttonDone)
 
-        let pickerFrame:CGRect = CGRectMake(5.0, 50.0, 350.0, 150.0)
+        let pickerFrame:CGRect = CGRectMake(5.0, 50.0, 340.0, 170.0)
         datePicker = UIDatePicker(frame:pickerFrame)
         datePicker!.datePickerMode = .Date
         datePicker!.setDate(NSDate(), animated: true)
         datePicker!.maximumDate = NSDate()
         
-        alertController!.view.addSubview(buttonView)
+        alertController!.view.addSubview(buttonsView)
         alertController!.view.addSubview(datePicker!)
         /*let doneAction =  UIAlertAction(title: "Done", style: .Default, handler: {
             (action:UIAlertAction) in
@@ -183,13 +195,80 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
         alertController!.dismissViewControllerAnimated(true, completion: nil)
     }
     func setBirthdayDate(){
-        var dateFormatter = NSDateFormatter()
+        let dateFormatter = NSDateFormatter()
         dateFormatter.dateStyle = .LongStyle
         birthdayText.text = dateFormatter.stringFromDate(datePicker!.date)
         alertController!.dismissViewControllerAnimated(true, completion: nil)
     }
     
+    @IBAction func singUp() {
+        let name = nameText.text
+        let lastName = lastNameText.text
+        let birthday =  birthdayText.text
+        let email =  emailText.text
+        let password =  passwordText.text
+        let imageProfile = imageView.image
+        if(imageProfileSelected && name?.characters.count>0 && lastName?.characters.count>0 && birthday?.characters.count>0 && isValidEmail(email!) && password?.characters.count>5){
+            let imageEncode64 = imageToBase64(imageProfile: imageProfile!)
+            //TODO: We should create the user with the information that she/he provied us
+            ref.createUser(email!, password: password,
+                           withValueCompletionBlock: { error, result in
+                            if error != nil {
+                                // There was an error creating the account
+                                let errorMessage = UIAlertController(title: "Error", message: "There was an error\nThe possible problems are:\nAn internet issue\nThe email is already registerd with another user", preferredStyle: .Alert)
+                                let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                                
+                                errorMessage.addAction(okAction)
+                                self.presentViewController(errorMessage, animated: true, completion: nil)
+                            }else{
+                                /*let successMessage = UIAlertController(title: "Success", message: "The account was created", preferredStyle: .Alert)
+                                let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                                successMessage.addAction(okAction)
+                                self.presentViewController(successMessage, animated: true, completion: nil)*/
+                                let newUser = [
+                                    "provider": "password",
+                                    "name": name!,
+                                    "lasName": lastName!,
+                                    "birthday": birthday!,
+                                    "email":email!,
+                                    "profileImage":imageEncode64                                ]
+                                let uid = result["uid"] as? String
+                                let userRef = self.ref.childByAppendingPath("users")
+                                let user = userRef.childByAppendingPath(uid)
+                                user.setValue(newUser)
+                                self.performSegueWithIdentifier("unWindToHomeScreen", sender: nil)
+                                
+                            }
+            })
+            
+        }else{
+            let errorMessage = UIAlertController(title: "Error", message: "All the fields are required or some fields are incorrect", preferredStyle: .Alert)
+            let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+            
+            errorMessage.addAction(okAction)
+            presentViewController(errorMessage, animated: true, completion: nil)
+        }
+    }
     
+    func resizeImage(image:UIImage,newWidth:CGFloat,newHeight:CGFloat) -> UIImage{
+        UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight))
+        image.drawInRect(CGRectMake(0, 0, newWidth, newHeight))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage
+    }
+    
+    func imageToBase64(imageProfile image:UIImage) -> String {
+        let imageData:NSData = UIImagePNGRepresentation(image)!
+        return imageData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+    }
+    
+    func isValidEmail(testStr:String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        let range = testStr.rangeOfString(emailRegEx, options:.RegularExpressionSearch)
+        let result = range != nil ? true : false
+        return result
+    }
    
    
     
