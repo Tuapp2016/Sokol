@@ -73,63 +73,9 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
         
     }
 
-    /*
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         
-        imageView.image = resizeImage(info[UIImagePickerControllerOriginalImage] as! UIImage, newWidth: 200.0, newHeight: 200.0)
+        imageView.image = Utilities.resizeImage(info[UIImagePickerControllerOriginalImage] as! UIImage, newWidth: 200.0, newHeight: 200.0)
         imageView.contentMode = .ScaleAspectFill
         imageView.clipsToBounds = true
         let leadingConstraint = NSLayoutConstraint(item: imageView, attribute:.Leading, relatedBy: .Equal, toItem: imageView.superview, attribute: .Leading, multiplier: 1, constant: 0)
@@ -178,14 +124,6 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
         
         alertController!.view.addSubview(buttonsView)
         alertController!.view.addSubview(datePicker!)
-        /*let doneAction =  UIAlertAction(title: "Done", style: .Default, handler: {
-            (action:UIAlertAction) in
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
-            //dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
-            print("date selected \(datePicker.date)")
-        })*/
-        //alertController.addAction(doneAction)
         presentViewController(alertController!, animated: true, completion: nil)
         
         
@@ -208,18 +146,14 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
         let email =  emailText.text
         let password =  passwordText.text
         let imageProfile = imageView.image
-        if(imageProfileSelected && name?.characters.count>0 && lastName?.characters.count>0 && birthday?.characters.count>0 && isValidEmail(email!) && password?.characters.count>5){
-            let imageEncode64 = imageToBase64(imageProfile: imageProfile!)
+        if(imageProfileSelected && name?.characters.count>0 && lastName?.characters.count>0 && birthday?.characters.count>0 && Utilities.isValidEmail(email!) && password?.characters.count>5){
+            let imageEncode64 = Utilities.imageToBase64(imageProfile: imageProfile!)
             //TODO: We should create the user with the information that she/he provied us
             ref.createUser(email!, password: password,
                            withValueCompletionBlock: { error, result in
                             if error != nil {
                                 // There was an error creating the account
-                                let errorMessage = UIAlertController(title: "Error", message: "There was an error\nThe possible problems are:\nAn internet issue\nThe email is already registerd with another user", preferredStyle: .Alert)
-                                let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
-                                
-                                errorMessage.addAction(okAction)
-                                self.presentViewController(errorMessage, animated: true, completion: nil)
+                                self.presentViewController(Utilities.alertMessage("Error", message: "There was an error\nThe possible problems are:\nAn internet issue\nThe email is already registerd with another user"), animated: true, completion: nil)
                             }else{
                                 /*let successMessage = UIAlertController(title: "Success", message: "The account was created", preferredStyle: .Alert)
                                 let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
@@ -227,11 +161,11 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
                                 self.presentViewController(successMessage, animated: true, completion: nil)*/
                                 let newUser = [
                                     "provider": "password",
-                                    "name": name!,
-                                    "lasName": lastName!,
+                                    "name": name! + lastName!,
                                     "birthday": birthday!,
                                     "email":email!,
-                                    "profileImage":imageEncode64                                ]
+                                    "profileImage":imageEncode64
+                                ]
                                 let uid = result["uid"] as? String
                                 let userRef = self.ref.childByAppendingPath("users")
                                 let user = userRef.childByAppendingPath(uid)
@@ -242,34 +176,9 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
             })
             
         }else{
-            let errorMessage = UIAlertController(title: "Error", message: "All the fields are required or some fields are incorrect", preferredStyle: .Alert)
-            let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
-            
-            errorMessage.addAction(okAction)
-            presentViewController(errorMessage, animated: true, completion: nil)
+            self.presentViewController(Utilities.alertMessage("Error", message: "All the fields are required or some fields are incorrect"), animated: true, completion: nil)
         }
     }
     
-    func resizeImage(image:UIImage,newWidth:CGFloat,newHeight:CGFloat) -> UIImage{
-        UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight))
-        image.drawInRect(CGRectMake(0, 0, newWidth, newHeight))
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return newImage
-    }
-    
-    func imageToBase64(imageProfile image:UIImage) -> String {
-        let imageData:NSData = UIImagePNGRepresentation(image)!
-        return imageData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
-    }
-    
-    func isValidEmail(testStr:String) -> Bool {
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
-        let range = testStr.rangeOfString(emailRegEx, options:.RegularExpressionSearch)
-        let result = range != nil ? true : false
-        return result
-    }
-   
-   
     
 }
