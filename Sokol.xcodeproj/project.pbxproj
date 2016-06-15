@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B52A675C1D10CA3A0062980F /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52A675B1D10CA3A0062980F /* ProfileTableViewCell.swift */; };
+		B52A675E1D10EC1C0062980F /* ProfileImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52A675D1D10EC1C0062980F /* ProfileImageTableViewCell.swift */; };
 		B56A73E61D0B8DEC00DF1F9B /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73E51D0B8DEC00DF1F9B /* Firebase.framework */; };
 		B56A73E71D0B8DEC00DF1F9B /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73E51D0B8DEC00DF1F9B /* Firebase.framework */; };
 		B56A73E91D0B8E1B00DF1F9B /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73E81D0B8E1B00DF1F9B /* libicucore.tbd */; };
@@ -39,6 +41,9 @@
 		B57715011D0272470020E856 /* SokolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57715001D0272470020E856 /* SokolTests.swift */; };
 		B5C1FBF01D10557500BA9104 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C1FBEF1D10557500BA9104 /* Utilities.swift */; };
 		B5C1FBF21D1069AA00BA9104 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C1FBF11D1069AA00BA9104 /* Constants.swift */; };
+		B5C1FBF51D1082F600BA9104 /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5C1FBF31D1082F600BA9104 /* Home.storyboard */; };
+		B5C1FBF71D108EB200BA9104 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C1FBF61D108EB200BA9104 /* HomeViewController.swift */; };
+		B5C1FBF91D108EC300BA9104 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C1FBF81D108EC300BA9104 /* ProfileViewController.swift */; };
 		B5CEF7FB1D0E32D800A776C2 /* SignUpTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CEF7FA1D0E32D800A776C2 /* SignUpTableViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +58,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B52A675B1D10CA3A0062980F /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
+		B52A675D1D10EC1C0062980F /* ProfileImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileImageTableViewCell.swift; sourceTree = "<group>"; };
 		B56A73E51D0B8DEC00DF1F9B /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
 		B56A73E81D0B8E1B00DF1F9B /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		B56A73EB1D0B8E3400DF1F9B /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
@@ -80,6 +87,9 @@
 		B57715021D0272470020E856 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B5C1FBEF1D10557500BA9104 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		B5C1FBF11D1069AA00BA9104 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		B5C1FBF41D1082F600BA9104 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Home.storyboard; sourceTree = "<group>"; };
+		B5C1FBF61D108EB200BA9104 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		B5C1FBF81D108EC300BA9104 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		B5CEF7FA1D0E32D800A776C2 /* SignUpTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -158,6 +168,7 @@
 				B57714EB1D0272470020E856 /* AppDelegate.swift */,
 				B57714ED1D0272470020E856 /* ViewController.swift */,
 				B57714EF1D0272470020E856 /* Main.storyboard */,
+				B5C1FBF31D1082F600BA9104 /* Home.storyboard */,
 				B57714F21D0272470020E856 /* Assets.xcassets */,
 				B57714F41D0272470020E856 /* LaunchScreen.storyboard */,
 				B57714F71D0272470020E856 /* Info.plist */,
@@ -168,6 +179,10 @@
 				B5CEF7FA1D0E32D800A776C2 /* SignUpTableViewController.swift */,
 				B5C1FBEF1D10557500BA9104 /* Utilities.swift */,
 				B5C1FBF11D1069AA00BA9104 /* Constants.swift */,
+				B5C1FBF61D108EB200BA9104 /* HomeViewController.swift */,
+				B5C1FBF81D108EC300BA9104 /* ProfileViewController.swift */,
+				B52A675B1D10CA3A0062980F /* ProfileTableViewCell.swift */,
+				B52A675D1D10EC1C0062980F /* ProfileImageTableViewCell.swift */,
 			);
 			path = Sokol;
 			sourceTree = "<group>";
@@ -270,6 +285,7 @@
 				B57714F61D0272470020E856 /* LaunchScreen.storyboard in Resources */,
 				B57714F31D0272470020E856 /* Assets.xcassets in Resources */,
 				B57714F11D0272470020E856 /* Main.storyboard in Resources */,
+				B5C1FBF51D1082F600BA9104 /* Home.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,9 +306,13 @@
 				B57714EE1D0272470020E856 /* ViewController.swift in Sources */,
 				B56A740A1D0B954000DF1F9B /* TwitterAuthHelper.m in Sources */,
 				B57714EC1D0272470020E856 /* AppDelegate.swift in Sources */,
+				B52A675C1D10CA3A0062980F /* ProfileTableViewCell.swift in Sources */,
 				B5C1FBF01D10557500BA9104 /* Utilities.swift in Sources */,
 				B5CEF7FB1D0E32D800A776C2 /* SignUpTableViewController.swift in Sources */,
+				B5C1FBF71D108EB200BA9104 /* HomeViewController.swift in Sources */,
+				B5C1FBF91D108EC300BA9104 /* ProfileViewController.swift in Sources */,
 				B5C1FBF21D1069AA00BA9104 /* Constants.swift in Sources */,
+				B52A675E1D10EC1C0062980F /* ProfileImageTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,6 +350,14 @@
 				B57714F51D0272470020E856 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		B5C1FBF31D1082F600BA9104 /* Home.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B5C1FBF41D1082F600BA9104 /* Base */,
+			);
+			name = Home.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

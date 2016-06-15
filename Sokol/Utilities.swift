@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 class Utilities {
+    static var authData:FAuthData?
     static func isValidEmail(test:String) -> Bool{
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
         let range = test.rangeOfString(emailRegEx, options:.RegularExpressionSearch)
@@ -19,6 +20,12 @@ class Utilities {
     static func imageToBase64(imageProfile image:UIImage) -> String {
         let imageData:NSData = UIImagePNGRepresentation(image)!
         return imageData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+    }
+    static func base64ToImage(base:String) ->UIImage {
+        
+        let dataDecoded:NSData = NSData(base64EncodedString:base, options: .IgnoreUnknownCharacters)!
+        let decodedimage:UIImage = UIImage(data: dataDecoded)!
+        return decodedimage
     }
     static func resizeImage(image:UIImage,newWidth:CGFloat,newHeight:CGFloat) -> UIImage{
         UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight))
@@ -43,4 +50,5 @@ class Utilities {
         alertMessage.addAction(okAction)
         return alertMessage
     }
+    
 }

@@ -161,7 +161,7 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
                                 self.presentViewController(successMessage, animated: true, completion: nil)*/
                                 let newUser = [
                                     "provider": "password",
-                                    "name": name! + lastName!,
+                                    "name": name! + " " + lastName!,
                                     "birthday": birthday!,
                                     "email":email!,
                                     "profileImage":imageEncode64
@@ -171,6 +171,7 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
                                 let user = userRef.childByAppendingPath(uid)
                                 user.setValue(newUser)
                                 self.performSegueWithIdentifier("unWindToHomeScreen", sender: nil)
+                                self.ref.removeAllObservers()
                                 
                             }
             })

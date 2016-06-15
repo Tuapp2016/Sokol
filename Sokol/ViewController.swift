@@ -21,11 +21,19 @@ class ViewController: UIViewController {
     var loginWithSokol:UIAlertController?
     var passwordRecovery:UIAlertController?
     var twitterAuthHelper:TwitterAuthHelper?
+    var blurEffectView:UIVisualEffectView?
     
     let ref = Firebase(url:"sokolunal.firebaseio.com")
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        ref.observeAuthEventWithBlock({authData in
+            if authData != nil {
+                let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
+                Utilities.authData = authData
+                self.presentViewController(viewController, animated: true, completion: nil)
+            }
+        })
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -39,6 +47,10 @@ class ViewController: UIViewController {
         case 0,
              3:
             print ("Login with sokol")
+            let blurEffect = UIBlurEffect(style: .Dark)
+            blurEffectView = UIVisualEffectView(effect: blurEffect)
+            blurEffectView?.frame = view.bounds
+            blurEffectView?.tag = 10
             loginWithSokol = UIAlertController(title: "Log in", message: "\n\n\n\n\n", preferredStyle: .Alert)
             let height:NSLayoutConstraint = NSLayoutConstraint(item: loginWithSokol!.view, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 250.0)
             loginWithSokol!.view.addConstraint(height)
@@ -88,6 +100,7 @@ class ViewController: UIViewController {
             
             
             presentViewController(loginWithSokol!, animated: true, completion: nil)
+            self.view.addSubview(blurEffectView!)
                         
         case 1:
             print ("Login with facebook")
@@ -120,6 +133,10 @@ class ViewController: UIViewController {
                                     userUID.updateChildValues(user)
                                 }
                             })
+                            self.ref.removeAllObservers()
+                            let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
+                            Utilities.authData = authData
+                            self.presentViewController(viewController, animated: true, completion: nil)
                         }
                     })
                 }
@@ -173,9 +190,11 @@ class ViewController: UIViewController {
                 self.presentViewController(Utilities.alertMessage("Success", message: "We sent the recovery password to the email provided"), animated: true, completion: nil)
             }
         })
+        removeBlurEffect()
     }
     func cancelLogin(){
         loginWithSokol?.dismissViewControllerAnimated(true, completion: nil)
+        removeBlurEffect()
     }
     func loginSokol(){
         loginWithSokol?.dismissViewControllerAnimated(true, completion: nil)
@@ -183,12 +202,25 @@ class ViewController: UIViewController {
             if error != nil {
                 self.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
             }else{
-                self.presentViewController(Utilities.alertMessage("Success", message: "The log in was successful"), animated: true, completion: nil)
-                //TODO: We should redirect to other view throough a segue
+                /*self.presentViewController(Utilities.alertMessage("Success", message: "The log in was successful"), animated: true, completion: nil)*/
+                self.ref.removeAllObservers()
+                let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
+                Utilities.authData = authData
+                self.presentViewController(viewController, animated: true, completion: nil)
+                
             }
             
         })
+        removeBlurEffect()
         
+    }
+    func removeBlurEffect(){
+        self.view.subviews.forEach({
+            temp in
+            if temp.tag == 10 {
+                temp.removeFromSuperview()
+            }
+        })
     }
     func selectAccount(accounts:NSArray) {
         let selectTwitterAcccount = UIAlertController(title: "Select an account", message: nil, preferredStyle: .ActionSheet)
@@ -224,9 +256,16 @@ class ViewController: UIViewController {
                         userUID.updateChildValues(user)
                     }
                 })
-                
+                self.ref.removeAllObservers()
+                let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
+                Utilities.authData = authData
+                self.presentViewController(viewController, animated: true, completion: nil)
             }
         })
+    
+    }
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        blurEffectView?.frame = view.bounds
     }
     
 }
