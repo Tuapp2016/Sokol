@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class SignUpTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class SignUpTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,UITextFieldDelegate {
     @IBOutlet var imageView:UIImageView!
     @IBOutlet var nameText:UITextField!
     @IBOutlet var lastNameText:UITextField!
@@ -26,7 +26,10 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        nameText.delegate = self
+        lastNameText.delegate = self
+        emailText.delegate = self
+        passwordText.delegate = self
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -92,7 +95,7 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
     
     
     @IBAction func dataPickerSelector(sender: AnyObject) {
-        view.endEditing(true)
+        self.view.endEditing(true)
         alertController = UIAlertController(title: "Date", message: "\n\n\n\n\n\n\n", preferredStyle: .ActionSheet)
         let height:NSLayoutConstraint = NSLayoutConstraint(item: alertController!.view, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 250.0)
         let width:NSLayoutConstraint = NSLayoutConstraint(item: alertController!.view, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1, constant: 350.0)
@@ -179,6 +182,10 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
         }else{
             self.presentViewController(Utilities.alertMessage("Error", message: "All the fields are required or some fields are incorrect"), animated: true, completion: nil)
         }
+    }
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
     
     

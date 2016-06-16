@@ -32,6 +32,13 @@
                                 </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="sokol_logo" translatesAutoresizingMaskIntoConstraints="NO" id="qfF-Pa-SP1">
+                                <rect key="frame" x="151" y="91" width="322" height="330"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="350" id="aLS-b9-DZ4"/>
+                                    <constraint firstAttribute="height" constant="350" id="l9x-qd-B8m"/>
+                                </constraints>
+                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rQ8-U9-7jz">
                                 <rect key="frame" x="202" y="556" width="220" height="21"/>
                                 <attributedString key="attributedText">
@@ -44,13 +51,6 @@
                                 </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="sokol_logo" translatesAutoresizingMaskIntoConstraints="NO" id="qfF-Pa-SP1">
-                                <rect key="frame" x="151" y="91" width="322" height="330"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="350" id="aLS-b9-DZ4"/>
-                                    <constraint firstAttribute="height" constant="350" id="l9x-qd-B8m"/>
-                                </constraints>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>

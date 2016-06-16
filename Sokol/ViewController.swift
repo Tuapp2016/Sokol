@@ -59,6 +59,7 @@ class ViewController: UIViewController {
             emailText = UITextField(frame: emailTextFrame)
             emailText!.placeholder = "Enter your emial"
             emailText!.autocapitalizationType = .None
+            emailText!.keyboardType = .EmailAddress
             //emailText!.borderStyle = .Bezel
             
             let passwordTextFrame:CGRect = CGRectMake(5.0, 90.0, 250.0, 40.0)
@@ -105,7 +106,8 @@ class ViewController: UIViewController {
         case 1:
             print ("Login with facebook")
             let facebookLogin = FBSDKLoginManager()
-            facebookLogin.logInWithReadPermissions(["email","public_profile","user_friends","user_birthday"], fromViewController: self, handler: {
+            facebookLogin.logOut()
+            facebookLogin.logInWithReadPermissions(["email","public_profile","user_friends"], fromViewController: self, handler: {
                 (facebookResult, facebookError) -> Void in
                 if facebookError != nil {
                     self.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
@@ -115,15 +117,29 @@ class ViewController: UIViewController {
                     let accessToken = FBSDKAccessToken.currentAccessToken().tokenString
                     self.ref.authWithOAuthProvider("facebook", token: accessToken, withCompletionBlock: { error, authData in
                         if error != nil {
-                            self.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
+                            self.presentViewController(Utilities.alertMessage("Error", message:"There was an error"), animated: true, completion: nil)
                         } else {
                             let userRef = self.ref.childByAppendingPath("users")
                             let userUID = userRef.childByAppendingPath(authData.uid)
+                            //print(authData.providerData["cachedUserProfile"]!["birthday"]!!)
+                            var email:String? = authData.providerData["email"] as? String
+                            var birthday:String? = authData.providerData["cachedUserProfile"]!["birthday"] as? String
+                            
+                            if email == nil {
+                                email = "There is no a valid email"
+                            }
+                            print(birthday)
+                            if birthday == nil {
+                                birthday = "There is no a valid birthday"
+                            }else{
+                                birthday = Utilities.setBirthdayDate(birthday!)
+                            }
+                            print(birthday)
                             let user = [
                                 "provider":authData.provider,
                                 "name":authData.providerData["displayName"]!,
-                            "birthday":Utilities.setBirthdayDate(authData.providerData["cachedUserProfile"]!["birthday"]!! as! String),
-                                "email":authData.providerData["email"]!,
+                            "birthday":birthday!,
+                                "email":email!,
                                 "profileImage":authData.providerData["profileImageURL"]!
                             ]
                             userUID.observeSingleEventOfType(.Value, withBlock: {snap in
@@ -168,6 +184,7 @@ class ViewController: UIViewController {
         emailText = UITextField(frame: emailTextFrame)
         emailText!.placeholder = "Enter your emial"
         emailText!.autocapitalizationType = .None
+        emailText!.keyboardType = .EmailAddress
 
         let sendButtonFrame:CGRect =  CGRectMake(5.0, 90, 250.0, 40.0)
         let sendButton:UIButton = UIButton(frame: sendButtonFrame)
