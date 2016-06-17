@@ -1,21 +1,17 @@
 //
-//  ProfileTableViewCell.swift
+//  LeftMenuTableViewCell.swift
 //  Sokol
 //
-//  Created by Andres Rene Gutierrez on 14/06/2016.
+//  Created by Andres Rene Gutierrez on 16/06/2016.
 //  Copyright © 2016 Andres Rene Gutierrez. All rights reserved.
 //
 
 import UIKit
 
-class ProfileTableViewCell: UITableViewCell {
-    
-    @IBOutlet weak var titleLabel: UILabel!
-    
-    @IBOutlet weak var valueLabel: UILabel!
-    
-    @IBOutlet weak var logo: UIImageView!
-    @IBOutlet weak var providerLabel: UILabel!
+class LeftMenuTableViewCell: UITableViewCell {
+
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var profileImage: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -26,6 +22,5 @@ class ProfileTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
 
 }

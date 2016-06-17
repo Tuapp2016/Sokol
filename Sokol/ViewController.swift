@@ -29,6 +29,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         ref.observeAuthEventWithBlock({authData in
             if authData != nil {
+                self.ref.removeAllObservers()
                 let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
                 Utilities.authData = authData
                 self.presentViewController(viewController, animated: true, completion: nil)
@@ -248,6 +249,8 @@ class ViewController: UIViewController {
             })
             selectTwitterAcccount.addAction(action)
         }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        selectTwitterAcccount.addAction(cancelAction)
         self.presentViewController(selectTwitterAcccount, animated: true, completion: nil)
         
     }

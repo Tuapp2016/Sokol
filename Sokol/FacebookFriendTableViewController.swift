@@ -12,12 +12,22 @@ import FBSDKCoreKit
 class FacebookFriendTableViewController: UITableViewController {
     var next:String?
     var facebookIds:[String] = []
-    var facebookName:[String] = []
-    var facebookPhoto:[UIImage] = []
+    var facebookName:[String:String] = [:]
+    var facebookPhoto:[String:UIImage] = [:]
+    var whiteRoundedView : UIView?
+    
+    let ref = Firebase(url:"sokolunal.firebaseio.com")
     override func viewDidLoad() {
         super.viewDidLoad()
+        ref.observeAuthEventWithBlock({authData in
+            if authData == nil {
+                self.ref.removeAllObservers()
+                let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
+                self.presentViewController(viewController, animated: true, completion: nil)
+            }
+        })
+        self.tableView.separatorStyle = .None
         getFriendsFacebook("me/friends")
-
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -32,10 +42,7 @@ class FacebookFriendTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
+    
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
@@ -44,17 +51,37 @@ class FacebookFriendTableViewController: UITableViewController {
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        
         let cell = tableView.dequeueReusableCellWithIdentifier("facebookCell", forIndexPath: indexPath) as! FacebookFriendsTableViewCell
-
-        if indexPath.row < facebookName.count {
-            cell.nameText.text = facebookName[indexPath.row]
+        cell.contentView.backgroundColor = UIColor.clearColor()
+        if indexPath.row < facebookName.count && facebookName.count == facebookIds.count {
+            cell.nameText.text = facebookName[facebookIds[indexPath.row]]
             
         }
-        if indexPath.row >= facebookPhoto.count {
+        if indexPath.row >= facebookPhoto.count && facebookPhoto.count != facebookIds.count {
             cell.profileImage.image = UIImage(named: "user_profile")
+            cell.profileImage.layer.cornerRadius = 50.0
+            cell.profileImage.clipsToBounds = true
+
         }else{
-            cell.profileImage.image = facebookPhoto[indexPath.row]
+            cell.profileImage.image = facebookPhoto[facebookIds[indexPath.row]]
         }
+        whiteRoundedView = UIView(frame: CGRectMake(10, 10, self.view.frame.size.width - 20, self.view.frame.size.height))
+        whiteRoundedView?.tag = 10
+        
+        whiteRoundedView!.layer.backgroundColor = CGColorCreate(CGColorSpaceCreateDeviceRGB(), [1.0, 1.0, 1.0, 0.8])
+        whiteRoundedView!.layer.masksToBounds = false
+        whiteRoundedView!.layer.cornerRadius = 5.0
+        whiteRoundedView!.layer.shadowOffset = CGSizeMake(-1, 1)
+        whiteRoundedView!.layer.shadowOpacity = 0.2
+        cell.contentView.subviews.forEach({temp in
+            if temp.tag == 10 {
+                temp.removeFromSuperview()
+            }
+        })
+        cell.contentView.addSubview(whiteRoundedView!)
+        cell.contentView.sendSubviewToBack(whiteRoundedView!)
 
         return cell
     }
@@ -67,18 +94,18 @@ class FacebookFriendTableViewController: UITableViewController {
             getFriendsFacebookPhoto(facebookIds)
             return;
         }else {
-            let fbRequest = FBSDKGraphRequest(graphPath: path!, parameters: ["limit":25])
+            let fbRequest = FBSDKGraphRequest(graphPath: path!, parameters: nil)
             
             fbRequest.startWithCompletionHandler({ (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
                 if error != nil {
-                    Utilities.alertMessage("Error", message: "There was an error")
-                    return;
+                    self.presentViewController(Utilities.alertMessage("Error", message: "There was an error")
+, animated: false, completion:nil)
                 }else{
-                    //print(result)
                     let data = result.objectForKey("data") as! NSArray
                     for i in data {
                         self.facebookIds.append(i.objectForKey("id") as! String)
-                        self.facebookName.append(i.objectForKey("name") as! String)
+                        self.facebookName[i.objectForKey("id")
+                        as! String] = i.objectForKey("name") as! String
                         NSOperationQueue.mainQueue().addOperationWithBlock({
                             self.tableView.reloadData()
                         })
@@ -86,7 +113,6 @@ class FacebookFriendTableViewController: UITableViewController {
                     }
                     let pagination = result.objectForKey("paging") as! NSDictionary
                     next = pagination.objectForKey("next") as? String
-                    //print(next)
                     if next != nil {
                         next = next!.substringFromIndex(next!.startIndex.advancedBy(32))
                         self.getFriendsFacebook(next)
@@ -101,7 +127,7 @@ class FacebookFriendTableViewController: UITableViewController {
         
     }
     func getFriendsFacebookPhoto(ids:[String]) {
-        for id in ids{
+        for id in ids {
             let request = id+"/picture?type=large&redirect=false"
             let fbRequestImage = FBSDKGraphRequest(graphPath:request , parameters: nil)
             fbRequestImage.startWithCompletionHandler({ (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
@@ -109,14 +135,14 @@ class FacebookFriendTableViewController: UITableViewController {
                     Utilities.alertMessage("Error", message: "There was an error")
                 }else{
                     let data = result.objectForKey("data") as! NSDictionary
-                    self.imageFromURL(data.objectForKey("url") as! String)
+                    self.imageFromURL(data.objectForKey("url") as! String,id:id)
                 }
             })
         }
         
         
     }
-    func imageFromURL(url:String){
+    func imageFromURL(url:String,id:String){
         let request = NSURLRequest(URL: NSURL(string: url)!)
         let urlSession = NSURLSession.sharedSession()
         let task = urlSession.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
@@ -127,7 +153,7 @@ class FacebookFriendTableViewController: UITableViewController {
             }
             
             if let data = data {
-                self.facebookPhoto.append(UIImage(data: data)!)
+                self.facebookPhoto[id]=UIImage(data: data)
                 NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                     self.tableView.reloadData()
                     
@@ -137,6 +163,13 @@ class FacebookFriendTableViewController: UITableViewController {
         })
         task.resume()
         
+    }
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        tableView.reloadData()
+        
+    }
+    @IBAction func toggleMenu(sender:AnyObject){
+        NSNotificationCenter.defaultCenter().postNotificationName("toggleMenu",object:nil)
     }
     
 

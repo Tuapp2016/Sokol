@@ -28,11 +28,14 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
     var oldPassword:UITextField?
     var newPassword:UITextField?
     var blurEffectView:UIVisualEffectView?
+    var whiteRoundedView : UIView?
     
     let ref = Firebase(url:"sokolunal.firebaseio.com")
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.tableView.separatorStyle = .None
         if traitCollection.forceTouchCapability == .Available{
             registerForPreviewingWithDelegate(self, sourceView: view)
         }
@@ -43,7 +46,7 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                 self.presentViewController(viewController, animated: true, completion: nil)
             }
         })
-        self.automaticallyAdjustsScrollViewInsets = false;
+        //self.automaticallyAdjustsScrollViewInsets = false;
         if let authData = Utilities.authData {
             switch authData.provider {
             case "facebook":
@@ -104,6 +107,7 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
 
         // Do any additional setup after loading the view.
     }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -134,12 +138,21 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                     cell.valueLabel.text = valueFacebook![indexPath.row]
                     if let profileImage =  profileImage{
                         cell.profileImage.image = profileImage
+                        cell.profileImage.layer.cornerRadius = 40.0
+                        cell.profileImage.clipsToBounds = true
                     }
+                    
                     return cell
                     
                 }else if indexPath.row == 3 {
                     let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
                     cell.textLabel?.text = "Friends who are using sokol"
+                    cell.contentView.subviews.forEach({temp in
+                        if temp.tag == 10 {
+                            temp.removeFromSuperview()
+                        }
+                    })
+                    
                     return cell
                 }
                 else{
@@ -148,6 +161,7 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                     cell.logo.image = UIImage(named: "facebook")
                     cell.providerLabel.text = "Login with facebook"
                     cell.valueLabel.text = valueFacebook![indexPath.row]
+                    
                     return cell
                 }
                 
@@ -158,8 +172,16 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                     cell.valueLabel.text = valueTwitter![indexPath.row]
                     if let profileImage =  profileImage{
                         cell.profileImage.image = profileImage
+                        cell.profileImage.layer.cornerRadius = 40.0
+                        cell.profileImage.clipsToBounds = true
+
                     }
-                    return cell
+                    cell.contentView.subviews.forEach({temp in
+                        if temp.tag == 10 {
+                            temp.removeFromSuperview()
+                        }
+                    })
+                                       return cell
                     
                 }else{
                     let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol", forIndexPath: indexPath)as! ProfileTableViewCell
@@ -167,6 +189,12 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                     cell.logo.image = UIImage(named: "twitter")
                     cell.providerLabel.text = "Login with twitter"
                     cell.valueLabel.text = valueTwitter![indexPath.row]
+                    cell.contentView.subviews.forEach({temp in
+                        if temp.tag == 10 {
+                            temp.removeFromSuperview()
+                        }
+                    })
+                    
                     return cell
                 }
             default:
@@ -178,12 +206,22 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                         cell.valueLabel.text = valueSokol![indexPath.row]
                         if let base = base{
                             cell.profileImage.image = Utilities.base64ToImage(base)
+                            cell.profileImage.layer.cornerRadius = 40.0
+                            cell.profileImage.clipsToBounds = true
+
                         }
+                        
                         return cell
                     }
                     else if indexPath.row == 3 || indexPath.row == 4 || indexPath.row == 5 {
                         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
                         cell.textLabel?.text = titleButtons[indexPath.row % 3]
+                        cell.contentView.subviews.forEach({temp in
+                            if temp.tag == 10 {
+                                temp.removeFromSuperview()
+                            }
+                        })
+                        
                         return cell
                     }
                     else{
@@ -192,6 +230,12 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                         cell.logo.image = UIImage(named: "sokol_logo")
                         cell.providerLabel.text = "Login with sokol"
                         cell.valueLabel.text = valueSokol![indexPath.row]
+                        cell.contentView.subviews.forEach({temp in
+                            if temp.tag == 10 {
+                                temp.removeFromSuperview()
+                            }
+                        })
+                        
                         return cell
                     }
                     
@@ -369,13 +413,12 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
     
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         blurEffectView?.frame = view.bounds
+        //tableView.reloadData()
     }
     func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         guard let indexPath = tableView.indexPathForRowAtPoint(location) else {
             return nil
-        }
-        print(indexPath.row)
-        
+        }        
         guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
             return nil
         }
@@ -391,6 +434,9 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
     func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
         self.ref.removeAllObservers()
         showViewController(viewControllerToCommit, sender: self)
+    }
+    @IBAction func toggleMenu(sender:AnyObject){
+        NSNotificationCenter.defaultCenter().postNotificationName("toggleMenu",object:nil)
     }
     
 

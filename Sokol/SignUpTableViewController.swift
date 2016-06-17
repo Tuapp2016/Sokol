@@ -26,6 +26,8 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.separatorStyle = .None
+        //self.tableView.c = UIColor.lightGrayColor()
         nameText.delegate = self
         lastNameText.delegate = self
         emailText.delegate = self
