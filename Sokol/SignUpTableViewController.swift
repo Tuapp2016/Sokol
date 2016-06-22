@@ -21,8 +21,9 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
     var imageProfileSelected = false
     var alertController:UIAlertController?
     var datePicker:UIDatePicker?
+    let ref = FIRDatabase.database().reference()
     
-    let ref = Firebase(url:"sokolunal.firebaseio.com")
+    //let ref = Firebase(url:"sokolunal.firebaseio.com")
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,31 +155,25 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
         if(imageProfileSelected && name?.characters.count>0 && lastName?.characters.count>0 && birthday?.characters.count>0 && Utilities.isValidEmail(email!) && password?.characters.count>5){
             let imageEncode64 = Utilities.imageToBase64(imageProfile: imageProfile!)
             //TODO: We should create the user with the information that she/he provied us
-            ref.createUser(email!, password: password,
-                           withValueCompletionBlock: { error, result in
-                            if error != nil {
-                                // There was an error creating the account
-                                self.presentViewController(Utilities.alertMessage("Error", message: "There was an error\nThe possible problems are:\nAn internet issue\nThe email is already registerd with another user"), animated: true, completion: nil)
-                            }else{
-                                /*let successMessage = UIAlertController(title: "Success", message: "The account was created", preferredStyle: .Alert)
-                                let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
-                                successMessage.addAction(okAction)
-                                self.presentViewController(successMessage, animated: true, completion: nil)*/
-                                let newUser = [
-                                    "provider": "password",
-                                    "name": name! + " " + lastName!,
-                                    "birthday": birthday!,
-                                    "email":email!,
-                                    "profileImage":imageEncode64
-                                ]
-                                let uid = result["uid"] as? String
-                                let userRef = self.ref.childByAppendingPath("users")
-                                let user = userRef.childByAppendingPath(uid)
-                                user.setValue(newUser)
-                                self.performSegueWithIdentifier("unWindToHomeScreen", sender: nil)
-                                self.ref.removeAllObservers()
-                                
-                            }
+            FIRAuth.auth()?.createUserWithEmail(email!, password: password!, completion: {(user:FIRUser?,error) in
+                if error != nil {
+                     self.presentViewController(Utilities.alertMessage("Error", message: "There was an error\nThe possible problems are:\nAn internet issue\nThe email is already registerd with another user"), animated: true, completion: nil)
+                }else {
+                    let userRef = self.ref.child("users")
+                    let userIdRef = userRef.child((user?.uid)!)
+                    let newUser = [
+                        "provider": "sokol",
+                        "name": name! + " " + lastName!,
+                        "birthday": birthday!,
+                        "email":email!,
+                        "profileImage":imageEncode64
+                    ]
+                    userIdRef.setValue(newUser)
+                    try! FIRAuth.auth()?.signOut()
+                    self.ref.removeAllObservers()
+                    self.performSegueWithIdentifier("unWindToHomeScreen", sender: nil)
+
+                }
             })
             
         }else{

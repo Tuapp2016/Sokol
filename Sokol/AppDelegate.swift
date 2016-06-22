@@ -7,15 +7,21 @@
 //
 
 import UIKit
-import FBSDKCoreKit
+import Firebase
 import FBSDKLoginKit
+import FBSDKCoreKit
+import Fabric
+import TwitterKit
 
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-
+class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
+    
     var window: UIWindow?
-
+    override init() {
+        // Firebase Init
+        FIRApp.configure()
+    }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         UINavigationBar.appearance().barTintColor = UIColor(red: 22.0/255.0, green: 109.0/255.0, blue: 186.0/255.0, alpha: 1.0)
@@ -24,18 +30,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSFontAttributeName:barFont]
             
         }
+        Fabric.with([Twitter.self])
         UITabBar.appearance().tintColor = UIColor(red: 22.0/255.0, green: 109.0/255.0, blue: 186.0/255.0, alpha: 1.0)
         UITabBar.appearance().barTintColor = UIColor.blackColor()
+        //FIRApp.configure()
         // Override point for customization after application launch.
         NSThread.sleepForTimeInterval(2)
-        return FBSDKApplicationDelegate.sharedInstance()
-            .application(application, didFinishLaunchingWithOptions: launchOptions)
+        GIDSignIn.sharedInstance().clientID = FIRApp.defaultApp()?.options.clientID
+        GIDSignIn.sharedInstance().delegate = self
+        Twitter.sharedInstance().startWithConsumerKey(Constants.TWITTER_KEY, consumerSecret: Constants.TWITTER_SECRET_KEY)
+        
+        return FBSDKApplicationDelegate.sharedInstance().application(application,didFinishLaunchingWithOptions: launchOptions)
     }
-    func application(application: UIApplication, openURL url: NSURL,sourceApplication: String?, annotation: AnyObject) -> Bool {
-        return FBSDKApplicationDelegate.sharedInstance()
-            .application(application, openURL: url,
-                         sourceApplication: sourceApplication, annotation: annotation)
+    /*func application(application: UIApplication,openURL url: NSURL, options: [String: AnyObject]) -> Bool {
+        var twitter = false
+        if Twitter.sharedInstance().application(application, openURL:url, options: options){
+            twitter = true
+        }
+        return  GIDSignIn.sharedInstance().handleURL(url,sourceApplication: options[UIApplicationOpenURLOptionsSourceApplicationKey] as? String,annotation: options[UIApplicationOpenURLOptionsAnnotationKey]) || twitter
+    }*/
+    func application(application: UIApplication,
+                     openURL url: NSURL,
+                             sourceApplication: String?,
+                             annotation: AnyObject) -> Bool {
+        
+        var options: [String: AnyObject] = [UIApplicationOpenURLOptionsSourceApplicationKey: sourceApplication!,UIApplicationOpenURLOptionsAnnotationKey: annotation]
+        if Twitter.sharedInstance().application(application, openURL:url, options: options){
+            return true
+        }
+        return FBSDKApplicationDelegate.sharedInstance().application(
+            application,
+            openURL: url,
+            sourceApplication: sourceApplication,
+            annotation: annotation) ||  GIDSignIn.sharedInstance().handleURL(url,sourceApplication: options[UIApplicationOpenURLOptionsSourceApplicationKey] as? String,annotation: options[UIApplicationOpenURLOptionsAnnotationKey])
     }
+    
 
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -52,13 +81,67 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         FBSDKAppEvents.activateApp()
     }
-
+   
+    
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+    func signIn(signIn: GIDSignIn!, didDisconnectWithUser user: GIDGoogleUser!, withError error: NSError!) {
+        try! FIRAuth.auth()?.signOut()
+        signIn.signOut()
+        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
+        self.window?.rootViewController?.presentViewController(viewController, animated: true, completion: nil)
+    
+        
+    }
+    func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!,
+                withError error: NSError!) {
+        if let error = error {
+            self.window?.rootViewController?.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
+            return
+        }
+        
+        let authentication = user.authentication
+        let credential = FIRGoogleAuthProvider.credentialWithIDToken(authentication.idToken,
+                                                                     accessToken: authentication.accessToken)
+        FIRAuth.auth()?.signInWithCredential(credential, completion:{(user,error) in
+            //Here we need to save the data about the user
+            if error != nil {
+                self.window?.rootViewController?.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
+            }else{
+                let ref = FIRDatabase.database().reference()
+                ref.removeAllObservers()
+                for profile in (user?.providerData)!{
+                    let uid = profile.uid
+                    var name = profile.displayName
+                    if name == nil{
+                        name = "There is no  name"
+                    }
+                    var email = profile.email
+                    if email == nil{
+                        email = "There is no an email"
+                    }
+                    var photoURL = profile.photoURL?.absoluteString
+                    if photoURL == nil {
+                        photoURL = "There is no an image available"
+                    }
+                    let userRef = ref.child("users")
+                    let userIdRef = userRef.child((user?.uid)!)
+                    let newUser = ["provider": profile.providerID,"name": name!,"email":email!,"profileImage":photoURL!]
+                    userIdRef.setValue(newUser)
+                    
+                }
+                let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
+                if Utilities.user == nil {
+                    Utilities.user = user
+                }
+                self.window?.rootViewController?.presentViewController(viewController, animated: true, completion: nil)
+            }
+        })
+    }
+
 
 
 }

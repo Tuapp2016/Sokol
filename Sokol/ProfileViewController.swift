@@ -14,12 +14,14 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
     
     @IBOutlet weak var tableView: UITableView!
     
-    let titleTwitter:[String] = ["Name","User name"]
-    let tittleFacebookAndSokol:[String] = ["Name","Email","Birthday"]
+    let titleTwitterAndGoogle:[String] = ["Name","Email"]
+    let titleFacebook:[String] = ["Name","Email"]
+    let titleSokol:[String] = ["Name","Email","Birthday"]
     let titleButtons = ["Change email","Change password"]
-    var valueTwitter:[String]?
-    var valueSokol:[String]?
-    var valueFacebook:[String]?
+    var valueTwitter:[String]? = ["",""]
+    var valueGoogle:[String]? = ["",""]
+    var valueSokol:[String]? = ["","",""]
+    var valueFacebook:[String]? = ["",""]
     var profileImage:UIImage?
     var base:String?
     var changeEmaillAlert:UIAlertController?
@@ -30,81 +32,119 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
     var blurEffectView:UIVisualEffectView?
     var whiteRoundedView : UIView?
     
-    let ref = Firebase(url:"sokolunal.firebaseio.com")
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    //let ref = Firebase(url:"sokolunal.firebaseio.com")
+    let ref =  FIRDatabase.database().reference()
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
         self.tableView.separatorStyle = .None
         if traitCollection.forceTouchCapability == .Available{
             registerForPreviewingWithDelegate(self, sourceView: view)
         }
-        ref.observeAuthEventWithBlock({authData in
-            if authData == nil {
-                self.ref.removeAllObservers()
+        FIRAuth.auth()?.addAuthStateDidChangeListener({(auth,user) in
+            if user == nil {
                 let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
                 self.presentViewController(viewController, animated: true, completion: nil)
             }
         })
+        
         //self.automaticallyAdjustsScrollViewInsets = false;
-        if let authData = Utilities.authData {
-            switch authData.provider {
-            case "facebook":
-                var email:String? = authData.providerData["email"] as? String
-                var birthday:String? = authData.providerData["cachedUserProfile"]!["birthday"] as? String
-                if email == nil {
-                    email = "There is no a valid email"
-                }
-                if birthday == nil {
-                    birthday = "There is no a valid birthday"
-                }else{
-                    birthday = Utilities.setBirthdayDate(birthday!)
-                }
-                valueFacebook = [authData.providerData["displayName"]! as! String,email!,birthday!]
-                let userRef =  ref.childByAppendingPath("users")
-                let user = userRef.childByAppendingPath(authData.uid)
+        if let user = Utilities.user {
+            print(user.providerData[0].providerID)
+            switch user.providerData[0].providerID {
                 
-                user.observeEventType(.Value, withBlock: { snapshot in
-                    if !(snapshot.value is NSNull){
-                        self.valueFacebook = [snapshot.value.objectForKey("name") as!String,snapshot.value.objectForKey("email") as! String,snapshot.value.objectForKey("birthday") as! String]
-                        self.imageFromURL(snapshot.value.objectForKey("profileImage") as! String)
-                        NSOperationQueue.mainQueue().addOperationWithBlock({
-                            self.tableView.reloadData()
-                        })
-                        
+            case "facebook.com":
+                let userRef = ref.child("users")
+                let userId =  userRef.child(user.uid)
+                //print(user.uid)
+                userId.observeEventType(.Value, withBlock: {(snapshot) in
+                    
+                    let values = snapshot.value as! [String:AnyObject]
+                    
+                    let email = values["email"] as!String
+                    let name = values["name"] as! String
+                    
+                    let photoURL = values["profileImage"] as! String
+                    if photoURL == "There is no an image available" {//We use an image for default
+                        self.profileImage = UIImage(named: "profile")
+                    }else{
+                        self.imageFromURL(photoURL)
                     }
+                    self.valueFacebook = [name,email]
+                    //self.profileImage = Utilities.base64ToImage(values["profileImage"] as! String)
+                    //self.imageFromURL(values["profileImage"] as! String)
+                    NSOperationQueue.mainQueue().addOperationWithBlock({
+                        self.tableView.reloadData()
+                    })
                 })
-             case "twitter":
-                let userRef =  ref.childByAppendingPath("users")
-                let user = userRef.childByAppendingPath(authData.uid)
-                valueTwitter = [authData.providerData["displayName"] as! String, authData.providerData["username"] as! String]
-                imageFromURL(authData.providerData["profileImageURL"] as! String)
-                user.observeEventType(.Value, withBlock: { snapshot in
-                    if !(snapshot.value is NSNull){
-                        self.valueTwitter = [snapshot.value.objectForKey("name") as! String,snapshot.value.objectForKey("username") as! String]
-                        self.imageFromURL(snapshot.value.objectForKey("profileImage") as! String)
-                        NSOperationQueue.mainQueue().addOperationWithBlock({
-                            self.tableView.reloadData()
-                        })
+                
+            case "google.com":
+                let userRef = ref.child("users")
+                let userId =  userRef.child(user.uid)
+                //print(user.uid)
+                userId.observeEventType(.Value, withBlock: {(snapshot) in
+                    
+                    let values = snapshot.value as! [String:AnyObject]
+                    
+                    let email = values["email"] as!String
+                    let name = values["name"] as! String
+                    
+                    let photoURL = values["profileImage"] as! String
+                    if photoURL == "There is no an image available" {//We use an image for default
+                        self.profileImage = UIImage(named: "profile")
+                    }else{
+                        self.imageFromURL(photoURL)
                     }
+                    self.valueGoogle = [name,email]
+                    //self.profileImage = Utilities.base64ToImage(values["profileImage"] as! String)
+                    //self.imageFromURL(values["profileImage"] as! String)
+                    NSOperationQueue.mainQueue().addOperationWithBlock({
+                        self.tableView.reloadData()
+                    })
                 })
+
+                
+            case "twitter.com":
+                let userRef = ref.child("users")
+                let userId =  userRef.child(user.uid)
+                //print(user.uid)
+                userId.observeEventType(.Value, withBlock: {(snapshot) in
+                    
+                    let values = snapshot.value as! [String:AnyObject]
+                    
+                    let email = values["email"] as!String
+                    let name = values["name"] as! String
+                    
+                    let photoURL = values["profileImage"] as! String
+                    if photoURL == "There is no an image available" {//We use an image for default
+                        self.profileImage = UIImage(named: "profile")
+                    }else{
+                        self.imageFromURL(photoURL)
+                    }
+                    self.valueTwitter = [name,email]
+                    //self.profileImage = Utilities.base64ToImage(values["profileImage"] as! String)
+                    //self.imageFromURL(values["profileImage"] as! String)
+                    NSOperationQueue.mainQueue().addOperationWithBlock({
+                        self.tableView.reloadData()
+                    })
+                })
+                
             default:
-                let userRef =  ref.childByAppendingPath("users")
-                let user = userRef.childByAppendingPath(authData.uid)
-                user.observeEventType(.Value, withBlock: { snapshot in
-                    //print("\(snapshot.value)")
-                    if !(snapshot.value is NSNull){
-                        self.valueSokol = [snapshot.value.objectForKey("name") as! String, snapshot.value.objectForKey("email") as! String, snapshot.value.objectForKey("birthday") as! String]
-                        //print("\(snapshot.value.objectForKey("profileImage"))")
-                        self.base = snapshot.value.objectForKey("profileImage") as! String
-                        NSOperationQueue.mainQueue().addOperationWithBlock({
-                            self.tableView.reloadData()
-                        })
-                    }
+                let userRef = ref.child("users")
+                let userId =  userRef.child(user.uid)
+                userId.observeEventType(.Value, withBlock: {(snapshot) in
+                    
+                    let values = snapshot.value as! [String:AnyObject]
+                    self.valueSokol = [values["name"] as! String, values["email"] as! String,values["birthday"] as! String]
+                    self.base = values["profileImage"] as! String
+                    //self.imageFromURL(values["profileImage"] as! String)
+                    NSOperationQueue.mainQueue().addOperationWithBlock({
+                        self.tableView.reloadData()
+                    })
                 })
             }
         }
-
+        
         // Do any additional setup after loading the view.
     }
     
@@ -114,11 +154,13 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
         // Dispose of any resources that can be recreated.
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let authData = Utilities.authData {
-            switch authData.provider {
-            case "facebook":
-                return 4
-            case "twitter":
+        if let user = Utilities.user {
+            switch user.providerData[0].providerID  {
+            case "facebook.com":
+                return 3
+            case "twitter.com":
+                return 2
+            case "google.com":
                 return 2
             default:
                 return 5
@@ -129,35 +171,29 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        if let authData = Utilities.authData {
-            switch authData.provider {
-            case "facebook":
+        if let user = Utilities.user {
+            switch user.providerData[0].providerID {
+            case "facebook.com":
                 if indexPath.row == 0{
                     let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol1", forIndexPath: indexPath) as! ProfileImageTableViewCell
-                    cell.titleLabel.text = tittleFacebookAndSokol[indexPath.row]
+                    cell.titleLabel.text = titleFacebook[indexPath.row]
                     cell.valueLabel.text = valueFacebook![indexPath.row]
                     if let profileImage =  profileImage{
                         cell.profileImage.image = profileImage
                         cell.profileImage.layer.cornerRadius = 40.0
                         cell.profileImage.clipsToBounds = true
                     }
-                    
                     return cell
                     
-                }else if indexPath.row == 3 {
+                }else if indexPath.row == 2 {
                     let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
                     cell.textLabel?.text = "Friends who are using sokol"
-                    cell.contentView.subviews.forEach({temp in
-                        if temp.tag == 10 {
-                            temp.removeFromSuperview()
-                        }
-                    })
                     
                     return cell
                 }
                 else{
                     let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol", forIndexPath: indexPath)as! ProfileTableViewCell
-                    cell.titleLabel.text = tittleFacebookAndSokol[indexPath.row]
+                    cell.titleLabel.text = titleFacebook[indexPath.row]
                     cell.logo.image = UIImage(named: "facebook")
                     cell.providerLabel.text = "Login with facebook"
                     cell.valueLabel.text = valueFacebook![indexPath.row]
@@ -165,10 +201,10 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                     return cell
                 }
                 
-            case "twitter":
+            case "twitter.com":
                 if indexPath.row == 0{
                     let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol1", forIndexPath: indexPath) as! ProfileImageTableViewCell
-                    cell.titleLabel.text = titleTwitter[indexPath.row]
+                    cell.titleLabel.text = titleTwitterAndGoogle[indexPath.row]
                     cell.valueLabel.text = valueTwitter![indexPath.row]
                     if let profileImage =  profileImage{
                         cell.profileImage.image = profileImage
@@ -176,33 +212,49 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                         cell.profileImage.clipsToBounds = true
 
                     }
-                    cell.contentView.subviews.forEach({temp in
-                        if temp.tag == 10 {
-                            temp.removeFromSuperview()
-                        }
-                    })
-                                       return cell
+                    
+                    return cell
                     
                 }else{
                     let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol", forIndexPath: indexPath)as! ProfileTableViewCell
-                    cell.titleLabel.text = titleTwitter[indexPath.row]
+                    cell.titleLabel.text = titleTwitterAndGoogle[indexPath.row]
                     cell.logo.image = UIImage(named: "twitter")
                     cell.providerLabel.text = "Login with twitter"
                     cell.valueLabel.text = valueTwitter![indexPath.row]
-                    cell.contentView.subviews.forEach({temp in
-                        if temp.tag == 10 {
-                            temp.removeFromSuperview()
-                        }
-                    })
                     
                     return cell
                 }
+            case "google.com":
+                if indexPath.row == 0{
+                    let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol1", forIndexPath: indexPath) as! ProfileImageTableViewCell
+                    cell.titleLabel.text = titleTwitterAndGoogle[indexPath.row]
+                    cell.valueLabel.text = valueGoogle![indexPath.row]
+                    if let profileImage =  profileImage{
+                        cell.profileImage.image = profileImage
+                        cell.profileImage.layer.cornerRadius = 40.0
+                        cell.profileImage.clipsToBounds = true
+                        
+                    }
+                    
+                    return cell
+                    
+                }else{
+                    let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol", forIndexPath: indexPath)as! ProfileTableViewCell
+                    cell.titleLabel.text = titleTwitterAndGoogle[indexPath.row]
+                    cell.logo.image = UIImage(named: "twitter")
+                    cell.providerLabel.text = "Login with google"
+                    cell.valueLabel.text = valueGoogle![indexPath.row]
+                    
+                    return cell
+                }
+
+                
             default:
                 
                 if valueSokol != nil {
                     if indexPath.row == 0{
                         let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol1", forIndexPath: indexPath) as! ProfileImageTableViewCell
-                        cell.titleLabel.text = tittleFacebookAndSokol[indexPath.row]
+                        cell.titleLabel.text = titleSokol[indexPath.row]
                         cell.valueLabel.text = valueSokol![indexPath.row]
                         if let base = base{
                             cell.profileImage.image = Utilities.base64ToImage(base)
@@ -213,28 +265,18 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                         
                         return cell
                     }
-                    else if indexPath.row == 3 || indexPath.row == 4 || indexPath.row == 5 {
+                    else if indexPath.row == 3 || indexPath.row == 4  {
                         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-                        cell.textLabel?.text = titleButtons[indexPath.row % 3]
-                        cell.contentView.subviews.forEach({temp in
-                            if temp.tag == 10 {
-                                temp.removeFromSuperview()
-                            }
-                        })
+                        cell.textLabel?.text = titleButtons[indexPath.row % 2]
                         
                         return cell
                     }
                     else{
                         let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol", forIndexPath: indexPath)as! ProfileTableViewCell
-                        cell.titleLabel.text = tittleFacebookAndSokol[indexPath.row]
+                        cell.titleLabel.text = titleSokol[indexPath.row]
                         cell.logo.image = UIImage(named: "sokol_logo")
                         cell.providerLabel.text = "Login with sokol"
                         cell.valueLabel.text = valueSokol![indexPath.row]
-                        cell.contentView.subviews.forEach({temp in
-                            if temp.tag == 10 {
-                                temp.removeFromSuperview()
-                            }
-                        })
                         
                         return cell
                     }
@@ -247,7 +289,7 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
         return UITableViewCell()
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.row == 3 && Utilities.authData?.provider == "facebook"{
+        if indexPath.row == 2 && Utilities.user?.providerData[0].providerID == "facebook.com"{
             //We need to change the view
             self.ref.removeAllObservers()
             let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("facebookFriends")
@@ -258,7 +300,7 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
 
             
         }
-        if indexPath.row == 3 && Utilities.authData?.provider != "facebook"{
+        if indexPath.row == 3 && Utilities.user?.providerData[0].providerID != "facebook"{
             let blurEffect = UIBlurEffect(style: .Dark)
             blurEffectView = UIVisualEffectView(effect: blurEffect)
             blurEffectView?.frame = view.bounds
@@ -292,7 +334,7 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
             self.presentViewController(changeEmaillAlert!, animated: true, completion: nil)
             
         }
-        if indexPath.row == 4 && Utilities.authData?.provider != "facebook"{
+        if indexPath.row == 4 && Utilities.user?.providerData[0].providerID != "facebook"{
             let blurEffect = UIBlurEffect(style: .Dark)
             blurEffectView = UIVisualEffectView(effect: blurEffect)
             blurEffectView?.frame = view.bounds
@@ -324,8 +366,7 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
             changePasswordAlert?.view.addSubview(changePasswordButton)
             
             self.view.addSubview(blurEffectView!)
-            
-            
+
         }
         
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
@@ -340,7 +381,7 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
         })
     }
     func changePassword(){
-        changePasswordAlert!.dismissViewControllerAnimated(true, completion: nil)
+        /*changePasswordAlert!.dismissViewControllerAnimated(true, completion: nil)
         removeBlurEffect()
         let password = newPassword?.text
         if password?.characters.count > 4 {
@@ -353,10 +394,10 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
             })
         }else {
             self.presentViewController(Utilities.alertMessage("Error", message: "The password has to be almost of 5 characters"), animated: true, completion: nil)
-        }
+        }*/
     }
     func changeEmail(){
-        changeEmaillAlert!.dismissViewControllerAnimated(true, completion: nil)
+        /*changeEmaillAlert!.dismissViewControllerAnimated(true, completion: nil)
         removeBlurEffect()
         let email = emailText!.text
         if Utilities.isValidEmail(email!) {
@@ -375,15 +416,18 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
             })
         }else{
             self.presentViewController(Utilities.alertMessage("Error", message: "The new email is not valid"), animated: true, completion: nil)
-        }
+        }*/
     }
     
     
     @IBAction func logOut(sender: AnyObject) {
-        ref.unauth()
+        try! FIRAuth.auth()?.signOut()
+        Utilities.user = nil
         self.ref.removeAllObservers()
         let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
-        self.presentViewController(viewController, animated: true, completion: nil)
+        let window = UIApplication.sharedApplication().windows[0] as UIWindow;
+        window.rootViewController = viewController;
+        //self.presentViewController(viewController, animated: true, completion: nil)
 
         
     }
@@ -424,15 +468,15 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
         }
         let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("facebookFriends")
        
-        //viewController.preferredContentSize = CGSize(width: 0.0, height: 450.0)
-        if Utilities.authData?.provider != "facebook" {
+        viewController.preferredContentSize = CGSize(width: 0.0, height: 450.0)
+        if Utilities.user?.providerData[0].providerID != "facebook.com" {
             return nil
         }
         previewingContext.sourceRect = cell.frame
         return viewController
     }
     func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
-        self.ref.removeAllObservers()
+        //self.ref.removeAllObservers()
         showViewController(viewControllerToCommit, sender: self)
     }
     @IBAction func toggleMenu(sender:AnyObject){

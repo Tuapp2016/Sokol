@@ -16,16 +16,16 @@ class FacebookFriendTableViewController: UITableViewController {
     var facebookPhoto:[String:UIImage] = [:]
     var whiteRoundedView : UIView?
     
-    let ref = Firebase(url:"sokolunal.firebaseio.com")
+    //let ref = Firebase(url:"sokolunal.firebaseio.com")
     override func viewDidLoad() {
         super.viewDidLoad()
-        ref.observeAuthEventWithBlock({authData in
+        /*ref.observeAuthEventWithBlock({authData in
             if authData == nil {
                 self.ref.removeAllObservers()
                 let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
                 self.presentViewController(viewController, animated: true, completion: nil)
             }
-        })
+        })*/
         self.tableView.separatorStyle = .None
         getFriendsFacebook("me/friends")
         // Uncomment the following line to preserve selection between presentations

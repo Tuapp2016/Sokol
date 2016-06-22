@@ -10,16 +10,16 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
-    let ref = Firebase(url:"sokolunal.firebaseio.com")
+    //let ref = Firebase(url:"sokolunal.firebaseio.com")
     override func viewDidLoad() {
         super.viewDidLoad()
-        ref.observeAuthEventWithBlock({authData in
+        /*ref.observeAuthEventWithBlock({authData in
             if authData == nil {
                 self.ref.removeAllObservers()
                 let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
                 self.presentViewController(viewController, animated: true, completion: nil)
             }
-        })
+        })*/
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "switchTabRoutes", name: "switchTabRoutes", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "switchTabProfile", name: "switchTabProfile", object: nil)
 

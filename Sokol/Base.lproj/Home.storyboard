@@ -488,7 +488,6 @@
         <!--Left Menu Table View Controller-->
         <scene sceneID="TVI-xV-zr3">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="aIW-eg-23g" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="2Qd-0Z-hED" customClass="LeftMenuTableViewController" customModule="Sokol" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" sectionHeaderHeight="28" sectionFooterHeight="28" id="Rwj-b6-MKM">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
@@ -536,6 +535,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="W4M-4H-uJq"/>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aIW-eg-23g" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1558" y="1395"/>
         </scene>
