@@ -50,20 +50,17 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                 }
                 
                 Utilities.user = nil
-                let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
-                self.presentViewController(viewController, animated: true, completion: nil)
+                self.dismissViewControllerAnimated(true, completion: {})
             }
         })
         
         //self.automaticallyAdjustsScrollViewInsets = false;
         if let user = Utilities.user {
-            print(user.providerData[0].providerID)
             switch user.providerData[0].providerID {
                 
             case "facebook.com":
                 let userRef = ref.child("users")
                 let userId =  userRef.child(user.uid)
-                //print(user.uid)
                 userId.observeEventType(.Value, withBlock: {(snapshot) in
                     
                     let values = snapshot.value as! [String:AnyObject]
@@ -88,7 +85,6 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
             case "google.com":
                 let userRef = ref.child("users")
                 let userId =  userRef.child(user.uid)
-                //print(user.uid)
                 userId.observeEventType(.Value, withBlock: {(snapshot) in
                     
                     let values = snapshot.value as! [String:AnyObject]
@@ -114,7 +110,6 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
             case "twitter.com":
                 let userRef = ref.child("users")
                 let userId =  userRef.child(user.uid)
-                //print(user.uid)
                 userId.observeEventType(.Value, withBlock: {(snapshot) in
                     
                     let values = snapshot.value as! [String:AnyObject]
@@ -155,7 +150,6 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
         // Do any additional setup after loading the view.
     }
     
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -253,7 +247,7 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                 }else{
                     let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol", forIndexPath: indexPath)as! ProfileTableViewCell
                     cell.titleLabel.text = titleTwitterAndGoogle[indexPath.row]
-                    cell.logo.image = UIImage(named: "twitter")
+                    cell.logo.image = UIImage(named: "googlePlus")
                     cell.providerLabel.text = "Login with google"
                     cell.valueLabel.text = valueGoogle![indexPath.row]
                     
@@ -464,7 +458,6 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                             else{
                                 let userRef = self.ref.child("users")
                                 let userId =  userRef.child(user.uid)
-                                //print(user.uid)
                                 let values = ["email":newEmailValue!]
                                 userId.updateChildValues(values)
                                 self.presentViewController(Utilities.alertMessage("Success", message: "We have update your emial"), animated: true, completion: nil)
@@ -485,9 +478,10 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
         userId.removeAllObservers()
         try! FIRAuth.auth()?.signOut()
         Utilities.user = nil
-        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
-        let window = UIApplication.sharedApplication().windows[0] as UIWindow;
-        window.rootViewController = viewController;
+        
+        //let window = UIApplication.sharedApplication().windows[0] as UIWindow;
+        //window.rootViewController = viewController;
+        self.dismissViewControllerAnimated(true, completion: {});
         //self.presentViewController(viewController, animated: true, completion: nil)
 
         

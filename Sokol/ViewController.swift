@@ -37,7 +37,6 @@ class ViewController: UIViewController,GIDSignInUIDelegate{
                 Utilities.user = user
                 self.presentViewController(viewController, animated: true, completion: nil)
             } else {
-                
                 let facebookLogin = FBSDKLoginManager()
                 facebookLogin.logOut()
                 if let userId = Twitter.sharedInstance().sessionStore.session()?.userID {
@@ -120,7 +119,6 @@ class ViewController: UIViewController,GIDSignInUIDelegate{
     @IBAction func logIn(sender:AnyObject){
         switch sender.tag {
         case 0:
-            print ("Login with sokol")
             let blurEffect = UIBlurEffect(style: .Dark)
             blurEffectView = UIVisualEffectView(effect: blurEffect)
             blurEffectView?.frame = view.bounds
@@ -224,7 +222,7 @@ class ViewController: UIViewController,GIDSignInUIDelegate{
             
             
         default:
-            print ("We don't support this opertation")
+            self.presentViewController(Utilities.alertMessage("Error", message: "We don't support this opertation"), animated: true, completion: nil)
         }
     }
     @IBAction func unwindToHomeScreen(segue:UIStoryboardSegue) {
@@ -254,7 +252,6 @@ class ViewController: UIViewController,GIDSignInUIDelegate{
     }
     func sendPassword(){
         passwordRecovery!.dismissViewControllerAnimated(true, completion: nil)
-        //print("\(emailText?.text)")
         FIRAuth.auth()?.sendPasswordResetWithEmail((emailText?.text)!, completion: {error in
             if error != nil {
                 self.presentViewController(Utilities.alertMessage("Error", message: "There was an error we couldn't send you the recovery password"), animated: true, completion: nil)

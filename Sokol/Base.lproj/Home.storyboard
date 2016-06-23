@@ -480,6 +480,9 @@
                             <outlet property="delegate" destination="m3s-qw-ir0" id="ci8-aS-4LO"/>
                         </connections>
                     </tableView>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="wCK-pv-eao">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G5D-bw-kCn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -508,6 +511,9 @@
                             <outlet property="delegate" destination="gkI-vi-ttW" id="kgm-0Z-9R2"/>
                         </connections>
                     </tableView>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="x3X-br-Dgb">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5IZ-uw-LqK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

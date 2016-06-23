@@ -116,9 +116,10 @@ class LeftMenuTableViewController: UITableViewController {
             
             Utilities.user = nil
             try! FIRAuth.auth()?.signOut()
-            let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
-            let window = UIApplication.sharedApplication().windows[0] as UIWindow;
-            window.rootViewController = viewController;
+            //let window = UIApplication.sharedApplication().windows[0] as UIWindow;
+            //window.rootViewController = viewController;
+            self.dismissViewControllerAnimated(true, completion: {});
+            //self.presentViewController(viewController, animated: true, completion: nil)
             
         default:
             print("")

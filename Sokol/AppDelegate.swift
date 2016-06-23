@@ -43,13 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
         
         return FBSDKApplicationDelegate.sharedInstance().application(application,didFinishLaunchingWithOptions: launchOptions)
     }
-    /*func application(application: UIApplication,openURL url: NSURL, options: [String: AnyObject]) -> Bool {
-        var twitter = false
-        if Twitter.sharedInstance().application(application, openURL:url, options: options){
-            twitter = true
-        }
-        return  GIDSignIn.sharedInstance().handleURL(url,sourceApplication: options[UIApplicationOpenURLOptionsSourceApplicationKey] as? String,annotation: options[UIApplicationOpenURLOptionsAnnotationKey]) || twitter
-    }*/
+    
     func application(application: UIApplication,
                      openURL url: NSURL,
                              sourceApplication: String?,
@@ -90,12 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     func signIn(signIn: GIDSignIn!, didDisconnectWithUser user: GIDGoogleUser!, withError error: NSError!) {
-        try! FIRAuth.auth()?.signOut()
         signIn.signOut()
-        let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
-        self.window?.rootViewController?.presentViewController(viewController, animated: true, completion: nil)
-    
-        
     }
     func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!,
                 withError error: NSError!) {
@@ -113,7 +102,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
                 self.window?.rootViewController?.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
             }else{
                 let ref = FIRDatabase.database().reference()
-                ref.removeAllObservers()
+                //ref.removeAllObservers()
                 for profile in (user?.providerData)!{
                     let uid = profile.uid
                     var name = profile.displayName

@@ -23,8 +23,7 @@ class HomeViewController: UIViewController {
                     userId.removeAllObservers()
                 }
                 Utilities.user = nil
-                let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
-                self.presentViewController(viewController, animated: true, completion: nil)
+                self.dismissViewControllerAnimated(true, completion: {})
             }
         })
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "switchTabRoutes", name: "switchTabRoutes", object: nil)

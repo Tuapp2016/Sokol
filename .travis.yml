@@ -6,7 +6,7 @@ env:
   - LANG=en_US.UTF-8
   matrix:
     - DESTINATION="OS=9.2,name=iPhone 6s"   SCHEME="Sokol" SDK=iphonesimulator9.2$
-xcode_project: Sokol.xcodeproj #3
+xcode_project: Sokol.xcworkspace #3
 xcode_scheme: Sokol #4
 xcode_sdk: iphonesimulator9.2 #5
 

@@ -8,6 +8,7 @@
 
 import UIKit
 import FBSDKCoreKit
+import Firebase
 
 class FacebookFriendTableViewController: UITableViewController {
     var next:String?
@@ -15,24 +16,27 @@ class FacebookFriendTableViewController: UITableViewController {
     var facebookName:[String:String] = [:]
     var facebookPhoto:[String:UIImage] = [:]
     var whiteRoundedView : UIView?
+    let ref = FIRDatabase.database().reference()
     
     //let ref = Firebase(url:"sokolunal.firebaseio.com")
     override func viewDidLoad() {
         super.viewDidLoad()
-        /*ref.observeAuthEventWithBlock({authData in
-            if authData == nil {
-                self.ref.removeAllObservers()
-                let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
-                self.presentViewController(viewController, animated: true, completion: nil)
+        FIRAuth.auth()?.addAuthStateDidChangeListener({(auth,user) in
+            if user == nil {
+                let userRef = self.ref.child("users")
+                if let uid = Utilities.user?.uid{
+                    let userId =  userRef.child(uid)
+                    userId.removeAllObservers()
+                }
+                Utilities.user = nil
+               
+                self.dismissViewControllerAnimated(true, completion: {})
             }
-        })*/
+        })
+        self.refreshControl?.addTarget(self, action: "handleRefresh", forControlEvents: UIControlEvents.ValueChanged)
+        
         self.tableView.separatorStyle = .None
         getFriendsFacebook("me/friends")
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
     override func didReceiveMemoryWarning() {
@@ -87,6 +91,12 @@ class FacebookFriendTableViewController: UITableViewController {
     }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
+    }
+    func handleRefresh(){
+        facebookIds = []
+        getFriendsFacebook("me/friends")
+        self.refreshControl?.endRefreshing()
+
     }
     func getFriendsFacebook(path:String?){
         var next:String?
@@ -173,49 +183,5 @@ class FacebookFriendTableViewController: UITableViewController {
     }
     
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+   
 }
