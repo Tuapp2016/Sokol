@@ -14,7 +14,7 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
     
     @IBOutlet weak var tableView: UITableView!
     
-    let titleTwitterAndGoogle:[String] = ["Name","Email"]
+    let titleTwitterAndGoogle:[String] = ["Name","Email","Twitter thoughts"]
     let titleFacebook:[String] = ["Name","Email"]
     let titleSokol:[String] = ["Name","Email","Birthday"]
     let titleButtons = ["Change email","Change password"]
@@ -29,20 +29,27 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
     var emailText:UITextField?
     var oldPassword:UITextField?
     var newPassword:UITextField?
+    var newEmail:UITextField?
     var blurEffectView:UIVisualEffectView?
     var whiteRoundedView : UIView?
     
     //let ref = Firebase(url:"sokolunal.firebaseio.com")
     let ref =  FIRDatabase.database().reference()
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
+    override func viewDidLoad() {
+        super.viewDidLoad()
         self.tableView.separatorStyle = .None
         if traitCollection.forceTouchCapability == .Available{
             registerForPreviewingWithDelegate(self, sourceView: view)
         }
         FIRAuth.auth()?.addAuthStateDidChangeListener({(auth,user) in
             if user == nil {
+                let userRef = self.ref.child("users")
+                if let uid = Utilities.user?.uid{
+                    let userId =  userRef.child(uid)
+                    userId.removeAllObservers()
+                }
+                
+                Utilities.user = nil
                 let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
                 self.presentViewController(viewController, animated: true, completion: nil)
             }
@@ -159,7 +166,7 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
             case "facebook.com":
                 return 3
             case "twitter.com":
-                return 2
+                return 3
             case "google.com":
                 return 2
             default:
@@ -215,12 +222,17 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                     
                     return cell
                     
-                }else{
+                }else if indexPath.row == 1{
                     let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol", forIndexPath: indexPath)as! ProfileTableViewCell
                     cell.titleLabel.text = titleTwitterAndGoogle[indexPath.row]
                     cell.logo.image = UIImage(named: "twitter")
                     cell.providerLabel.text = "Login with twitter"
                     cell.valueLabel.text = valueTwitter![indexPath.row]
+                    
+                    return cell
+                }else {
+                    let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+                    cell.textLabel?.text = titleTwitterAndGoogle[indexPath.row]
                     
                     return cell
                 }
@@ -267,7 +279,7 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                     }
                     else if indexPath.row == 3 || indexPath.row == 4  {
                         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-                        cell.textLabel?.text = titleButtons[indexPath.row % 2]
+                        cell.textLabel?.text = titleButtons[indexPath.row % 3]
                         
                         return cell
                     }
@@ -289,6 +301,7 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
         return UITableViewCell()
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
         if indexPath.row == 2 && Utilities.user?.providerData[0].providerID == "facebook.com"{
             //We need to change the view
             self.ref.removeAllObservers()
@@ -300,19 +313,26 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
 
             
         }
-        if indexPath.row == 3 && Utilities.user?.providerData[0].providerID != "facebook"{
+        if indexPath.row == 2 && Utilities.user?.providerData[0].providerID == "twitter.com"{
+            self.ref.removeAllObservers()
+            let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("twitterThoughts")
+            let userProfile = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("userProfile")
+            
+            self.navigationController?.viewControllers = [userProfile,viewController]
+        }
+        if indexPath.row == 3 && Utilities.user?.providerData[0].providerID != "facebook.com"{
             let blurEffect = UIBlurEffect(style: .Dark)
             blurEffectView = UIVisualEffectView(effect: blurEffect)
             blurEffectView?.frame = view.bounds
             blurEffectView?.tag = 10
             changeEmaillAlert = UIAlertController(title: "Change your email", message: "\n\n\n\n\n", preferredStyle: .Alert)
-            let height:NSLayoutConstraint = NSLayoutConstraint(item: changeEmaillAlert!.view, attribute: .Height, relatedBy:NSLayoutRelation.Equal , toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: 220.0)
+            let height:NSLayoutConstraint = NSLayoutConstraint(item: changeEmaillAlert!.view, attribute: .Height, relatedBy:NSLayoutRelation.Equal , toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: 275.0)
             let width:NSLayoutConstraint = NSLayoutConstraint(item: changeEmaillAlert!.view, attribute: .Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: 250.0)
             changeEmaillAlert!.view.addConstraint(width)
             changeEmaillAlert!.view.addConstraint(height)
             let emailTextFrame:CGRect = CGRectMake(5.0, 40.0, 240.0, 50.0)
             emailText = UITextField(frame: emailTextFrame)
-            emailText!.placeholder = "Enter your new email"
+            emailText!.placeholder = "Enter your old  email"
             emailText!.autocapitalizationType = .None
             emailText!.keyboardType = .EmailAddress
             
@@ -321,7 +341,13 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
             oldPassword!.placeholder = "Enter your password"
             oldPassword!.secureTextEntry = true
             
-            let changeEmailButtonFrame:CGRect =  CGRectMake(5.0, 160.0, 240.0, 50.0)
+            let newEmailTextFrame:CGRect = CGRectMake(5.0, 160.0, 240.0, 50.0)
+            newEmail = UITextField(frame: newEmailTextFrame)
+            newEmail!.placeholder = "Enter your new email"
+            newEmail!.autocapitalizationType = .None
+            newEmail!.keyboardType = .EmailAddress
+            
+            let changeEmailButtonFrame:CGRect =  CGRectMake(5.0, 220.0, 240.0, 50.0)
             let changeEmailButton = UIButton(frame: changeEmailButtonFrame)
             changeEmailButton.setTitle("Change Email", forState: .Normal)
             changeEmailButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
@@ -329,43 +355,53 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
             
             changeEmaillAlert!.view.addSubview(emailText!)
             changeEmaillAlert!.view.addSubview(oldPassword!)
+            changeEmaillAlert!.view.addSubview(newEmail!)
             changeEmaillAlert!.view.addSubview(changeEmailButton)
             self.view.addSubview(blurEffectView!)
             self.presentViewController(changeEmaillAlert!, animated: true, completion: nil)
             
         }
-        if indexPath.row == 4 && Utilities.user?.providerData[0].providerID != "facebook"{
+        if indexPath.row == 4 && Utilities.user?.providerData[0].providerID != "facebook.com"{
             let blurEffect = UIBlurEffect(style: .Dark)
             blurEffectView = UIVisualEffectView(effect: blurEffect)
             blurEffectView?.frame = view.bounds
             blurEffectView?.tag = 10
             changePasswordAlert = UIAlertController(title: "Change password", message: "\n\n\n\n\n", preferredStyle: .Alert)
-            let height:NSLayoutConstraint = NSLayoutConstraint(item: changeEmaillAlert!.view, attribute: .Height, relatedBy:NSLayoutRelation.Equal , toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: 220.0)
-            let width:NSLayoutConstraint = NSLayoutConstraint(item: changeEmaillAlert!.view, attribute: .Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: 250.0)
+            let height:NSLayoutConstraint = NSLayoutConstraint(item: changePasswordAlert!.view, attribute: .Height, relatedBy:NSLayoutRelation.Equal , toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: 275.0)
+            let width:NSLayoutConstraint = NSLayoutConstraint(item: changePasswordAlert!.view, attribute: .Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: 250.0)
             changePasswordAlert?.view.addConstraint(height)
             changePasswordAlert?.view.addConstraint(width)
             
-            let oldPasswordFrame:CGRect = CGRectMake(5.0, 40.0, 240.0, 50.0)
+            let emailTextFrame:CGRect = CGRectMake(5.0, 40.0, 240.0, 50.0)
+            emailText = UITextField(frame: emailTextFrame)
+            emailText!.placeholder = "Enter your  email"
+            emailText!.autocapitalizationType = .None
+            emailText!.keyboardType = .EmailAddress
+            
+            let oldPasswordFrame:CGRect = CGRectMake(5.0, 100.0, 240.0, 50.0)
             oldPassword = UITextField(frame: oldPasswordFrame)
             oldPassword?.placeholder = "Enter your old password"
             oldPassword?.autocapitalizationType = .None
-            
-            let newPasswordFrame:CGRect = CGRectMake(5.0, 100.0, 240.0, 50.0)
+            oldPassword?.secureTextEntry = true
+        
+            let newPasswordFrame:CGRect = CGRectMake(5.0, 160.0, 240.0, 50.0)
             newPassword = UITextField(frame: newPasswordFrame)
             newPassword?.placeholder = "Enter your new password"
             newPassword?.autocapitalizationType = .None
             
-            let changePasswordButtonFrame:CGRect = CGRectMake(5.0, 160.0, 240.0, 50.0)
+            let changePasswordButtonFrame:CGRect = CGRectMake(5.0, 220.0, 240.0, 50.0)
             let changePasswordButton = UIButton(frame: changePasswordButtonFrame)
             changePasswordButton.setTitle("Change Password", forState: .Normal)
             changePasswordButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
             changePasswordButton.addTarget(self, action: "changePassword", forControlEvents: .TouchUpInside)
             
+            changePasswordAlert?.view.addSubview(emailText!)
             changePasswordAlert?.view.addSubview(oldPassword!)
             changePasswordAlert?.view.addSubview(newPassword!)
             changePasswordAlert?.view.addSubview(changePasswordButton)
             
             self.view.addSubview(blurEffectView!)
+            self.presentViewController(changePasswordAlert!, animated: true, completion: nil)
 
         }
         
@@ -381,49 +417,74 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
         })
     }
     func changePassword(){
-        /*changePasswordAlert!.dismissViewControllerAnimated(true, completion: nil)
-        removeBlurEffect()
-        let password = newPassword?.text
-        if password?.characters.count > 4 {
-            ref.changePasswordForUser(Utilities.authData?.providerData["email"] as! String, fromOld: oldPassword?.text, toNew: password!, withCompletionBlock: {error in
-                if error != nil {
-                    self.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
-                }else {
-                    self.presentViewController(Utilities.alertMessage("Success", message: "We have changed the your password"), animated: true, completion: nil)
-                }
-            })
-        }else {
-            self.presentViewController(Utilities.alertMessage("Error", message: "The password has to be almost of 5 characters"), animated: true, completion: nil)
-        }*/
-    }
-    func changeEmail(){
-        /*changeEmaillAlert!.dismissViewControllerAnimated(true, completion: nil)
+        changePasswordAlert!.dismissViewControllerAnimated(true, completion: nil)
         removeBlurEffect()
         let email = emailText!.text
-        if Utilities.isValidEmail(email!) {
-            let oldEmail = Utilities.authData?.providerData["email"] as! String
-            ref.changeEmailForUser(oldEmail, password: oldPassword?.text, toNewEmail: email!, withCompletionBlock: {error in
-                if error != nil {
-                    self.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
-                }else {
-                    let userRef = self.ref.childByAppendingPath("users")
-                    let user = userRef.childByAppendingPath(Utilities.authData!.uid)
-                    let values = ["email":email!]
-                    user.updateChildValues(values)
-                    self.presentViewController(Utilities.alertMessage("Success", message: "We have changed the your email"), animated: true, completion: nil)
-                }
-            
-            })
+        let password = oldPassword!.text
+        let newPassword = self.newPassword!.text
+        if Utilities.isValidEmail(email!) && newPassword?.characters.count >= 5{
+            let credential = FIREmailPasswordAuthProvider.credentialWithEmail(email!, password: password!)
+            if let user = FIRAuth.auth()?.currentUser {
+                user.reauthenticateWithCredential(credential, completion: {error in
+                    if error != nil {
+                        self.presentViewController(Utilities.alertMessage("Error", message: "There was an error with the credentials"), animated: true, completion: nil)
+                    }else{
+                        user.updatePassword(newPassword!, completion:{error in
+                            if error != nil{
+                                self.presentViewController(Utilities.alertMessage("Error", message: "We can update the password\n Please try later"), animated: true, completion: nil)
+                            }else{
+                                self.presentViewController(Utilities.alertMessage("Success", message: "We have update your password"), animated: true, completion: nil)
+                            }
+                        })
+                    }
+                })
+            }
         }else{
-            self.presentViewController(Utilities.alertMessage("Error", message: "The new email is not valid"), animated: true, completion: nil)
-        }*/
+            self.presentViewController(Utilities.alertMessage("Error", message: "The  email is not valid or your new password is very short\nRemenber that your password has to be at least five characters"), animated: true, completion: nil)
+        }
+    }
+    func changeEmail(){
+        changeEmaillAlert!.dismissViewControllerAnimated(true, completion: nil)
+        removeBlurEffect()
+        let email = emailText!.text
+        let newEmailValue = newEmail!.text
+        let password = oldPassword!.text
+        if Utilities.isValidEmail(email!) && Utilities.isValidEmail(newEmailValue!) {
+            let credential = FIREmailPasswordAuthProvider.credentialWithEmail(email!, password: password!)
+            if let user = FIRAuth.auth()?.currentUser{
+                user.reauthenticateWithCredential(credential, completion: { error in
+                    if error != nil {
+                        self.presentViewController(Utilities.alertMessage("Error", message: "There was an error with the credentials"), animated: true, completion: nil)
+                    }
+                    else{
+                        user.updateEmail(newEmailValue!, completion: {error in
+                            if error !=  nil{
+                                self.presentViewController(Utilities.alertMessage("Error", message: "We can update the email\n Please try later"), animated: true, completion: nil)
+                            }
+                            else{
+                                let userRef = self.ref.child("users")
+                                let userId =  userRef.child(user.uid)
+                                //print(user.uid)
+                                let values = ["email":newEmailValue!]
+                                userId.updateChildValues(values)
+                                self.presentViewController(Utilities.alertMessage("Success", message: "We have update your emial"), animated: true, completion: nil)
+                            }
+                        })
+                    }
+                })
+            }
+        }else{
+            self.presentViewController(Utilities.alertMessage("Error", message: "The new email is not valid or the credetianls are not valid"), animated: true, completion: nil)
+        }
     }
     
     
     @IBAction func logOut(sender: AnyObject) {
+        let userRef = ref.child("users")
+        let userId = userRef.child(Utilities.user!.uid)
+        userId.removeAllObservers()
         try! FIRAuth.auth()?.signOut()
         Utilities.user = nil
-        self.ref.removeAllObservers()
         let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
         let window = UIApplication.sharedApplication().windows[0] as UIWindow;
         window.rootViewController = viewController;
@@ -460,20 +521,37 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
         //tableView.reloadData()
     }
     func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        guard let indexPath = tableView.indexPathForRowAtPoint(location) else {
-            return nil
-        }        
-        guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
+        switch (Utilities.user?.providerData[0].providerID)! {
+        case "facebook.com":
+            guard let indexPath = tableView.indexPathForRowAtPoint(location) else {
+                return nil
+            }
+            guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
+                return nil
+            }
+            let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("facebookFriends")
+            
+            viewController.preferredContentSize = CGSize(width: 0.0, height: 450.0)
+            
+            previewingContext.sourceRect = cell.frame
+            return viewController
+        case "twitter.com":
+            guard let indexPath = tableView.indexPathForRowAtPoint(location) else {
+                return nil
+            }
+            guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
+                return nil
+            }
+            let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("twitterThoughts")
+            
+            viewController.preferredContentSize = CGSize(width: 0.0, height: 450.0)
+            
+            previewingContext.sourceRect = cell.frame
+            return viewController
+        default:
             return nil
         }
-        let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("facebookFriends")
-       
-        viewController.preferredContentSize = CGSize(width: 0.0, height: 450.0)
-        if Utilities.user?.providerData[0].providerID != "facebook.com" {
-            return nil
-        }
-        previewingContext.sourceRect = cell.frame
-        return viewController
+        
     }
     func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
         //self.ref.removeAllObservers()

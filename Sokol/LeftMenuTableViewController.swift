@@ -17,9 +17,9 @@ class LeftMenuTableViewController: UITableViewController {
     //let ref = Firebase(url:"sokolunal.firebaseio.com")
     let ref = FIRDatabase.database().reference()
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewDidLoad(){
     
-        super.viewWillAppear(animated)
+        super.viewDidLoad()
         self.tableView.separatorStyle = .None
         if let user = Utilities.user{
             //imageFromURL(authData.providerData["profileImageURL"] as! String)
@@ -108,7 +108,12 @@ class LeftMenuTableViewController: UITableViewController {
             NSNotificationCenter.defaultCenter().postNotificationName("switchTabProfile", object: nil)
             NSNotificationCenter.defaultCenter().postNotificationName("closeMenuViaNotification", object: nil)
         case 2:
-          
+            let userRef = ref.child("users")
+            if let uid = Utilities.user?.uid{
+                let userId =  userRef.child(uid)
+                userId.removeAllObservers()
+            }
+            
             Utilities.user = nil
             try! FIRAuth.auth()?.signOut()
             let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")

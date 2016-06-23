@@ -33,6 +33,7 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
         lastNameText.delegate = self
         emailText.delegate = self
         passwordText.delegate = self
+        passwordText.secureTextEntry = false
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -159,6 +160,7 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
                 if error != nil {
                      self.presentViewController(Utilities.alertMessage("Error", message: "There was an error\nThe possible problems are:\nAn internet issue\nThe email is already registerd with another user"), animated: true, completion: nil)
                 }else {
+                    try! FIRAuth.auth()?.signOut()
                     let userRef = self.ref.child("users")
                     let userIdRef = userRef.child((user?.uid)!)
                     let newUser = [
@@ -169,7 +171,6 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
                         "profileImage":imageEncode64
                     ]
                     userIdRef.setValue(newUser)
-                    try! FIRAuth.auth()?.signOut()
                     self.ref.removeAllObservers()
                     self.performSegueWithIdentifier("unWindToHomeScreen", sender: nil)
 

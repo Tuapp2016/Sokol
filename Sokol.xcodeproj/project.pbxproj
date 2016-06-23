@@ -16,6 +16,7 @@
 		B56A73FD1D0B908F00DF1F9B /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73F81D0B908F00DF1F9B /* FBSDKLoginKit.framework */; };
 		B56A73FE1D0B908F00DF1F9B /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73F91D0B908F00DF1F9B /* FBSDKShareKit.framework */; };
 		B56A73FF1D0B908F00DF1F9B /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73F91D0B908F00DF1F9B /* FBSDKShareKit.framework */; };
+		B56DF7971D1B2123002DB22A /* TwitterThoughtsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56DF7961D1B2123002DB22A /* TwitterThoughtsTableViewController.swift */; };
 		B57714EC1D0272470020E856 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57714EB1D0272470020E856 /* AppDelegate.swift */; };
 		B57714EE1D0272470020E856 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57714ED1D0272470020E856 /* ViewController.swift */; };
 		B57714F11D0272470020E856 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B57714EF1D0272470020E856 /* Main.storyboard */; };
@@ -58,6 +59,7 @@
 		B56A73F91D0B908F00DF1F9B /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
 		B56A74071D0B954000DF1F9B /* Sokol-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Sokol-Bridging-Header.h"; sourceTree = "<group>"; };
 		B56A74081D0B954000DF1F9B /* SokolTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SokolTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		B56DF7961D1B2123002DB22A /* TwitterThoughtsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterThoughtsTableViewController.swift; sourceTree = "<group>"; };
 		B57714E81D0272470020E856 /* Sokol.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sokol.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B57714EB1D0272470020E856 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B57714ED1D0272470020E856 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 				B58E4E3B1D1376DC00D5527A /* ContainerViewController.swift */,
 				B58E4E3D1D13799800D5527A /* LeftMenuTableViewController.swift */,
 				B58E4E3F1D13B13B00D5527A /* LeftMenuTableViewCell.swift */,
+				B56DF7961D1B2123002DB22A /* TwitterThoughtsTableViewController.swift */,
 			);
 			path = Sokol;
 			sourceTree = "<group>";
@@ -415,6 +418,7 @@
 			files = (
 				B58E4E321D13200700D5527A /* FacebookFriendsTableViewCell.swift in Sources */,
 				B57714EE1D0272470020E856 /* ViewController.swift in Sources */,
+				B56DF7971D1B2123002DB22A /* TwitterThoughtsTableViewController.swift in Sources */,
 				B58E4E401D13B13B00D5527A /* LeftMenuTableViewCell.swift in Sources */,
 				B58E4E3C1D1376DC00D5527A /* ContainerViewController.swift in Sources */,
 				B57714EC1D0272470020E856 /* AppDelegate.swift in Sources */,

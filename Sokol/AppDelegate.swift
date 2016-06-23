@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
             UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSFontAttributeName:barFont]
             
         }
-        Fabric.with([Twitter.self])
+        
         UITabBar.appearance().tintColor = UIColor(red: 22.0/255.0, green: 109.0/255.0, blue: 186.0/255.0, alpha: 1.0)
         UITabBar.appearance().barTintColor = UIColor.blackColor()
         //FIRApp.configure()
@@ -39,6 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
         GIDSignIn.sharedInstance().clientID = FIRApp.defaultApp()?.options.clientID
         GIDSignIn.sharedInstance().delegate = self
         Twitter.sharedInstance().startWithConsumerKey(Constants.TWITTER_KEY, consumerSecret: Constants.TWITTER_SECRET_KEY)
+        Fabric.with([Twitter.self])
         
         return FBSDKApplicationDelegate.sharedInstance().application(application,didFinishLaunchingWithOptions: launchOptions)
     }

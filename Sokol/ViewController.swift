@@ -37,7 +37,7 @@ class ViewController: UIViewController,GIDSignInUIDelegate{
                 Utilities.user = user
                 self.presentViewController(viewController, animated: true, completion: nil)
             } else {
-                //print("hola")
+                
                 let facebookLogin = FBSDKLoginManager()
                 facebookLogin.logOut()
                 if let userId = Twitter.sharedInstance().sessionStore.session()?.userID {
