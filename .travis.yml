@@ -1,7 +1,5 @@
 language: objective-c
 osx_image: xcode7.2
-script: 
-  -xctool -workspace Sokol.xcworkspace -scheme Sokol -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
-  -xctool -workspace Sokol.xcworkspace -scheme SokolTests -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
-
-
+script:
+  - xctool -workspace Sokol.xcworkspace -scheme Sokol -sdk iphonesimulator
+  - xctool -workspace Sokol.xcworkspace -scheme SokolTests -sdk iphonesimulator
