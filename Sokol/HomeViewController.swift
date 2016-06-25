@@ -26,17 +26,24 @@ class HomeViewController: UIViewController {
                 self.dismissViewControllerAnimated(true, completion: {})
             }
         })
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "switchTabRoutes", name: "switchTabRoutes", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotation", name: UIDeviceOrientationDidChangeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,selector: "switchTabRoutes", name: "switchTabRoutes", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "switchTabProfile", name: "switchTabProfile", object: nil)
 
 
         // Do any additional setup after loading the view.
+    }
+    
+    func rotation(){
+        print(Utilities.index)
+        tabBarController?.selectedIndex = Utilities.index!
     }
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     func switchTabProfile(){
         tabBarController?.selectedIndex = 1
+        
     }
     func switchTabRoutes() {
         tabBarController?.selectedIndex = 0
