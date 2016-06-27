@@ -59,7 +59,7 @@ class ViewController: UIViewController,GIDSignInUIDelegate{
                 let credential = FIRTwitterAuthProvider.credentialWithToken(authToken!, secret: authTokenSecret!)
                 FIRAuth.auth()?.signInWithCredential(credential, completion:{(user, error) in
                     if error != nil {
-                        self.presentViewController(Utilities.alertMessage("Error", message: (error?.description)!), animated: true, completion: nil)
+                        self.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
                     }else{
                         //self.ref.removeAllObservers()
                         for profile in (user?.providerData)!{
@@ -184,7 +184,7 @@ class ViewController: UIViewController,GIDSignInUIDelegate{
                 if facebookError != nil {
                     self.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
                 }else if facebookResult.isCancelled {
-                    self.presentViewController(Utilities.alertMessage("Error", message: facebookResult.debugDescription), animated: true, completion: nil)
+                    self.presentViewController(Utilities.alertMessage("Error", message: "The login was canceled"), animated: true, completion: nil)
                 }else{
                     let credential = FIRFacebookAuthProvider.credentialWithAccessToken(FBSDKAccessToken.currentAccessToken().tokenString)
                     FIRAuth.auth()?.signInWithCredential(credential, completion: {(user,error) in

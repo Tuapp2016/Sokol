@@ -480,7 +480,7 @@
         <!--Facebook Cell View Controller-->
         <scene sceneID="qwg-N8-5vA">
             <objects>
-                <viewController storyboardIdentifier="algo" id="X65-3F-Zyn" customClass="FacebookCellViewController" customModule="Sokol" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="facebookInformation" id="X65-3F-Zyn" customClass="FacebookCellViewController" customModule="Sokol" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="DfN-ab-5qg"/>
                         <viewControllerLayoutGuide type="bottom" id="Ni4-O5-phS"/>

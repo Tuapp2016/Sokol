@@ -62,48 +62,56 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                 let userRef = ref.child("users")
                 let userId =  userRef.child(user.uid)
                 userId.observeEventType(.Value, withBlock: {(snapshot) in
+                    if !(snapshot.value  is NSNull){
+                        let values = snapshot.value as! [String:AnyObject]
                     
-                    let values = snapshot.value as! [String:AnyObject]
+                        let email = values["email"] as!String
+                        let name = values["name"] as! String
                     
-                    let email = values["email"] as!String
-                    let name = values["name"] as! String
-                    
-                    let photoURL = values["profileImage"] as! String
-                    if photoURL == "There is no an image available" {//We use an image for default
-                        self.profileImage = UIImage(named: "profile")
+                        let photoURL = values["profileImage"] as! String
+                        if photoURL == "There is no an image available" {//We use an image for default
+                            self.profileImage = UIImage(named: "profile")
+                        }else{
+                            self.imageFromURL(photoURL)
+                        }
+                        self.valueFacebook = [name,email]
+                        //self.profileImage = Utilities.base64ToImage(values["profileImage"] as! String)
+                        //self.imageFromURL(values["profileImage"] as! String)
+                        NSOperationQueue.mainQueue().addOperationWithBlock({
+                            self.tableView.reloadData()
+                        })
                     }else{
-                        self.imageFromURL(photoURL)
+                        try! FIRAuth.auth()?.signOut()
+                        self.dismissViewControllerAnimated(true, completion: {});
                     }
-                    self.valueFacebook = [name,email]
-                    //self.profileImage = Utilities.base64ToImage(values["profileImage"] as! String)
-                    //self.imageFromURL(values["profileImage"] as! String)
-                    NSOperationQueue.mainQueue().addOperationWithBlock({
-                        self.tableView.reloadData()
-                    })
                 })
                 
             case "google.com":
                 let userRef = ref.child("users")
                 let userId =  userRef.child(user.uid)
                 userId.observeEventType(.Value, withBlock: {(snapshot) in
+                    if !(snapshot.value is NSNull) {
+                        let values = snapshot.value as! [String:AnyObject]
                     
-                    let values = snapshot.value as! [String:AnyObject]
+                        let email = values["email"] as!String
+                        let name = values["name"] as! String
                     
-                    let email = values["email"] as!String
-                    let name = values["name"] as! String
-                    
-                    let photoURL = values["profileImage"] as! String
-                    if photoURL == "There is no an image available" {//We use an image for default
-                        self.profileImage = UIImage(named: "profile")
+                        let photoURL = values["profileImage"] as! String
+                        if photoURL == "There is no an image available" {//We use an image for default
+                            self.profileImage = UIImage(named: "profile")
+                        }else{
+                            self.imageFromURL(photoURL)
+                        }
+                        self.valueGoogle = [name,email]
+                        //self.profileImage = Utilities.base64ToImage(values["profileImage"] as! String)
+                        //self.imageFromURL(values["profileImage"] as! String)
+                        NSOperationQueue.mainQueue().addOperationWithBlock({
+                            self.tableView.reloadData()
+                        })
                     }else{
-                        self.imageFromURL(photoURL)
+                        try! FIRAuth.auth()?.signOut()
+                        self.dismissViewControllerAnimated(true, completion: {});
                     }
-                    self.valueGoogle = [name,email]
-                    //self.profileImage = Utilities.base64ToImage(values["profileImage"] as! String)
-                    //self.imageFromURL(values["profileImage"] as! String)
-                    NSOperationQueue.mainQueue().addOperationWithBlock({
-                        self.tableView.reloadData()
-                    })
                 })
 
                 
@@ -111,38 +119,46 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                 let userRef = ref.child("users")
                 let userId =  userRef.child(user.uid)
                 userId.observeEventType(.Value, withBlock: {(snapshot) in
+                    if !(snapshot.value is NSNull){
+                        let values = snapshot.value as! [String:AnyObject]
                     
-                    let values = snapshot.value as! [String:AnyObject]
+                        let email = values["email"] as!String
+                        let name = values["name"] as! String
                     
-                    let email = values["email"] as!String
-                    let name = values["name"] as! String
-                    
-                    let photoURL = values["profileImage"] as! String
-                    if photoURL == "There is no an image available" {//We use an image for default
-                        self.profileImage = UIImage(named: "profile")
-                    }else{
-                        self.imageFromURL(photoURL)
-                    }
-                    self.valueTwitter = [name,email]
-                    //self.profileImage = Utilities.base64ToImage(values["profileImage"] as! String)
-                    //self.imageFromURL(values["profileImage"] as! String)
-                    NSOperationQueue.mainQueue().addOperationWithBlock({
-                        self.tableView.reloadData()
-                    })
+                        let photoURL = values["profileImage"] as! String
+                        if photoURL == "There is no an image available" {//We use an image for default
+                            self.profileImage = UIImage(named: "profile")
+                        }else{
+                            self.imageFromURL(photoURL)
+                        }
+                        self.valueTwitter = [name,email]
+                        //self.profileImage = Utilities.base64ToImage(values["profileImage"] as! String)
+                        //self.imageFromURL(values["profileImage"] as! String)
+                        NSOperationQueue.mainQueue().addOperationWithBlock({
+                            self.tableView.reloadData()
+                        })
+                        }else{
+                            try! FIRAuth.auth()?.signOut()
+                            self.dismissViewControllerAnimated(true, completion: {});
+                        }
                 })
                 
             default:
                 let userRef = ref.child("users")
                 let userId =  userRef.child(user.uid)
                 userId.observeEventType(.Value, withBlock: {(snapshot) in
-                    
-                    let values = snapshot.value as! [String:AnyObject]
-                    self.valueSokol = [values["name"] as! String, values["email"] as! String,values["birthday"] as! String]
-                    self.base = values["profileImage"] as! String
+                    if !(snapshot.value is NSNull){
+                        let values = snapshot.value as! [String:AnyObject]
+                        self.valueSokol = [values["name"] as! String, values["email"] as! String,values["birthday"] as! String]
+                        self.base = values["profileImage"] as! String
                     //self.imageFromURL(values["profileImage"] as! String)
-                    NSOperationQueue.mainQueue().addOperationWithBlock({
-                        self.tableView.reloadData()
-                    })
+                        NSOperationQueue.mainQueue().addOperationWithBlock({
+                            self.tableView.reloadData()
+                        })
+                    }else{
+                        try! FIRAuth.auth()?.signOut()
+                        self.dismissViewControllerAnimated(true, completion: {});
+                    }
                 })
             }
         }

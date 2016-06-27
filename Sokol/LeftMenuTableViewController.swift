@@ -8,39 +8,62 @@
 
 import UIKit
 import Firebase
+import TwitterKit
 
 class LeftMenuTableViewController: UITableViewController {
     let values = ["My routes","Profile","Log out"]
     let valuesImage = ["route","profile","logout"]
     var profileImage:UIImage? = nil
     var header:LeftMenuTableViewCell? = nil
-    //let ref = Firebase(url:"sokolunal.firebaseio.com")
     let ref = FIRDatabase.database().reference()
     
     override func viewDidLoad(){
     
         super.viewDidLoad()
+        if Utilities.user?.providerData[0].providerID == "twitter.com"{
+            let userId = Twitter.sharedInstance().sessionStore.session()?.userID
+            let client = TWTRAPIClient(userID: userId)
+            let request = client.URLRequestWithMethod("GET", URL: "https://api.twitter.com/1.1/account/verify_credentials.json", parameters: ["include_email": "true", "skip_status": "true"], error: nil)
+            
+            client.sendTwitterRequest(request, completion: {response, data,connectionError in
+                if connectionError == nil {
+                    do{
+                        let json = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as? NSDictionary
+                        let value = ["email":json!["screen_name"] as! String]
+                        let user = self.ref.child("users").child((Utilities.user?.uid)!)
+                        user.updateChildValues(value)
+                    }catch let jsonError as NSError {
+                        print("json error: \(jsonError.localizedDescription)")
+                    }
+                }
+            })
+                
+            
+        }
         self.tableView.separatorStyle = .None
         if let user = Utilities.user{
-            //imageFromURL(authData.providerData["profileImageURL"] as! String)
             let userRef = ref.child("users")
             let userId = userRef.child(user.uid)
             userId.observeEventType(.Value, withBlock: {snapshot in
-                let values = snapshot.value  as! [String:AnyObject]
-                
-                if self.header != nil {
-                    self.header?.nameLabel.text = values["name"] as! String
-                    let url = values["profileImage"] as! String
-                    if url == "There is no an image available" {
-                        self.header?.profileImage.image = UIImage(named: "profile")
-                    }else if url.containsString("https")  || url.containsString("http")  {
-                        self.imageFromURL(url)
-                    }else{
-                        self.header?.profileImage.image = Utilities.base64ToImage(url)
-                        self.header?.profileImage.layer.cornerRadius = 50.0
-                        self.header?.profileImage.clipsToBounds = true
+                if !(snapshot.value is NSNull){
+                    let values = snapshot.value  as! [String:AnyObject]
+                    if self.header != nil {
+                        self.header?.nameLabel.text = values["name"] as! String
+                        let url = values["profileImage"] as! String
+                        if url == "There is no an image available" {
+                            self.header?.profileImage.image = UIImage(named: "profile")
+                        }else if url.containsString("https")  || url.containsString("http")  {
+                            self.imageFromURL(url)
+                        }else{
+                            self.header?.profileImage.image = Utilities.base64ToImage(url)
+                            self.header?.profileImage.layer.cornerRadius = 50.0
+                            self.header?.profileImage.clipsToBounds = true
 
+                        }
                     }
+                }else{
+                    try! FIRAuth.auth()?.signOut()
+                    self.dismissViewControllerAnimated(true, completion: {});
                 }
 
                 
@@ -116,10 +139,7 @@ class LeftMenuTableViewController: UITableViewController {
             
             Utilities.user = nil
             try! FIRAuth.auth()?.signOut()
-            //let window = UIApplication.sharedApplication().windows[0] as UIWindow;
-            //window.rootViewController = viewController;
             self.dismissViewControllerAnimated(true, completion: {});
-            //self.presentViewController(viewController, animated: true, completion: nil)
             
         default:
             print("")

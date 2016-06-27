@@ -41,11 +41,6 @@ class FacebookFriendsCollectionViewController: UICollectionViewController,UIView
 
         getFriendsFacebook("me/friends")
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -74,14 +69,9 @@ class FacebookFriendsCollectionViewController: UICollectionViewController,UIView
             cell.facebookProfileImage.image = facebookPhoto[facebookIds[indexPath.row]]
             cell.facebookProfileImage.layer.cornerRadius = 90.0
             cell.facebookProfileImage.clipsToBounds = true
-            //cell.backgroundView = UIImageView(image: UIImage(named: "photo-frame")!)
         }else{
             cell.facebookProfileImage.image = UIImage(named: "profile")
-            //cell.backgroundView = UIImageView(image: UIImage(named: "photo-frame")!)
         }
-        //
-        // Configure the cell
-    
         return cell
     }
     
@@ -204,7 +194,7 @@ class FacebookFriendsCollectionViewController: UICollectionViewController,UIView
         guard let cell = collectionView?.cellForItemAtIndexPath(indexPath) else {
             return nil
         }
-        let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("algo") as! FacebookCellViewController
+        let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("facebookInformation") as! FacebookCellViewController
         if indexPath.row <= facebookIds.count && indexPath.row <= facebookName.count && indexPath.row <= facebookPhoto.count{
             viewController.nameText = facebookName[facebookIds[indexPath.row]]
             viewController.image = facebookPhoto[facebookIds[indexPath.row]]
