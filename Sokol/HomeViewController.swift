@@ -7,30 +7,38 @@
 //
 
 import UIKit
+import Firebase
 
 class HomeViewController: UIViewController {
     
-    let ref = Firebase(url:"sokolunal.firebaseio.com")
+    //let ref = Firebase(url:"sokolunal.firebaseio.com")
+    let ref = FIRDatabase.database().reference()
     override func viewDidLoad() {
         super.viewDidLoad()
-        ref.observeAuthEventWithBlock({authData in
-            if authData == nil {
-                self.ref.removeAllObservers()
-                let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
-                self.presentViewController(viewController, animated: true, completion: nil)
+        FIRAuth.auth()?.addAuthStateDidChangeListener({(auth,user) in
+            if user == nil {
+                let userRef = self.ref.child("users")
+                if let uid = Utilities.user?.uid{
+                    let userId =  userRef.child(uid)
+                    userId.removeAllObservers()
+                }
+                Utilities.user = nil
+                self.dismissViewControllerAnimated(true, completion: {})
             }
         })
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "switchTabRoutes", name: "switchTabRoutes", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,selector: "switchTabRoutes", name: "switchTabRoutes", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "switchTabProfile", name: "switchTabProfile", object: nil)
 
 
         // Do any additional setup after loading the view.
     }
+   
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     func switchTabProfile(){
         tabBarController?.selectedIndex = 1
+        
     }
     func switchTabRoutes() {
         tabBarController?.selectedIndex = 0

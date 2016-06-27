@@ -9,6 +9,7 @@
 import Foundation
 
 struct Constants {
-    static let TWITTER_KEY = "R0qFN9H3z0GSz6bKrTupGx0l3"
+    static let TWITTER_KEY = "EuJFAIRjYsoX46n8UY4LAGfbN"
+    static let TWITTER_SECRET_KEY = "LASlk8viEbWe0UzgeoJCDcponXgnd3A7CbO2DzpDCTfTEyByqL"
     
 }

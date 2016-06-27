@@ -1,4 +1,4 @@
-//
+    //
 //  ViewController.swift
 //  Sokol
 //
@@ -10,32 +10,105 @@ import UIKit
 import Firebase
 import FBSDKLoginKit
 import FBSDKCoreKit
+import Fabric
+import TwitterKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,GIDSignInUIDelegate{
     
-    @IBOutlet weak var sokol: UIButton!
-    @IBOutlet weak var facebook: UIButton!
-    @IBOutlet weak var twitter: UIButton!
+    @IBOutlet weak var signInButtonGoogle: GIDSignInButton!
+    @IBOutlet weak var signInButtonFacebook:UIButton!
+    @IBOutlet weak var signInButtonSokol:UIButton!
+    @IBOutlet weak var signInButtonTwitter:UIView!
+    
+    
     var emailText:UITextField?
     var passwordText:UITextField?
     var loginWithSokol:UIAlertController?
     var passwordRecovery:UIAlertController?
-    var twitterAuthHelper:TwitterAuthHelper?
     var blurEffectView:UIVisualEffectView?
     
-    let ref = Firebase(url:"sokolunal.firebaseio.com")
-
+    let ref = FIRDatabase.database().reference()
     override func viewDidLoad() {
         super.viewDidLoad()
-        ref.observeAuthEventWithBlock({authData in
-            if authData != nil {
-                self.ref.removeAllObservers()
+        GIDSignIn.sharedInstance().uiDelegate = self
+        FIRAuth.auth()?.addAuthStateDidChangeListener({ auth,user in
+            if let user = user {
                 let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
-                Utilities.authData = authData
+                Utilities.user = user
+                self.presentViewController(viewController, animated: true, completion: nil)
+            } else {
+                let facebookLogin = FBSDKLoginManager()
+                facebookLogin.logOut()
+                if let userId = Twitter.sharedInstance().sessionStore.session()?.userID {
+                    Twitter.sharedInstance().sessionStore.logOutUserID(userId)
+                }
+                GIDSignIn.sharedInstance().signOut()
+                
+            }
+        })
+        
+
+        // Do any additional setup after loading the view, typically from a nib.
+    }
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        let loginButton = TWTRLogInButton(logInCompletion: {session, error in
+            if session != nil {
+                let authToken = session?.authToken
+                let authTokenSecret = session?.authTokenSecret
+                let credential = FIRTwitterAuthProvider.credentialWithToken(authToken!, secret: authTokenSecret!)
+                FIRAuth.auth()?.signInWithCredential(credential, completion:{(user, error) in
+                    if error != nil {
+                        self.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
+                    }else{
+                        //self.ref.removeAllObservers()
+                        for profile in (user?.providerData)!{
+                            let uid = profile.uid
+                            var name = profile.displayName
+                            if name == nil{
+                                name = "There is no  name"
+                            }
+                            var email = profile.email
+                            if email == nil{
+                                email = "There is no an email"
+                            }
+                            let photoURL = (profile.photoURL!).absoluteString
+                            let userRef = self.ref.child("users")
+                            let userIdRef = userRef.child((user?.uid)!)
+                            let newUser = ["provider": profile.providerID,"name": name!,"email":email!,"profileImage":photoURL]
+                            userIdRef.setValue(newUser)
+                            
+                        }
+                        
+                        let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
+                        if Utilities.user == nil {
+                            Utilities.user = user
+                        }
+                        self.presentViewController(viewController, animated: true, completion: nil)
+                        
+                        
+                    }
+                })
+                
+            }else{
+                self.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
+                
+            }
+            
+        })
+        
+        loginButton.frame = CGRect(x: signInButtonTwitter.frame.origin.x, y: signInButtonTwitter.frame.origin.y-55, width: signInButtonTwitter.frame.width, height: signInButtonTwitter.frame.height)
+        FIRAuth.auth()?.addAuthStateDidChangeListener({auth,user in
+            if let user = user {
+                self.ref.removeAllObservers()
+                Utilities.user = user
+                let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
+                
+                //Utilities.authData = authData
                 self.presentViewController(viewController, animated: true, completion: nil)
             }
         })
-        // Do any additional setup after loading the view, typically from a nib.
+        signInButtonTwitter.addSubview(loginButton)
     }
 
     override func didReceiveMemoryWarning() {
@@ -43,11 +116,9 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func logIn(sender:UIButton){
+    @IBAction func logIn(sender:AnyObject){
         switch sender.tag {
-        case 0,
-             3:
-            print ("Login with sokol")
+        case 0:
             let blurEffect = UIBlurEffect(style: .Dark)
             blurEffectView = UIVisualEffectView(effect: blurEffect)
             blurEffectView?.frame = view.bounds
@@ -104,73 +175,54 @@ class ViewController: UIViewController {
             presentViewController(loginWithSokol!, animated: true, completion: nil)
             self.view.addSubview(blurEffectView!)
                         
-        case 1:
-            print ("Login with facebook")
+        case 2:
             let facebookLogin = FBSDKLoginManager()
             facebookLogin.logOut()
+            //facebookLogin.loginBehavior = .Web
             facebookLogin.logInWithReadPermissions(["email","public_profile","user_friends"], fromViewController: self, handler: {
                 (facebookResult, facebookError) -> Void in
                 if facebookError != nil {
                     self.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
                 }else if facebookResult.isCancelled {
-                    self.presentViewController(Utilities.alertMessage("Error", message: "The log in was canceled"), animated: true, completion: nil)
+                    self.presentViewController(Utilities.alertMessage("Error", message: "The login was canceled"), animated: true, completion: nil)
                 }else{
-                    let accessToken = FBSDKAccessToken.currentAccessToken().tokenString
-                    self.ref.authWithOAuthProvider("facebook", token: accessToken, withCompletionBlock: { error, authData in
+                    let credential = FIRFacebookAuthProvider.credentialWithAccessToken(FBSDKAccessToken.currentAccessToken().tokenString)
+                    FIRAuth.auth()?.signInWithCredential(credential, completion: {(user,error) in
                         if error != nil {
-                            self.presentViewController(Utilities.alertMessage("Error", message:"There was an error"), animated: true, completion: nil)
-                        } else {
-                            let userRef = self.ref.childByAppendingPath("users")
-                            let userUID = userRef.childByAppendingPath(authData.uid)
-                            //print(authData.providerData["cachedUserProfile"]!["birthday"]!!)
-                            var email:String? = authData.providerData["email"] as? String
-                            var birthday:String? = authData.providerData["cachedUserProfile"]!["birthday"] as? String
-                            
-                            if email == nil {
-                                email = "There is no a valid email"
-                            }
-                            print(birthday)
-                            if birthday == nil {
-                                birthday = "There is no a valid birthday"
-                            }else{
-                                birthday = Utilities.setBirthdayDate(birthday!)
-                            }
-                            print(birthday)
-                            let user = [
-                                "provider":authData.provider,
-                                "name":authData.providerData["displayName"]!,
-                            "birthday":birthday!,
-                                "email":email!,
-                                "profileImage":authData.providerData["profileImageURL"]!
-                            ]
-                            userUID.observeSingleEventOfType(.Value, withBlock: {snap in
-                                if snap.value is NSNull { //The user doesn't exit
-                                   userUID.setValue(user)
-                                }else {
-                                    userUID.updateChildValues(user)
-                                }
-                            })
+                            self.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
+                        }else{
                             self.ref.removeAllObservers()
-                            let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
-                            Utilities.authData = authData
-                            self.presentViewController(viewController, animated: true, completion: nil)
+                            for profile in (user?.providerData)!{
+                                let uid = profile.uid
+                                var name = profile.displayName
+                                if name == nil{
+                                    name = "There is no  name"
+                                }
+                                var email = profile.email
+                                if email == nil{
+                                    email = "There is no an email"
+                                }
+                                let photoURL = (profile.photoURL!).absoluteString
+                                let userRef = self.ref.child("users")
+                                let userIdRef = userRef.child((user?.uid)!)
+                                let newUser = ["provider": profile.providerID,"name": name!,"email":email!,"profileImage":photoURL]
+                                userIdRef.setValue(newUser)
+                                
+                            }
+
+                            if Utilities.user == nil {
+                                Utilities.user = user
+                            }
+                            
                         }
                     })
-                }
-            })
-        case 2:
-            print ("Login with twitter")
-            twitterAuthHelper = TwitterAuthHelper(firebaseRef: ref, apiKey: Constants.TWITTER_KEY)
-            twitterAuthHelper!.selectTwitterAccountWithCallback({ error, accounts in
-                if error != nil {
-                    self.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
-                }else if accounts.count >= 1 {
-                    self.selectAccount(accounts!)
+                    
                 }
             })
             
+            
         default:
-            print ("We don't support this opertation")
+            self.presentViewController(Utilities.alertMessage("Error", message: "We don't support this opertation"), animated: true, completion: nil)
         }
     }
     @IBAction func unwindToHomeScreen(segue:UIStoryboardSegue) {
@@ -200,14 +252,14 @@ class ViewController: UIViewController {
     }
     func sendPassword(){
         passwordRecovery!.dismissViewControllerAnimated(true, completion: nil)
-        //print("\(emailText?.text)")
-        ref.resetPasswordForUser(emailText?.text, withCompletionBlock: { error in
+        FIRAuth.auth()?.sendPasswordResetWithEmail((emailText?.text)!, completion: {error in
             if error != nil {
                 self.presentViewController(Utilities.alertMessage("Error", message: "There was an error we couldn't send you the recovery password"), animated: true, completion: nil)
             }else{
                 self.presentViewController(Utilities.alertMessage("Success", message: "We sent the recovery password to the email provided"), animated: true, completion: nil)
             }
         })
+ 
         removeBlurEffect()
     }
     func cancelLogin(){
@@ -216,20 +268,18 @@ class ViewController: UIViewController {
     }
     func loginSokol(){
         loginWithSokol?.dismissViewControllerAnimated(true, completion: nil)
-        ref.authUser(emailText?.text, password: passwordText?.text,  withCompletionBlock: { error, authData in
-            if error != nil {
-                self.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
-            }else{
-                /*self.presentViewController(Utilities.alertMessage("Success", message: "The log in was successful"), animated: true, completion: nil)*/
-                self.ref.removeAllObservers()
-                let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
-                Utilities.authData = authData
-                self.presentViewController(viewController, animated: true, completion: nil)
-                
-            }
-            
-        })
         removeBlurEffect()
+        FIRAuth.auth()?.signInWithEmail((emailText?.text)!, password: (passwordText?.text)!, completion: {(user:FIRUser?,error) in
+            if error != nil {
+                self.presentViewController(Utilities.alertMessage("Error", message: (error?.description)!), animated: true, completion: nil)
+            }else{
+                //self.ref.removeAllObservers()
+                let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
+                Utilities.user = user
+                self.presentViewController(viewController, animated: true, completion: nil)
+            }
+        })
+        
         
     }
     func removeBlurEffect(){
@@ -240,53 +290,12 @@ class ViewController: UIViewController {
             }
         })
     }
-    func selectAccount(accounts:NSArray) {
-        let selectTwitterAcccount = UIAlertController(title: "Select an account", message: nil, preferredStyle: .ActionSheet)
-        for account in accounts {
-            let action = UIAlertAction(title: account.username, style: .Default, handler: { temp in
-                self.twitterLogin(account as! ACAccount)
-                
-            })
-            selectTwitterAcccount.addAction(action)
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-        selectTwitterAcccount.addAction(cancelAction)
-        self.presentViewController(selectTwitterAcccount, animated: true, completion: nil)
-        
-    }
-    func twitterLogin(account:ACAccount){
-        twitterAuthHelper!.authenticateAccount(account, withCallback: {error, authData in
-            if error != nil{
-                //Error authenticating account
-                self.presentViewController(Utilities.alertMessage("Error", message: "There was an error authenticating the account"), animated: true, completion: nil)
-            }else {
-                // User logged in
-                let userRef = self.ref.childByAppendingPath("users")
-                let userUID = userRef.childByAppendingPath(authData.uid)
-                let user = [
-                    "provider":authData.provider,
-                    "name":authData.providerData["displayName"]!,
-                    "username":authData.providerData["username"]!,
-                    "profileImage":authData.providerData["profileImageURL"]!
-                ]
-                userUID.observeSingleEventOfType(.Value,  withBlock: {snap in
-                    if snap.value is NSNull { //The user doesn't exit
-                        userUID.setValue(user)
-                    }else {
-                        userUID.updateChildValues(user)
-                    }
-                })
-                self.ref.removeAllObservers()
-                let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
-                Utilities.authData = authData
-                self.presentViewController(viewController, animated: true, completion: nil)
-            }
-        })
     
-    }
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         blurEffectView?.frame = view.bounds
     }
+    
+    
     
 }
 

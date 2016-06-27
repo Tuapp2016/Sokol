@@ -1,0 +1,6 @@
+framework module Pods_Sokol {
+  umbrella header "Pods-Sokol-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -11,17 +11,8 @@ import UIKit
 class ContainerViewController: UIViewController,UIScrollViewDelegate {
     let leftMenuWidth:CGFloat = 258
     @IBOutlet weak var scrollView: UIScrollView!
-    let ref = Firebase(url:"sokolunal.firebaseio.com")
 
     override func viewDidLoad() {
-        ref.observeAuthEventWithBlock({authData in
-            if authData == nil {
-                self.ref.removeAllObservers()
-                let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
-                Utilities.authData = nil
-                self.presentViewController(viewController, animated: true, completion: nil)
-            }
-        })
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "toggleMenu", name: "toggleMenu", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "closeMenuViaNotification", name: "closeMenuViaNotification", object: nil)
