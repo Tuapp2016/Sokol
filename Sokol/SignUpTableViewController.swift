@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 
 class SignUpTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,UITextFieldDelegate {
+    var linking:Bool?
     @IBOutlet var imageView:UIImageView!
     @IBOutlet var nameText:UITextField!
     @IBOutlet var lastNameText:UITextField!
@@ -27,6 +28,7 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.tableView.separatorStyle = .None
         //self.tableView.c = UIColor.lightGrayColor()
         nameText.delegate = self
@@ -146,6 +148,9 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
         alertController!.dismissViewControllerAnimated(true, completion: nil)
     }
     
+    @IBAction func cancel(sender: AnyObject) {
+        dismissViewControllerAnimated(true, completion: {});
+    }
     @IBAction func singUp() {
         let name = nameText.text
         let lastName = lastNameText.text
@@ -156,7 +161,8 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
         if(imageProfileSelected && name?.characters.count>0 && lastName?.characters.count>0 && birthday?.characters.count>0 && Utilities.isValidEmail(email!) && password?.characters.count>5){
             let imageEncode64 = Utilities.imageToBase64(imageProfile: imageProfile!)
             //TODO: We should create the user with the information that she/he provied us
-            FIRAuth.auth()?.createUserWithEmail(email!, password: password!, completion: {(user:FIRUser?,error) in
+            if linking == false{
+                FIRAuth.auth()?.createUserWithEmail(email!, password: password!, completion: {(user:FIRUser?,error) in
                 if error != nil {
                      self.presentViewController(Utilities.alertMessage("Error", message: "There was an error\nThe possible problems are:\nAn internet issue\nThe email is already registerd with another user"), animated: true, completion: nil)
                 }else {
@@ -172,10 +178,31 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
                     ]
                     userIdRef.setValue(newUser)
                     self.ref.removeAllObservers()
-                    self.performSegueWithIdentifier("unWindToHomeScreen", sender: nil)
-
+                    self.dismissViewControllerAnimated(true, completion: {});
                 }
-            })
+                })
+            }else {
+                let credential = FIREmailPasswordAuthProvider.credentialWithEmail(email!, password: password!)
+                FIRAuth.auth()?.currentUser!.linkWithCredential(credential) { (user,error) in
+                    if error == nil {
+                        let newUser = [
+                            "provider": "sokol",
+                            "name": name! + " " + lastName!,
+                            "birthday": birthday!,
+                            "email":email!,
+                            "profileImage":imageEncode64
+                        ]
+                        let userRef = self.ref.child("users")
+                        let userIdRef = userRef.child((FIRAuth.auth()?.currentUser?.uid)!)
+                        userIdRef.updateChildValues(newUser)
+                        self.ref.removeAllObservers()
+                        Utilities.buttonSokol!.hidden = true
+                        self.dismissViewControllerAnimated(true, completion: {});
+                    }else{
+                        self.presentViewController(Utilities.alertMessage("error", message:(error?.description)!), animated: false, completion: nil)
+                    }
+                }
+            }
             
         }else{
             self.presentViewController(Utilities.alertMessage("Error", message: "All the fields are required or some fields are incorrect"), animated: true, completion: nil)

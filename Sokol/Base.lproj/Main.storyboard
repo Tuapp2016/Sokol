@@ -65,7 +65,7 @@
                                             <action selector="logIn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7JC-DO-5hW"/>
                                         </connections>
                                     </button>
-                                    <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xuF-26-A4p" customClass="UIControl">
+                                    <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xuF-26-A4p">
                                         <rect key="frame" x="0.0" y="55" width="300" height="50"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -89,7 +89,7 @@
                     <navigationItem key="navigationItem" id="APg-fi-MXF">
                         <barButtonItem key="rightBarButtonItem" title="Do you need an account?" id="plU-cs-WrA">
                             <connections>
-                                <segue destination="dVp-9m-1ln" kind="showDetail" id="p19-xc-bFQ"/>
+                                <action selector="signUp:" destination="BYZ-38-t0r" id="zVV-HI-HEf"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -298,7 +298,7 @@
                     <navigationItem key="navigationItem" id="MCu-8a-Lm5">
                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="Uzv-mm-LD5">
                             <connections>
-                                <segue destination="aeU-lo-6q0" kind="unwind" identifier="unWindToHomeScreen" unwindAction="unwindToHomeScreen:" id="qjw-om-mip"/>
+                                <action selector="cancel:" destination="f5B-RJ-JyC" id="bi9-dx-RXs"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Sign up" id="oXS-9j-YfA">
@@ -317,7 +317,6 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BhF-i0-WXg" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="aeU-lo-6q0" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1841" y="1109"/>
         </scene>
@@ -342,7 +341,7 @@
         <!--Navigation Controller-->
         <scene sceneID="LdH-Ra-a1Z">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="dVp-9m-1ln" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="signUp" automaticallyAdjustsScrollViewInsets="NO" id="dVp-9m-1ln" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="NZH-V8-amx">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>

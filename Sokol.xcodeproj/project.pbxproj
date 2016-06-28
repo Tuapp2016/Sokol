@@ -36,6 +36,7 @@
 		B5C1FBF71D108EB200BA9104 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C1FBF61D108EB200BA9104 /* HomeViewController.swift */; };
 		B5C1FBF91D108EC300BA9104 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C1FBF81D108EC300BA9104 /* ProfileViewController.swift */; };
 		B5CEF7FB1D0E32D800A776C2 /* SignUpTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CEF7FA1D0E32D800A776C2 /* SignUpTableViewController.swift */; };
+		B5EA15A31D21E854004CC7E8 /* LinkAccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EA15A21D21E854004CC7E8 /* LinkAccountsViewController.swift */; };
 		F2D11BDFF37F527B40E51A3C /* Pods_SokolTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A84B916E6F8FD527142610 /* Pods_SokolTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -84,6 +85,7 @@
 		B5C1FBF61D108EB200BA9104 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		B5C1FBF81D108EC300BA9104 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		B5CEF7FA1D0E32D800A776C2 /* SignUpTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpTableViewController.swift; sourceTree = "<group>"; };
+		B5EA15A21D21E854004CC7E8 /* LinkAccountsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkAccountsViewController.swift; sourceTree = "<group>"; };
 		C4A84B916E6F8FD527142610 /* Pods_SokolTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SokolTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6F091C12DA211C4C70E4657 /* Pods-Sokol.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sokol.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Sokol/Pods-Sokol.debug.xcconfig"; sourceTree = "<group>"; };
 		D9816A472096093A3FD45336 /* Pods-SokolTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SokolTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SokolTests/Pods-SokolTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				B5B9F8B91D1E1B110055287C /* FacebookFriendsCollectionViewController.swift */,
 				B5B9F8BB1D1E1B710055287C /* FacebookFriendsCollectionViewCell.swift */,
 				B5B9F8BD1D1E343F0055287C /* FacebookCellViewController.swift */,
+				B5EA15A21D21E854004CC7E8 /* LinkAccountsViewController.swift */,
 			);
 			path = Sokol;
 			sourceTree = "<group>";
@@ -427,6 +430,7 @@
 				B52A675C1D10CA3A0062980F /* ProfileTableViewCell.swift in Sources */,
 				B5C1FBF01D10557500BA9104 /* Utilities.swift in Sources */,
 				B5B9F8BA1D1E1B110055287C /* FacebookFriendsCollectionViewController.swift in Sources */,
+				B5EA15A31D21E854004CC7E8 /* LinkAccountsViewController.swift in Sources */,
 				B5CEF7FB1D0E32D800A776C2 /* SignUpTableViewController.swift in Sources */,
 				B5B9F8BC1D1E1B710055287C /* FacebookFriendsCollectionViewCell.swift in Sources */,
 				B5C1FBF71D108EB200BA9104 /* HomeViewController.swift in Sources */,
