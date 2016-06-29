@@ -370,8 +370,8 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                     }else{ //Here we have linked all the accounts
                         //print ("\(indexPath.row) - \(i)")
                         let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
-                        cell.textLabel!.text = "Unlink " + getProviderName(providers[indexPath.row % 2])
-                        cell.imageView?.image = getProviderImage(providers[indexPath.row % 2])
+                        cell.textLabel!.text = "Unlink " + getProviderName(providers[(indexPath.row + 1) % 3])
+                        cell.imageView?.image = getProviderImage(providers[(indexPath.row + 1) % 3])
                         return cell
                     }
 
@@ -518,7 +518,7 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
             self.unlinkAccount(providers[indexPath.row % 3])
         }
         if indexPath.row >= 2 && i == 4 && provider == "google.com" {
-            self.unlinkAccount(providers[indexPath.row % 2])
+            self.unlinkAccount(providers[(indexPath.row + 1) % 3])
 
         }
         if indexPath.row > 5 && i < 4 && (provider == "password" || provider == "sokol"){

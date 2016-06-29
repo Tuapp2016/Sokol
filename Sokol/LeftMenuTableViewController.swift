@@ -26,8 +26,8 @@ class LeftMenuTableViewController: UITableViewController {
     }
     override func viewWillAppear(animated: Bool) {
         tableView.reloadData()
-        if let user = Utilities.user{
-            if let provider = Utilities.provider{
+        if let user = FIRAuth.auth()?.currentUser{
+            if let provider = Utilities.provider {
                 if provider == "sokol" || provider == "password"{
                     let userRef = ref.child("users")
                     let userId = userRef.child(user.uid)
@@ -126,7 +126,6 @@ class LeftMenuTableViewController: UITableViewController {
                 let data = user.providerData[i]
             
                 var name = ""
-                var url = ""
                 if data.displayName != nil {
                     name = data.displayName!
                 }

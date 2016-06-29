@@ -13,7 +13,6 @@ import FBSDKCoreKit
 import Fabric
 import TwitterKit
 
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
     
@@ -129,7 +128,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
             
             FIRAuth.auth()?.currentUser?.linkWithCredential(credential, completion: {(user, error) in
                 if error != nil {
-                   self.window?.rootViewController?.presentViewController(Utilities.alertMessage("error", message:(error?.description)!), animated: false, completion: nil)
+                   self.window?.rootViewController?.presentViewController(Utilities.alertMessage("error", message:"There was an error"), animated: false, completion: nil)
                 }else{
                     Utilities.user = user
                     Utilities.button!.hidden = true
