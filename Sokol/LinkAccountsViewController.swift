@@ -58,9 +58,9 @@ class LinkAccountsViewController: UIViewController,GIDSignInUIDelegate {
         
         
         //signInTwitter.addSubview(loginButton)
-        for providerID in (FIRAuth.auth()?.currentUser?.providerData)! {
+        for data in (FIRAuth.auth()?.currentUser?.providerData)! {
             
-            switch providerID.providerID {
+            switch data.providerID {
             case "facebook.com":
                 signInFacebook.hidden = true
             case "twitter.com":
@@ -70,6 +70,9 @@ class LinkAccountsViewController: UIViewController,GIDSignInUIDelegate {
             default:
                 signInSokol.hidden = true
             }
+        }
+        if Utilities.sokolLinking {
+            signInSokol.hidden = true
         }
 
     }
@@ -100,6 +103,7 @@ class LinkAccountsViewController: UIViewController,GIDSignInUIDelegate {
                     if error != nil {
                         self.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
                     }else{
+                        Utilities.user = user
                         self.signInFacebook.hidden = true
                     }
                 })

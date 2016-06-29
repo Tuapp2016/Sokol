@@ -25,25 +25,29 @@ class LeftMenuTableViewController: UITableViewController {
         
     }
     override func viewWillAppear(animated: Bool) {
+        tableView.reloadData()
         if let user = Utilities.user{
             if let provider = Utilities.provider{
-                if provider == "sokol"{
+                if provider == "sokol" || provider == "password"{
                     let userRef = ref.child("users")
                     let userId = userRef.child(user.uid)
                     userId.observeEventType(.Value, withBlock: {snapshot in
                         if !(snapshot.value is NSNull){
                             let values = snapshot.value  as! [String:AnyObject]
                             if self.header != nil {
-                                self.header?.nameLabel.text = values["name"] as! String
-                                let url = values["profileImage"] as! String
-                                if url == "There is no an image available" {
-                                    self.header?.profileImage.image = UIImage(named: "profile")
-                                }else{
-                                    self.header?.profileImage.image = Utilities.base64ToImage(url)
-                                    self.header?.profileImage.layer.cornerRadius = 50.0
-                                    self.header?.profileImage.clipsToBounds = true
-                                    
-                                }
+                                NSOperationQueue.mainQueue().addOperationWithBlock({
+                                    self.header?.nameLabel.text = values["name"] as! String
+                                    let url = values["profileImage"] as! String
+                                    if url == "There is no an image available" {
+                                        self.header?.profileImage.image = UIImage(named: "profile")
+                                    }else{
+                                        self.header?.profileImage.image = Utilities.base64ToImage(url)
+                                        self.header?.profileImage.layer.cornerRadius = 50.0
+                                        self.header?.profileImage.clipsToBounds = true
+                                        
+                                    }
+                                })
+                                
                             }
                         }else{
                             try! FIRAuth.auth()?.signOut()
@@ -153,21 +157,18 @@ class LeftMenuTableViewController: UITableViewController {
             NSNotificationCenter.defaultCenter().postNotificationName("switchTabProfile", object: nil)
             NSNotificationCenter.defaultCenter().postNotificationName("closeMenuViaNotification", object: nil)
         case 2:
-            let userRef = ref.child("users")
-            if let uid = Utilities.user?.uid{
-                let userId =  userRef.child(uid)
-                userId.removeAllObservers()
-            }
-            if Utilities.auth != nil {
-                FIRAuth.auth()?.removeAuthStateDidChangeListener(Utilities.auth as! FIRAuthStateDidChangeListenerHandle)
-            }
+            let userRef = self.ref.child("user")
+            let userIdRef = userRef.child((FIRAuth.auth()?.currentUser?.uid)!)
+            userIdRef.removeAllObservers()
+            self.ref.removeAllObservers()
+         
             
             try! FIRAuth.auth()?.signOut()
             Utilities.user = nil
             Utilities.linking = false
             //let window = UIApplication.sharedApplication().windows[0] as UIWindow;
             //window.rootViewController = viewController;
-            let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
+            let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("leftMenu")
             viewController.dismissViewControllerAnimated(true, completion: {});
             self.dismissViewControllerAnimated(true, completion: {})
             

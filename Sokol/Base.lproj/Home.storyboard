@@ -18,42 +18,7 @@
                     <view key="view" contentMode="scaleToFill" id="z64-Ko-tFp">
                         <rect key="frame" x="0.0" y="0.0" width="310" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0g8-yI-Adh">
-                                <rect key="frame" x="0.0" y="487" width="310" height="33"/>
-                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="MiL-6M-8Hu"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                                <state key="normal" title="Link accounts">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <connections>
-                                    <segue destination="0na-W2-HaA" kind="show" id="BMf-fr-PBF"/>
-                                </connections>
-                            </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="rGe-FH-wDE">
-                                <rect key="frame" x="0.0" y="44" width="310" height="435"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </tableView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="rGe-FH-wDE" firstAttribute="top" secondItem="zdG-ND-Yle" secondAttribute="bottom" id="JFD-z3-Zce"/>
-                            <constraint firstItem="r9u-hC-5qy" firstAttribute="top" secondItem="0g8-yI-Adh" secondAttribute="bottom" id="R8d-En-mBH"/>
-                            <constraint firstItem="0g8-yI-Adh" firstAttribute="top" secondItem="rGe-FH-wDE" secondAttribute="bottom" constant="50" id="j2d-on-uAM"/>
-                            <constraint firstItem="0g8-yI-Adh" firstAttribute="leading" secondItem="z64-Ko-tFp" secondAttribute="leadingMargin" constant="-20" id="lTw-RU-nFY">
-                                <variation key="heightClass=compact-widthClass=regular" constant="100"/>
-                                <variation key="heightClass=regular-widthClass=regular" constant="150"/>
-                            </constraint>
-                            <constraint firstAttribute="trailingMargin" secondItem="rGe-FH-wDE" secondAttribute="trailing" constant="-20" id="pov-WX-lbZ"/>
-                            <constraint firstItem="rGe-FH-wDE" firstAttribute="leading" secondItem="z64-Ko-tFp" secondAttribute="leadingMargin" constant="-20" id="wDg-qQ-Df7"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="0g8-yI-Adh" secondAttribute="trailing" constant="-20" id="x4P-z3-1Ou">
-                                <variation key="heightClass=compact-widthClass=regular" constant="100"/>
-                                <variation key="heightClass=regular-widthClass=regular" constant="150"/>
-                            </constraint>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Sokol" id="8jp-Uu-Vku">
                         <barButtonItem key="leftBarButtonItem" image="menu" id="qeg-1o-ROC">
@@ -62,10 +27,6 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <connections>
-                        <outlet property="linkAccounts" destination="0g8-yI-Adh" id="lOo-cQ-bg4"/>
-                        <outlet property="tableView" destination="rGe-FH-wDE" id="1mL-Rh-Pyr"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RYI-0u-rcB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -455,17 +416,17 @@
         <!--Link Accounts View Controller-->
         <scene sceneID="rDN-vK-cSF">
             <objects>
-                <viewController id="0na-W2-HaA" customClass="LinkAccountsViewController" customModule="Sokol" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="linkAccounts" id="0na-W2-HaA" customClass="LinkAccountsViewController" customModule="Sokol" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="cvx-eD-9Yf"/>
                         <viewControllerLayoutGuide type="bottom" id="UJB-Ru-nae"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="86F-gp-tHw">
-                        <rect key="frame" x="0.0" y="0.0" width="310" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="aaS-lP-yue">
-                                <rect key="frame" x="0.0" y="197" width="300" height="194"/>
+                                <rect key="frame" x="0.0" y="197" width="300" height="184"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ysx-et-VXE">
                                         <rect key="frame" x="0.0" y="0.0" width="300" height="40"/>
@@ -503,10 +464,10 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="64h-sc-XYY">
-                                        <rect key="frame" x="0.0" y="144" width="300" height="50"/>
+                                        <rect key="frame" x="0.0" y="144" width="300" height="40"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="0CP-eX-7OV"/>
+                                            <constraint firstAttribute="height" constant="40" id="0CP-eX-7OV"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -613,7 +574,7 @@
                                     <constraint firstAttribute="width" constant="200" id="NNn-aQ-k0D"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -759,7 +720,7 @@
         <!--Navigation Controller-->
         <scene sceneID="xA0-6R-803">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Hxr-dS-bep" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="leftMenu" automaticallyAdjustsScrollViewInsets="NO" id="Hxr-dS-bep" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="EYW-wV-eVF">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>

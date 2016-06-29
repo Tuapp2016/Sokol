@@ -17,6 +17,7 @@ class Utilities {
     static var auth:AnyObject?
     static var button:GIDSignInButton?
     static var buttonSokol:UIButton?
+    static var sokolLinking:Bool = false
     static func isValidEmail(test:String) -> Bool{
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
         let range = test.rangeOfString(emailRegEx, options:.RegularExpressionSearch)

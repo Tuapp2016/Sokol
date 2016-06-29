@@ -33,6 +33,9 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
     var newEmail:UITextField?
     var blurEffectView:UIVisualEffectView?
     var whiteRoundedView : UIView?
+    var providers:[String] = []
+    var i = 0
+    var button:UIButton =  UIButton()
     
     //let ref = Firebase(url:"sokolunal.firebaseio.com")
     let ref =  FIRDatabase.database().reference()
@@ -157,6 +160,11 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
         
         // Do any additional setup after loading the view.
     }
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    
+    }
     
     
     override func didReceiveMemoryWarning() {
@@ -165,16 +173,48 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let user = Utilities.user {
-            if let provider = Utilities.provider {
+            
+            if var provider = Utilities.provider {
+                i = 0
+                for data in (FIRAuth.auth()?.currentUser?.providerData)! {
+                    if data.providerID == "facebook.com" || data.providerID == "google.com" || data.providerID == "twitter.com" || data.providerID == "password" {
+                        i += 1
+                    }
+                }
+                providers = []
+                if provider == "sokol"{
+                    provider = "password"
+                }
+                for data in (FIRAuth.auth()?.currentUser?.providerData)! {
+                    if data.providerID != provider {
+                        providers.append(data.providerID)
+                    }
+                }
                 switch provider  {
                 case "facebook.com":
-                    return 3
+                    if i == 4 {
+                        return 6
+                    }else{
+                        return 3 + (i-1) + 1
+                    }
                 case "twitter.com":
-                    return 3
+                    if i == 4 {
+                        return 6
+                    }else{
+                        return 3 + (i - 1) + 1
+                    }
                 case "google.com":
-                    return 2
+                    if i == 4{
+                        return 5
+                    }else{
+                        return 2 + (i-1) + 1
+                    }
                 default:
-                    return 5
+                    if i == 4 {
+                        return 8
+                    }else{
+                        return 5 + (i-1) + 1
+                    }
                 }
             }
         }
@@ -204,7 +244,7 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                     
                         return cell
                     }
-                    else{
+                    else if indexPath.row == 1 {
                         let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol", forIndexPath: indexPath)as! ProfileTableViewCell
                         cell.titleLabel.text = titleFacebook[indexPath.row]
                         cell.logo.image = UIImage(named: "facebook")
@@ -213,7 +253,27 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                     
                         return cell
                     }
-                
+                    else if i < 4 { //We have linked some accounts but not all
+                        if indexPath.row == 3 { //This is the button to link more accounts
+                            let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                            cell.textLabel!.text = "Link accounts"
+                            cell.imageView?.image = nil
+                            return cell
+                            //cell.imageView?.image = UIImage(named: "")
+                            
+                        }else{ //Here we present the accounts which we have linked
+                            let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                            cell.textLabel!.text = "Unlink " + getProviderName(providers[indexPath.row % 4])
+                            cell.imageView?.image = getProviderImage(providers[indexPath.row % 4])
+                            return cell
+                            
+                        }
+                    }else{ //Here we have linked all the accounts
+                        let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                        cell.textLabel!.text = "Unlink " + getProviderName(providers[indexPath.row % 3])
+                        cell.imageView?.image = getProviderImage(providers[indexPath.row % 3])
+                        return cell
+                    }
                 case "twitter.com":
                     if indexPath.row == 0{
                         let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol1", forIndexPath: indexPath) as! ProfileImageTableViewCell
@@ -239,12 +299,35 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                         cell.providerLabel.text = "Login with twitter"
                         cell.valueLabel.text = valueTwitter![titleTwitterAndGoogle[indexPath.row]]
                         return cell
-                    }else {
+                    }else if indexPath.row == 2 {
                         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
                         cell.textLabel?.text = titleTwitterAndGoogle[indexPath.row]
                     
                         return cell
                     }
+                    else if i < 4 { //We have linked some accounts but not all
+                        if indexPath.row == 3 { //This is the button to link more accounts
+                            let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                            cell.textLabel!.text = "Link accounts"
+                            cell.imageView?.image = nil
+                            return cell
+                            //cell.imageView?.image = UIImage(named: "")
+                            
+                            
+                        }else{ //Here we present the accounts which we have linked
+                            let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                            cell.textLabel!.text = "Unlink " + getProviderName(providers[indexPath.row % 4])
+                            cell.imageView?.image = getProviderImage(providers[indexPath.row % 4])
+                            return cell
+                            
+                        }
+                    }else{ //Here we have linked all the accounts
+                        let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                        cell.textLabel!.text = "Unlink " + getProviderName(providers[indexPath.row % 3])
+                        cell.imageView?.image = getProviderImage(providers[indexPath.row % 3])
+                        return cell
+                    }
+                    
                 case "google.com":
                     if indexPath.row == 0{
                         let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol1", forIndexPath: indexPath) as! ProfileImageTableViewCell
@@ -259,13 +342,36 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                     
                         return cell
                     
-                    }else{
+                    }else if indexPath.row == 1{
                         let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol", forIndexPath: indexPath)as! ProfileTableViewCell
                         cell.titleLabel.text = titleTwitterAndGoogle[indexPath.row]
                         cell.logo.image = UIImage(named: "googlePlus")
                         cell.providerLabel.text = "Login with google"
                         cell.valueLabel.text = valueGoogle![indexPath.row]
                     
+                        return cell
+                    }
+                    else if i < 4 { //We have linked some accounts but not all
+                        if indexPath.row == 2 { //This is the button to link more accounts
+                            let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                            cell.textLabel!.text = "Link accounts"
+                            cell.imageView?.image = nil
+                            return cell
+                            //cell.imageView?.image = UIImage(named: "")
+                            
+                            
+                        }else{ //Here we present the accounts which we have linked
+                            let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                            cell.textLabel!.text = "Unlink " + getProviderName(providers[indexPath.row % 3])
+                            cell.imageView?.image = getProviderImage(providers[indexPath.row % 3])
+                            return cell
+                            
+                        }
+                    }else{ //Here we have linked all the accounts
+                        //print ("\(indexPath.row) - \(i)")
+                        let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                        cell.textLabel!.text = "Unlink " + getProviderName(providers[indexPath.row % 2])
+                        cell.imageView?.image = getProviderImage(providers[indexPath.row % 2])
                         return cell
                     }
 
@@ -289,10 +395,10 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                         else if indexPath.row == 3 || indexPath.row == 4  {
                             let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
                             cell.textLabel?.text = titleButtons[indexPath.row % 3]
-                        
+                            cell.imageView?.image = nil
                             return cell
                         }
-                        else{
+                        else if indexPath.row == 1 || indexPath.row == 2{
                             let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol", forIndexPath: indexPath) as!ProfileTableViewCell
                             cell.titleLabel.text = titleSokol[indexPath.row]
                             cell.logo.image = UIImage(named: "sokol_logo")
@@ -301,7 +407,30 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                         
                             return cell
                         }
-                    
+                        else if i < 4 { //We have linked some accounts but not all
+                            if indexPath.row == 5 { //This is the button to link more accounts
+                                let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                                cell.textLabel!.text = "Link accounts"
+                                cell.imageView?.image = nil
+                                return cell
+                                //cell.imageView?.image = UIImage(named: "")
+                                
+                                
+                            }else{ //Here we present the accounts which we have linked
+                                //print(indexPath.row)
+                                let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                                cell.textLabel!.text = "Unlink " + getProviderName(providers[indexPath.row % 6])
+                                cell.imageView?.image = getProviderImage(providers[indexPath.row % 6])
+                                return cell
+                                
+                                
+                            }
+                        }else{ //Here we have linked all the accounts
+                            let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                            cell.textLabel!.text = "Unlink " + getProviderName(providers[indexPath.row % 5])
+                            cell.imageView?.image = getProviderImage(providers[indexPath.row % 5])
+                            return cell
+                        }
                     }
                 
                 }
@@ -309,12 +438,59 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
         }
         return UITableViewCell()
     }
+    func getProviderName(name:String) -> String{
+        var provider = ""
+        if name == "password"{
+            provider = "Sokol"
+        }else{
+            provider = name
+        }
+        return provider
+    }
+    func getProviderImage(name:String) -> UIImage{
+        switch name {
+        case "facebook.com":
+            return UIImage(named: "facebook")!
+        case "twitter.com":
+            return UIImage(named: "twitter")!
+        case "google.com":
+            return UIImage(named: "googlePlus")!
+        default:
+            return UIImage(named: "sokol_logo")!
+        }
+    }
+    func unlinkAccount(name:String) {
+        FIRAuth.auth()?.currentUser?.unlinkFromProvider(name, completion: {(user, error) in
+            if let error = error {
+                self.presentViewController(Utilities.alertMessage("Error", message: "We can't unlink this account"), animated: true, completion: nil)
+            }else{
+                Utilities.user = user
+                if name == "password"{
+                    Utilities.sokolLinking = false
+                    let userRef = self.ref.child("users")
+                    let userIdRef = userRef.child((FIRAuth.auth()?.currentUser?.uid)!)
+                    var value = ""
+                    if (FIRAuth.auth()?.currentUser?.providerData[0].providerID)! == "password"{
+                        value = (FIRAuth.auth()?.currentUser?.providerData[1].providerID)!
+                    }else{
+                        value = (FIRAuth.auth()?.currentUser?.providerData[0].providerID)!
+                    }
+                    userIdRef.setValue(["login":value])
+                    self.logOut(self.button)
+                }else{
+                    NSOperationQueue.mainQueue().addOperationWithBlock({
+                        self.tableView.reloadData()
+                    })
+                    self.presentViewController(Utilities.alertMessage("Success", message: "This account was unlinked"), animated: true, completion: nil)
+                }
+            }
+        })
+    }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let provider = Utilities.provider
         
-        if indexPath.row == 2 && provider == "facebook.com"{
+        if indexPath.row == 2 && (provider == "facebook.com"){
             //We need to change the view
-            self.ref.removeAllObservers()
             let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("facebookFriends")
             let userProfile = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("userProfile")
             //userProfile.navigationController?.setViewControllers([viewController], animated: false)
@@ -323,6 +499,34 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
 
             
         }
+        
+        if (indexPath.row == 3 && i < 4 && (provider == "facebook.com" || provider == "twitter.com")) || (indexPath.row == 2 && i < 4 && (provider == "google.com")) || (indexPath.row == 5 && i < 4 && (provider == "password" || provider == "sokol")) {
+            let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("linkAccounts")
+            let userProfile = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("userProfile")
+            self.navigationController?.viewControllers = [userProfile,viewController]
+        }
+        
+        if indexPath.row > 3 && i < 4 && (provider == "facebook.com" || provider == "twitter.com"){
+            self.unlinkAccount(providers[indexPath.row % 4])
+            
+        }
+        if indexPath.row >= 3 && i == 4 && (provider == "facebook.com" || provider == "twitter.com") {
+            self.unlinkAccount(providers[indexPath.row % 3])
+
+        }
+        if indexPath.row > 2 && i < 4 && provider == "google.com" {
+            self.unlinkAccount(providers[indexPath.row % 3])
+        }
+        if indexPath.row >= 2 && i == 4 && provider == "google.com" {
+            self.unlinkAccount(providers[indexPath.row % 2])
+
+        }
+        if indexPath.row > 5 && i < 4 && (provider == "password" || provider == "sokol"){
+            self.unlinkAccount(providers[indexPath.row % 6])
+        }
+        if indexPath.row >= 5 && i == 4 && (provider == "password" || provider == "sokol") {
+            self.unlinkAccount(providers[indexPath.row % 5])
+        }
         if indexPath.row == 2 && provider == "twitter.com"{
             self.ref.removeAllObservers()
             let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("twitterThoughts")
@@ -330,7 +534,7 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
             
             self.navigationController?.viewControllers = [userProfile,viewController]
         }
-        if indexPath.row == 3 && provider != "facebook.com"{
+        if indexPath.row == 3 && (provider == "password" || provider == "sokol"){
             let blurEffect = UIBlurEffect(style: .Dark)
             blurEffectView = UIVisualEffectView(effect: blurEffect)
             blurEffectView?.frame = view.bounds
@@ -371,7 +575,7 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
             self.presentViewController(changeEmaillAlert!, animated: true, completion: nil)
             
         }
-        if indexPath.row == 4 && provider != "facebook.com"{
+        if indexPath.row == 4 && (provider == "password" || provider == "sokol"){
             let blurEffect = UIBlurEffect(style: .Dark)
             blurEffectView = UIVisualEffectView(effect: blurEffect)
             blurEffectView?.frame = view.bounds
@@ -489,13 +693,17 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
     
     
     @IBAction func logOut(sender: AnyObject) {
-
+        let userRef = self.ref.child("user")
+        let userIdRef = userRef.child((FIRAuth.auth()?.currentUser?.uid)!)
+        userIdRef.removeAllObservers()
+        self.ref.removeAllObservers()
         try! FIRAuth.auth()?.signOut()
         Utilities.user = nil
         Utilities.linking = false
+        
         //let window = UIApplication.sharedApplication().windows[0] as UIWindow;
         //window.rootViewController = viewController;
-        let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
+        let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("leftMenu")
         viewController.dismissViewControllerAnimated(true, completion: {});
         self.dismissViewControllerAnimated(true, completion: {})
         //self.presentViewController(viewController, animated: true, completion: nil)
@@ -540,6 +748,9 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                 guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
                     return nil
                 }
+                if indexPath.row >= 3 {
+                    return nil
+                }
                 let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("facebookFriends")
             
                 viewController.preferredContentSize = CGSize(width: 0.0, height: 450.0)
@@ -551,6 +762,9 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                     return nil
                 }
                 guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
+                    return nil
+                }
+                if indexPath.row >= 3 {
                     return nil
                 }
                 let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("twitterThoughts")

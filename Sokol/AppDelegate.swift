@@ -117,10 +117,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
                     let userIdRef = userRef.child((user?.uid)!)
                     userIdRef.observeEventType(.Value, withBlock: {snapshot in
                         if snapshot.value is NSNull{
-                            userIdRef.setValue(["login":""])
+                            userIdRef.setValue(["login":"google.com"])
                         }
                         
                     })
+                    //userIdRef.removeAllObservers()
                     //self.window?.rootViewController?.presentViewController(viewController, animated: true, completion: nil)
                 }
             })
@@ -130,6 +131,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
                 if error != nil {
                    self.window?.rootViewController?.presentViewController(Utilities.alertMessage("error", message:(error?.description)!), animated: false, completion: nil)
                 }else{
+                    Utilities.user = user
                     Utilities.button!.hidden = true
                 }
                 
