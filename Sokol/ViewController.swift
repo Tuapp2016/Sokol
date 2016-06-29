@@ -41,15 +41,14 @@ class ViewController: UIViewController,GIDSignInUIDelegate{
                 //try! FIRAuth.auth()?.signOut()
                 let appDelegate  = UIApplication.sharedApplication().delegate as! AppDelegate
                 let viewController = appDelegate.window!.rootViewController as? ContainerViewController
+                Utilities.user =  user
                 if viewController == nil {
                     let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
                     if Utilities.provider == nil {
                         Utilities.provider =  FIRAuth.auth()?.currentUser?.providerData[0].providerID
                         
                     }
-                    if Utilities.user == nil {
-                        Utilities.user =  FIRAuth.auth()?.currentUser
-                    }
+                    
                     self.presentViewController(viewController, animated: true, completion: nil)
                 }
                 
@@ -77,17 +76,16 @@ class ViewController: UIViewController,GIDSignInUIDelegate{
                             //let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
                             Utilities.provider = "twitter.com"
 
-                            if Utilities.user == nil {
-                                Utilities.user = user
-                            }
+                            Utilities.user = user
                             let userRef = self.ref.child("users")
                             let userIdRef = userRef.child((user?.uid)!)
                             userIdRef.observeEventType(.Value, withBlock: {snapshot in
                                 if snapshot.value is NSNull{
-                                    userIdRef.setValue(["login":""])
+                                    userIdRef.setValue(["login":"twitter.com"])
                                 }
                                 
                             })
+                            //userIdRef.removeAllObservers()
                             //self.presentViewController(viewController, animated: true, completion: nil)
                         }
                     })
@@ -192,10 +190,11 @@ class ViewController: UIViewController,GIDSignInUIDelegate{
                             let userIdRef = userRef.child((user?.uid)!)
                             userIdRef.observeEventType(.Value, withBlock: {snapshot in
                                 if snapshot.value is NSNull {
-                                    userIdRef.setValue(["login":""])
+                                    userIdRef.setValue(["login":"facebook.com"])
                                 }
                                 
                             })
+                            //userIdRef.removeAllObservers()
                             Utilities.provider = "facebook.com"
                             if Utilities.user == nil {
                                 Utilities.user = user

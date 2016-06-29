@@ -170,7 +170,7 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
                     let userRef = self.ref.child("users")
                     let userIdRef = userRef.child((user?.uid)!)
                     let newUser = [
-                        "provider": "sokol",
+                        "login": "sokol",
                         "name": name! + " " + lastName!,
                         "birthday": birthday!,
                         "email":email!,
@@ -178,6 +178,7 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
                     ]
                     userIdRef.setValue(newUser)
                     self.ref.removeAllObservers()
+                    userIdRef.removeAllObservers()
                     self.dismissViewControllerAnimated(true, completion: {});
                 }
                 })
@@ -186,7 +187,7 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
                 FIRAuth.auth()?.currentUser!.linkWithCredential(credential) { (user,error) in
                     if error == nil {
                         let newUser = [
-                            "provider": "sokol",
+                            "login": "sokol",
                             "name": name! + " " + lastName!,
                             "birthday": birthday!,
                             "email":email!,
@@ -195,8 +196,10 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
                         let userRef = self.ref.child("users")
                         let userIdRef = userRef.child((FIRAuth.auth()?.currentUser?.uid)!)
                         userIdRef.updateChildValues(newUser)
+                        userIdRef.removeAllObservers()
                         self.ref.removeAllObservers()
                         Utilities.buttonSokol!.hidden = true
+                        Utilities.sokolLinking = true
                         self.dismissViewControllerAnimated(true, completion: {});
                     }else{
                         self.presentViewController(Utilities.alertMessage("error", message:(error?.description)!), animated: false, completion: nil)
