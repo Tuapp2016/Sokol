@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import FBSDKCoreKit
+import TwitterKit
 
 class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UIViewControllerPreviewingDelegate {
     
@@ -18,7 +19,7 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
     let titleFacebook:[String] = ["Name","Email"]
     let titleSokol:[String] = ["Name","Email","Birthday"]
     let titleButtons = ["Change email","Change password"]
-    var valueTwitter:[String]? = ["",""]
+    var valueTwitter:[String:String]? = [:]
     var valueGoogle:[String]? = ["",""]
     var valueSokol:[String]? = ["","",""]
     var valueFacebook:[String]? = ["",""]
@@ -32,6 +33,9 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
     var newEmail:UITextField?
     var blurEffectView:UIVisualEffectView?
     var whiteRoundedView : UIView?
+    var providers:[String] = []
+    var i = 0
+    var button:UIButton =  UIButton()
     
     //let ref = Firebase(url:"sokolunal.firebaseio.com")
     let ref =  FIRDatabase.database().reference()
@@ -41,129 +45,125 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
         if traitCollection.forceTouchCapability == .Available{
             registerForPreviewingWithDelegate(self, sourceView: view)
         }
-        FIRAuth.auth()?.addAuthStateDidChangeListener({(auth,user) in
-            if user == nil {
-                let userRef = self.ref.child("users")
-                if let uid = Utilities.user?.uid{
-                    let userId =  userRef.child(uid)
-                    userId.removeAllObservers()
-                }
-                
-                Utilities.user = nil
-                self.dismissViewControllerAnimated(true, completion: {})
-            }
-        })
         
         //self.automaticallyAdjustsScrollViewInsets = false;
         if let user = Utilities.user {
-            switch user.providerData[0].providerID {
-                
-            case "facebook.com":
-                let userRef = ref.child("users")
-                let userId =  userRef.child(user.uid)
-                userId.observeEventType(.Value, withBlock: {(snapshot) in
-                    if !(snapshot.value  is NSNull){
-                        let values = snapshot.value as! [String:AnyObject]
-                    
-                        let email = values["email"] as!String
-                        let name = values["name"] as! String
-                    
-                        let photoURL = values["profileImage"] as! String
-                        if photoURL == "There is no an image available" {//We use an image for default
-                            self.profileImage = UIImage(named: "profile")
-                        }else{
-                            self.imageFromURL(photoURL)
-                        }
-                        self.valueFacebook = [name,email]
-                        //self.profileImage = Utilities.base64ToImage(values["profileImage"] as! String)
-                        //self.imageFromURL(values["profileImage"] as! String)
-                        NSOperationQueue.mainQueue().addOperationWithBlock({
-                            self.tableView.reloadData()
-                        })
-                    }else{
-                        try! FIRAuth.auth()?.signOut()
-                        self.dismissViewControllerAnimated(true, completion: {});
+            if let provider = Utilities.provider{
+                var i = 0;
+                var j = 0;
+                for data in user.providerData{
+                    if provider == data.providerID{
+                        i = j
                     }
-                })
-                
-            case "google.com":
-                let userRef = ref.child("users")
-                let userId =  userRef.child(user.uid)
-                userId.observeEventType(.Value, withBlock: {(snapshot) in
-                    if !(snapshot.value is NSNull) {
-                        let values = snapshot.value as! [String:AnyObject]
-                    
-                        let email = values["email"] as!String
-                        let name = values["name"] as! String
-                    
-                        let photoURL = values["profileImage"] as! String
-                        if photoURL == "There is no an image available" {//We use an image for default
-                            self.profileImage = UIImage(named: "profile")
-                        }else{
-                            self.imageFromURL(photoURL)
-                        }
-                        self.valueGoogle = [name,email]
-                        //self.profileImage = Utilities.base64ToImage(values["profileImage"] as! String)
-                        //self.imageFromURL(values["profileImage"] as! String)
-                        NSOperationQueue.mainQueue().addOperationWithBlock({
-                            self.tableView.reloadData()
-                        })
+                    j += 1
+                }
+                switch provider {
+                case "facebook.com":
+                    let data = user.providerData[i]
+                    var name = ""
+                    var email = ""
+                    if data.displayName != nil {
+                        name = data.displayName!
                     }else{
-                        try! FIRAuth.auth()?.signOut()
-                        self.dismissViewControllerAnimated(true, completion: {});
+                        name = "There is no name available"
                     }
-                })
-
+                    if data.email != nil {
+                        email = data.email!
+                    }else{
+                        email = "There is no image available"
+                    }
+                    valueFacebook = [name,email]
+                    self.imageFromURL((data.photoURL?.absoluteString)!)
                 
-            case "twitter.com":
-                let userRef = ref.child("users")
-                let userId =  userRef.child(user.uid)
-                userId.observeEventType(.Value, withBlock: {(snapshot) in
-                    if !(snapshot.value is NSNull){
-                        let values = snapshot.value as! [String:AnyObject]
-                    
-                        let email = values["email"] as!String
-                        let name = values["name"] as! String
-                    
-                        let photoURL = values["profileImage"] as! String
-                        if photoURL == "There is no an image available" {//We use an image for default
-                            self.profileImage = UIImage(named: "profile")
-                        }else{
-                            self.imageFromURL(photoURL)
-                        }
-                        self.valueTwitter = [name,email]
-                        //self.profileImage = Utilities.base64ToImage(values["profileImage"] as! String)
-                        //self.imageFromURL(values["profileImage"] as! String)
-                        NSOperationQueue.mainQueue().addOperationWithBlock({
-                            self.tableView.reloadData()
+                case "google.com":
+                    let data = user.providerData[i]
+                    var name = ""
+                    var email = ""
+                    var photoURL = ""
+                    if data.displayName != nil {
+                        name = data.displayName!
+                    }else{
+                        name = "There is no name available"
+                    }
+                    if data.email != nil {
+                        email = data.email!
+                    }else{
+                        email = "There is no image available"
+                    }
+                    if data.photoURL?.absoluteString == nil {
+                        self.profileImage = UIImage(named: "profile")
+                    }else{
+                        photoURL = (data.photoURL?.absoluteString)!
+                        self.imageFromURL(photoURL)
+                    }
+                    valueGoogle = [name,email]
+                
+                case "twitter.com":
+                    let data = user.providerData[i]
+                    var name = ""
+                    var email = ""
+                    var photoURL = ""
+                    if data.displayName != nil {
+                        name = data.displayName!
+                    }else{
+                        name = "There is no name available"
+                    }
+                    if data.email != nil {
+                        email = data.email!
+                    }else{
+                        let userId = Twitter.sharedInstance().sessionStore.session()?.userID
+                        let client = TWTRAPIClient(userID: userId)
+                        let request = client.URLRequestWithMethod("GET", URL: "https://api.twitter.com/1.1/account/verify_credentials.json", parameters: ["include_email": "true", "skip_status": "true"], error: nil)
+                        client.sendTwitterRequest(request, completion: {response, data,connectionError in
+                            if connectionError == nil {
+                                do{
+                                    let json = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as? NSDictionary
+                                    self.valueTwitter!["Email"] = json!["screen_name"] as! String
+                                    NSOperationQueue.mainQueue().addOperationWithBlock({
+                                        self.tableView.reloadData()
+                                    })
+                                }catch let jsonError as NSError {
+                                    print("json error: \(jsonError.localizedDescription)")
+                                }
+                            }
                         })
+                    }
+                    if data.photoURL?.absoluteString == nil {
+                        self.profileImage = UIImage(named: "profile")
+                    }else{
+                        photoURL = (data.photoURL?.absoluteString)!
+                        self.imageFromURL(photoURL)
+                    }
+                    valueTwitter!["Name"] = name
+                    self.imageFromURL((data.photoURL?.absoluteString)!)
+                
+                default:
+                    let userRef = ref.child("users")
+                    let userId =  userRef.child(user.uid)
+                    userId.observeEventType(.Value, withBlock: {(snapshot) in
+                        if !(snapshot.value is NSNull){
+                            let values = snapshot.value as! [String:AnyObject]
+                            self.valueSokol = [values["name"] as! String, values["email"] as!   String,values["birthday"] as! String]
+                            self.base = values["profileImage"] as! String
+                    //self.imageFromURL(values["profileImage"] as! String)
+                            NSOperationQueue.mainQueue().addOperationWithBlock({
+                                self.tableView.reloadData()
+                            })
                         }else{
                             try! FIRAuth.auth()?.signOut()
                             self.dismissViewControllerAnimated(true, completion: {});
                         }
-                })
-                
-            default:
-                let userRef = ref.child("users")
-                let userId =  userRef.child(user.uid)
-                userId.observeEventType(.Value, withBlock: {(snapshot) in
-                    if !(snapshot.value is NSNull){
-                        let values = snapshot.value as! [String:AnyObject]
-                        self.valueSokol = [values["name"] as! String, values["email"] as! String,values["birthday"] as! String]
-                        self.base = values["profileImage"] as! String
-                    //self.imageFromURL(values["profileImage"] as! String)
-                        NSOperationQueue.mainQueue().addOperationWithBlock({
-                            self.tableView.reloadData()
-                        })
-                    }else{
-                        try! FIRAuth.auth()?.signOut()
-                        self.dismissViewControllerAnimated(true, completion: {});
-                    }
-                })
+                    })
+                }
             }
         }
         
         // Do any additional setup after loading the view.
+    }
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    
     }
     
     
@@ -173,15 +173,49 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let user = Utilities.user {
-            switch user.providerData[0].providerID  {
-            case "facebook.com":
-                return 3
-            case "twitter.com":
-                return 3
-            case "google.com":
-                return 2
-            default:
-                return 5
+            
+            if var provider = Utilities.provider {
+                i = 0
+                for data in (FIRAuth.auth()?.currentUser?.providerData)! {
+                    if data.providerID == "facebook.com" || data.providerID == "google.com" || data.providerID == "twitter.com" || data.providerID == "password" {
+                        i += 1
+                    }
+                }
+                providers = []
+                if provider == "sokol"{
+                    provider = "password"
+                }
+                for data in (FIRAuth.auth()?.currentUser?.providerData)! {
+                    if data.providerID != provider {
+                        providers.append(data.providerID)
+                    }
+                }
+                switch provider  {
+                case "facebook.com":
+                    if i == 4 {
+                        return 6
+                    }else{
+                        return 3 + (i-1) + 1
+                    }
+                case "twitter.com":
+                    if i == 4 {
+                        return 6
+                    }else{
+                        return 3 + (i - 1) + 1
+                    }
+                case "google.com":
+                    if i == 4{
+                        return 5
+                    }else{
+                        return 2 + (i-1) + 1
+                    }
+                default:
+                    if i == 4 {
+                        return 8
+                    }else{
+                        return 5 + (i-1) + 1
+                    }
+                }
             }
         }
         return 0
@@ -190,132 +224,273 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         if let user = Utilities.user {
-            switch user.providerData[0].providerID {
-            case "facebook.com":
-                if indexPath.row == 0{
-                    let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol1", forIndexPath: indexPath) as! ProfileImageTableViewCell
-                    cell.titleLabel.text = titleFacebook[indexPath.row]
-                    cell.valueLabel.text = valueFacebook![indexPath.row]
-                    if let profileImage =  profileImage{
-                        cell.profileImage.image = profileImage
-                        cell.profileImage.layer.cornerRadius = 40.0
-                        cell.profileImage.clipsToBounds = true
-                    }
-                    return cell
-                    
-                }else if indexPath.row == 2 {
-                    let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-                    cell.textLabel?.text = "Friends who are using sokol"
-                    
-                    return cell
-                }
-                else{
-                    let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol", forIndexPath: indexPath)as! ProfileTableViewCell
-                    cell.titleLabel.text = titleFacebook[indexPath.row]
-                    cell.logo.image = UIImage(named: "facebook")
-                    cell.providerLabel.text = "Login with facebook"
-                    cell.valueLabel.text = valueFacebook![indexPath.row]
-                    
-                    return cell
-                }
-                
-            case "twitter.com":
-                if indexPath.row == 0{
-                    let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol1", forIndexPath: indexPath) as! ProfileImageTableViewCell
-                    cell.titleLabel.text = titleTwitterAndGoogle[indexPath.row]
-                    cell.valueLabel.text = valueTwitter![indexPath.row]
-                    if let profileImage =  profileImage{
-                        cell.profileImage.image = profileImage
-                        cell.profileImage.layer.cornerRadius = 40.0
-                        cell.profileImage.clipsToBounds = true
-
-                    }
-                    
-                    return cell
-                    
-                }else if indexPath.row == 1{
-                    let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol", forIndexPath: indexPath)as! ProfileTableViewCell
-                    cell.titleLabel.text = titleTwitterAndGoogle[indexPath.row]
-                    cell.logo.image = UIImage(named: "twitter")
-                    cell.providerLabel.text = "Login with twitter"
-                    cell.valueLabel.text = valueTwitter![indexPath.row]
-                    
-                    return cell
-                }else {
-                    let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-                    cell.textLabel?.text = titleTwitterAndGoogle[indexPath.row]
-                    
-                    return cell
-                }
-            case "google.com":
-                if indexPath.row == 0{
-                    let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol1", forIndexPath: indexPath) as! ProfileImageTableViewCell
-                    cell.titleLabel.text = titleTwitterAndGoogle[indexPath.row]
-                    cell.valueLabel.text = valueGoogle![indexPath.row]
-                    if let profileImage =  profileImage{
-                        cell.profileImage.image = profileImage
-                        cell.profileImage.layer.cornerRadius = 40.0
-                        cell.profileImage.clipsToBounds = true
-                        
-                    }
-                    
-                    return cell
-                    
-                }else{
-                    let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol", forIndexPath: indexPath)as! ProfileTableViewCell
-                    cell.titleLabel.text = titleTwitterAndGoogle[indexPath.row]
-                    cell.logo.image = UIImage(named: "googlePlus")
-                    cell.providerLabel.text = "Login with google"
-                    cell.valueLabel.text = valueGoogle![indexPath.row]
-                    
-                    return cell
-                }
-
-                
-            default:
-                
-                if valueSokol != nil {
+            if let provider = Utilities.provider {
+                switch provider {
+                case "facebook.com":
                     if indexPath.row == 0{
                         let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol1", forIndexPath: indexPath) as! ProfileImageTableViewCell
-                        cell.titleLabel.text = titleSokol[indexPath.row]
-                        cell.valueLabel.text = valueSokol![indexPath.row]
-                        if let base = base{
-                            cell.profileImage.image = Utilities.base64ToImage(base)
+                        cell.titleLabel.text = titleFacebook[indexPath.row]
+                        cell.valueLabel.text = valueFacebook![indexPath.row]
+                        if let profileImage =  profileImage{
+                            cell.profileImage.image = profileImage
+                            cell.profileImage.layer.cornerRadius = 40.0
+                            cell.profileImage.clipsToBounds = true
+                        }
+                        return cell
+                    
+                    }else if indexPath.row == 2 {
+                        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+                        cell.textLabel?.text = "Friends who are using sokol"
+                    
+                        return cell
+                    }
+                    else if indexPath.row == 1 {
+                        let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol", forIndexPath: indexPath)as! ProfileTableViewCell
+                        cell.titleLabel.text = titleFacebook[indexPath.row]
+                        cell.logo.image = UIImage(named: "facebook")
+                        cell.providerLabel.text = "Login with facebook"
+                        cell.valueLabel.text = valueFacebook![indexPath.row]
+                    
+                        return cell
+                    }
+                    else if i < 4 { //We have linked some accounts but not all
+                        if indexPath.row == 3 { //This is the button to link more accounts
+                            let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                            cell.textLabel!.text = "Link accounts"
+                            cell.imageView?.image = nil
+                            return cell
+                            //cell.imageView?.image = UIImage(named: "")
+                            
+                        }else{ //Here we present the accounts which we have linked
+                            let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                            cell.textLabel!.text = "Unlink " + getProviderName(providers[indexPath.row % 4])
+                            cell.imageView?.image = getProviderImage(providers[indexPath.row % 4])
+                            return cell
+                            
+                        }
+                    }else{ //Here we have linked all the accounts
+                        let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                        cell.textLabel!.text = "Unlink " + getProviderName(providers[indexPath.row % 3])
+                        cell.imageView?.image = getProviderImage(providers[indexPath.row % 3])
+                        return cell
+                    }
+                case "twitter.com":
+                    if indexPath.row == 0{
+                        let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol1", forIndexPath: indexPath) as! ProfileImageTableViewCell
+                        cell.titleLabel.text = titleTwitterAndGoogle[indexPath.row]
+                        if valueTwitter![titleTwitterAndGoogle[indexPath.row]] != nil {
+                            cell.valueLabel.text = valueTwitter![titleTwitterAndGoogle[indexPath.row]]
+                        }else{
+                            cell.valueLabel.text = ""
+                        }
+                        if let profileImage =  profileImage{
+                            cell.profileImage.image = profileImage
                             cell.profileImage.layer.cornerRadius = 40.0
                             cell.profileImage.clipsToBounds = true
 
                         }
-                        
+                    
                         return cell
-                    }
-                    else if indexPath.row == 3 || indexPath.row == 4  {
-                        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-                        cell.textLabel?.text = titleButtons[indexPath.row % 3]
-                        
-                        return cell
-                    }
-                    else{
+                    
+                    }else if indexPath.row == 1{
                         let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol", forIndexPath: indexPath)as! ProfileTableViewCell
-                        cell.titleLabel.text = titleSokol[indexPath.row]
-                        cell.logo.image = UIImage(named: "sokol_logo")
-                        cell.providerLabel.text = "Login with sokol"
-                        cell.valueLabel.text = valueSokol![indexPath.row]
-                        
+                        cell.titleLabel.text = titleTwitterAndGoogle[indexPath.row]
+                        cell.logo.image = UIImage(named: "twitter")
+                        cell.providerLabel.text = "Login with twitter"
+                        cell.valueLabel.text = valueTwitter![titleTwitterAndGoogle[indexPath.row]]
+                        return cell
+                    }else if indexPath.row == 2 {
+                        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+                        cell.textLabel?.text = titleTwitterAndGoogle[indexPath.row]
+                    
+                        return cell
+                    }
+                    else if i < 4 { //We have linked some accounts but not all
+                        if indexPath.row == 3 { //This is the button to link more accounts
+                            let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                            cell.textLabel!.text = "Link accounts"
+                            cell.imageView?.image = nil
+                            return cell
+                            //cell.imageView?.image = UIImage(named: "")
+                            
+                            
+                        }else{ //Here we present the accounts which we have linked
+                            let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                            cell.textLabel!.text = "Unlink " + getProviderName(providers[indexPath.row % 4])
+                            cell.imageView?.image = getProviderImage(providers[indexPath.row % 4])
+                            return cell
+                            
+                        }
+                    }else{ //Here we have linked all the accounts
+                        let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                        cell.textLabel!.text = "Unlink " + getProviderName(providers[indexPath.row % 3])
+                        cell.imageView?.image = getProviderImage(providers[indexPath.row % 3])
                         return cell
                     }
                     
-                }
-            
+                case "google.com":
+                    if indexPath.row == 0{
+                        let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol1", forIndexPath: indexPath) as! ProfileImageTableViewCell
+                        cell.titleLabel.text = titleTwitterAndGoogle[indexPath.row]
+                        cell.valueLabel.text = valueGoogle![indexPath.row]
+                        if let profileImage =  profileImage{
+                            cell.profileImage.image = profileImage
+                            cell.profileImage.layer.cornerRadius = 40.0
+                            cell.profileImage.clipsToBounds = true
+                        
+                        }
+                    
+                        return cell
+                    
+                    }else if indexPath.row == 1{
+                        let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol", forIndexPath: indexPath)as! ProfileTableViewCell
+                        cell.titleLabel.text = titleTwitterAndGoogle[indexPath.row]
+                        cell.logo.image = UIImage(named: "googlePlus")
+                        cell.providerLabel.text = "Login with google"
+                        cell.valueLabel.text = valueGoogle![indexPath.row]
+                    
+                        return cell
+                    }
+                    else if i < 4 { //We have linked some accounts but not all
+                        if indexPath.row == 2 { //This is the button to link more accounts
+                            let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                            cell.textLabel!.text = "Link accounts"
+                            cell.imageView?.image = nil
+                            return cell
+                            //cell.imageView?.image = UIImage(named: "")
+                            
+                            
+                        }else{ //Here we present the accounts which we have linked
+                            let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                            cell.textLabel!.text = "Unlink " + getProviderName(providers[indexPath.row % 3])
+                            cell.imageView?.image = getProviderImage(providers[indexPath.row % 3])
+                            return cell
+                            
+                        }
+                    }else{ //Here we have linked all the accounts
+                        //print ("\(indexPath.row) - \(i)")
+                        let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                        cell.textLabel!.text = "Unlink " + getProviderName(providers[(indexPath.row + 1) % 3])
+                        cell.imageView?.image = getProviderImage(providers[(indexPath.row + 1) % 3])
+                        return cell
+                    }
+
                 
+                default:
+                
+                    if valueSokol != nil {
+                        if indexPath.row == 0{
+                            let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol1", forIndexPath: indexPath) as! ProfileImageTableViewCell
+                            cell.titleLabel.text = titleSokol[indexPath.row]
+                            cell.valueLabel.text = valueSokol![indexPath.row]
+                            if let base = base{
+                                cell.profileImage.image = Utilities.base64ToImage(base)
+                                cell.profileImage.layer.cornerRadius = 40.0
+                                cell.profileImage.clipsToBounds = true
+
+                            }
+                            
+                            return cell
+                        }
+                        else if indexPath.row == 3 || indexPath.row == 4  {
+                            let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+                            cell.textLabel?.text = titleButtons[indexPath.row % 3]
+                            cell.imageView?.image = nil
+                            return cell
+                        }
+                        else if indexPath.row == 1 || indexPath.row == 2{
+                            let cell = tableView.dequeueReusableCellWithIdentifier("cellSokol", forIndexPath: indexPath) as!ProfileTableViewCell
+                            cell.titleLabel.text = titleSokol[indexPath.row]
+                            cell.logo.image = UIImage(named: "sokol_logo")
+                            cell.providerLabel.text = "Login with sokol"
+                            cell.valueLabel.text = valueSokol![indexPath.row]
+                        
+                            return cell
+                        }
+                        else if i < 4 { //We have linked some accounts but not all
+                            if indexPath.row == 5 { //This is the button to link more accounts
+                                let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                                cell.textLabel!.text = "Link accounts"
+                                cell.imageView?.image = nil
+                                return cell
+                                //cell.imageView?.image = UIImage(named: "")
+                                
+                                
+                            }else{ //Here we present the accounts which we have linked
+                                //print(indexPath.row)
+                                let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                                cell.textLabel!.text = "Unlink " + getProviderName(providers[indexPath.row % 6])
+                                cell.imageView?.image = getProviderImage(providers[indexPath.row % 6])
+                                return cell
+                                
+                                
+                            }
+                        }else{ //Here we have linked all the accounts
+                            let cell = tableView.dequeueReusableCellWithIdentifier("Cell",forIndexPath: indexPath)
+                            cell.textLabel!.text = "Unlink " + getProviderName(providers[indexPath.row % 5])
+                            cell.imageView?.image = getProviderImage(providers[indexPath.row % 5])
+                            return cell
+                        }
+                    }
+                
+                }
             }
         }
         return UITableViewCell()
     }
+    func getProviderName(name:String) -> String{
+        var provider = ""
+        if name == "password"{
+            provider = "Sokol"
+        }else{
+            provider = name
+        }
+        return provider
+    }
+    func getProviderImage(name:String) -> UIImage{
+        switch name {
+        case "facebook.com":
+            return UIImage(named: "facebook")!
+        case "twitter.com":
+            return UIImage(named: "twitter")!
+        case "google.com":
+            return UIImage(named: "googlePlus")!
+        default:
+            return UIImage(named: "sokol_logo")!
+        }
+    }
+    func unlinkAccount(name:String) {
+        FIRAuth.auth()?.currentUser?.unlinkFromProvider(name, completion: {(user, error) in
+            if let error = error {
+                self.presentViewController(Utilities.alertMessage("Error", message: "We can't unlink this account"), animated: true, completion: nil)
+            }else{
+                Utilities.user = user
+                if name == "password"{
+                    Utilities.sokolLinking = false
+                    let userRef = self.ref.child("users")
+                    let userIdRef = userRef.child((FIRAuth.auth()?.currentUser?.uid)!)
+                    var value = ""
+                    if (FIRAuth.auth()?.currentUser?.providerData[0].providerID)! == "password"{
+                        value = (FIRAuth.auth()?.currentUser?.providerData[1].providerID)!
+                    }else{
+                        value = (FIRAuth.auth()?.currentUser?.providerData[0].providerID)!
+                    }
+                    userIdRef.setValue(["login":value])
+                    self.logOut(self.button)
+                }else{
+                    NSOperationQueue.mainQueue().addOperationWithBlock({
+                        self.tableView.reloadData()
+                    })
+                    self.presentViewController(Utilities.alertMessage("Success", message: "This account was unlinked"), animated: true, completion: nil)
+                }
+            }
+        })
+    }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let provider = Utilities.provider
         
-        if indexPath.row == 2 && Utilities.user?.providerData[0].providerID == "facebook.com"{
+        if indexPath.row == 2 && (provider == "facebook.com"){
             //We need to change the view
-            self.ref.removeAllObservers()
             let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("facebookFriends")
             let userProfile = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("userProfile")
             //userProfile.navigationController?.setViewControllers([viewController], animated: false)
@@ -324,14 +499,42 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
 
             
         }
-        if indexPath.row == 2 && Utilities.user?.providerData[0].providerID == "twitter.com"{
+        
+        if (indexPath.row == 3 && i < 4 && (provider == "facebook.com" || provider == "twitter.com")) || (indexPath.row == 2 && i < 4 && (provider == "google.com")) || (indexPath.row == 5 && i < 4 && (provider == "password" || provider == "sokol")) {
+            let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("linkAccounts")
+            let userProfile = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("userProfile")
+            self.navigationController?.viewControllers = [userProfile,viewController]
+        }
+        
+        if indexPath.row > 3 && i < 4 && (provider == "facebook.com" || provider == "twitter.com"){
+            self.unlinkAccount(providers[indexPath.row % 4])
+            
+        }
+        if indexPath.row >= 3 && i == 4 && (provider == "facebook.com" || provider == "twitter.com") {
+            self.unlinkAccount(providers[indexPath.row % 3])
+
+        }
+        if indexPath.row > 2 && i < 4 && provider == "google.com" {
+            self.unlinkAccount(providers[indexPath.row % 3])
+        }
+        if indexPath.row >= 2 && i == 4 && provider == "google.com" {
+            self.unlinkAccount(providers[(indexPath.row + 1) % 3])
+
+        }
+        if indexPath.row > 5 && i < 4 && (provider == "password" || provider == "sokol"){
+            self.unlinkAccount(providers[indexPath.row % 6])
+        }
+        if indexPath.row >= 5 && i == 4 && (provider == "password" || provider == "sokol") {
+            self.unlinkAccount(providers[indexPath.row % 5])
+        }
+        if indexPath.row == 2 && provider == "twitter.com"{
             self.ref.removeAllObservers()
             let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("twitterThoughts")
             let userProfile = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("userProfile")
             
             self.navigationController?.viewControllers = [userProfile,viewController]
         }
-        if indexPath.row == 3 && Utilities.user?.providerData[0].providerID != "facebook.com"{
+        if indexPath.row == 3 && (provider == "password" || provider == "sokol"){
             let blurEffect = UIBlurEffect(style: .Dark)
             blurEffectView = UIVisualEffectView(effect: blurEffect)
             blurEffectView?.frame = view.bounds
@@ -372,7 +575,7 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
             self.presentViewController(changeEmaillAlert!, animated: true, completion: nil)
             
         }
-        if indexPath.row == 4 && Utilities.user?.providerData[0].providerID != "facebook.com"{
+        if indexPath.row == 4 && (provider == "password" || provider == "sokol"){
             let blurEffect = UIBlurEffect(style: .Dark)
             blurEffectView = UIVisualEffectView(effect: blurEffect)
             blurEffectView?.frame = view.bounds
@@ -490,15 +693,19 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
     
     
     @IBAction func logOut(sender: AnyObject) {
-        let userRef = ref.child("users")
-        let userId = userRef.child(Utilities.user!.uid)
-        userId.removeAllObservers()
+        let userRef = self.ref.child("user")
+        let userIdRef = userRef.child((FIRAuth.auth()?.currentUser?.uid)!)
+        userIdRef.removeAllObservers()
+        self.ref.removeAllObservers()
         try! FIRAuth.auth()?.signOut()
         Utilities.user = nil
+        Utilities.linking = false
         
         //let window = UIApplication.sharedApplication().windows[0] as UIWindow;
         //window.rootViewController = viewController;
-        self.dismissViewControllerAnimated(true, completion: {});
+        let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("leftMenu")
+        viewController.dismissViewControllerAnimated(true, completion: {});
+        self.dismissViewControllerAnimated(true, completion: {})
         //self.presentViewController(viewController, animated: true, completion: nil)
 
         
@@ -532,37 +739,45 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
         //tableView.reloadData()
     }
     func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        switch (Utilities.user?.providerData[0].providerID)! {
-        case "facebook.com":
-            guard let indexPath = tableView.indexPathForRowAtPoint(location) else {
+        if let provider = Utilities.provider {
+            switch provider {
+            case "facebook.com":
+                guard let indexPath = tableView.indexPathForRowAtPoint(location) else {
+                    return nil
+                }
+                guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
+                    return nil
+                }
+                if indexPath.row >= 3 {
+                    return nil
+                }
+                let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("facebookFriends")
+            
+                viewController.preferredContentSize = CGSize(width: 0.0, height: 450.0)
+            
+                previewingContext.sourceRect = cell.frame
+                return viewController
+            case "twitter.com":
+                guard let indexPath = tableView.indexPathForRowAtPoint(location) else {
+                    return nil
+                }
+                guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
+                    return nil
+                }
+                if indexPath.row >= 3 {
+                    return nil
+                }
+                let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("twitterThoughts")
+            
+                viewController.preferredContentSize = CGSize(width: 0.0, height: 450.0)
+            
+                previewingContext.sourceRect = cell.frame
+                return viewController
+            default:
                 return nil
             }
-            guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
-                return nil
-            }
-            let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("facebookFriends")
-            
-            viewController.preferredContentSize = CGSize(width: 0.0, height: 450.0)
-            
-            previewingContext.sourceRect = cell.frame
-            return viewController
-        case "twitter.com":
-            guard let indexPath = tableView.indexPathForRowAtPoint(location) else {
-                return nil
-            }
-            guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
-                return nil
-            }
-            let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("twitterThoughts")
-            
-            viewController.preferredContentSize = CGSize(width: 0.0, height: 450.0)
-            
-            previewingContext.sourceRect = cell.frame
-            return viewController
-        default:
-            return nil
         }
-        
+        return nil
     }
     func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
         //self.ref.removeAllObservers()
@@ -572,16 +787,6 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
         NSNotificationCenter.defaultCenter().postNotificationName("toggleMenu",object:nil)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
 
 }

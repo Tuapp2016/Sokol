@@ -13,7 +13,6 @@ import FBSDKCoreKit
 import Fabric
 import TwitterKit
 
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
     
@@ -89,47 +88,54 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
     func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!,
                 withError error: NSError!) {
         if let error = error {
-            self.window?.rootViewController?.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
+        self.window?.rootViewController?.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
             return
         }
         
         let authentication = user.authentication
         let credential = FIRGoogleAuthProvider.credentialWithIDToken(authentication.idToken,
                                                                      accessToken: authentication.accessToken)
-        FIRAuth.auth()?.signInWithCredential(credential, completion:{(user,error) in
+        if Utilities.linking == false {
+            
+            FIRAuth.auth()?.signInWithCredential(credential, completion:{(user,error) in
             //Here we need to save the data about the user
-            if error != nil {
-                self.window?.rootViewController?.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
-            }else{
-                let ref = FIRDatabase.database().reference()
+                if error != nil {
+                    self.window?.rootViewController?.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
+                }else{
+                    let ref = FIRDatabase.database().reference()
                 //ref.removeAllObservers()
-                for profile in (user?.providerData)!{
-                    let uid = profile.uid
-                    var name = profile.displayName
-                    if name == nil{
-                        name = "There is no  name"
+                    if Utilities.user == nil {
+                        Utilities.user = user
+                        
                     }
-                    var email = profile.email
-                    if email == nil{
-                        email = "There is no an email"
-                    }
-                    var photoURL = profile.photoURL?.absoluteString
-                    if photoURL == nil {
-                        photoURL = "There is no an image available"
-                    }
+                    Utilities.provider = "google.com"
+
+                    //let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
+
                     let userRef = ref.child("users")
                     let userIdRef = userRef.child((user?.uid)!)
-                    let newUser = ["provider": profile.providerID,"name": name!,"email":email!,"profileImage":photoURL!]
-                    userIdRef.setValue(newUser)
-                    
+                    userIdRef.observeEventType(.Value, withBlock: {snapshot in
+                        if snapshot.value is NSNull{
+                            userIdRef.setValue(["login":"google.com"])
+                        }
+                        
+                    })
+                    //userIdRef.removeAllObservers()
+                    //self.window?.rootViewController?.presentViewController(viewController, animated: true, completion: nil)
                 }
-                let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
-                if Utilities.user == nil {
+            })
+        }else{
+            
+            FIRAuth.auth()?.currentUser?.linkWithCredential(credential, completion: {(user, error) in
+                if error != nil {
+                   self.window?.rootViewController?.presentViewController(Utilities.alertMessage("error", message:"There was an error"), animated: false, completion: nil)
+                }else{
                     Utilities.user = user
+                    Utilities.button!.hidden = true
                 }
-                self.window?.rootViewController?.presentViewController(viewController, animated: true, completion: nil)
-            }
-        })
+                
+            })
+        }
     }
 
 
