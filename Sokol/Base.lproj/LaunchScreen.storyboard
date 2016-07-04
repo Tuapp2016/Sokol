@@ -69,6 +69,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="sokol_logo" width="179" height="125"/>
+        <image name="sokol_logo" width="48" height="48"/>
     </resources>
 </document>

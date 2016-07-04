@@ -26,11 +26,70 @@
                                 <action selector="toggleMenu:" destination="GyK-bS-Gms" id="PbF-nX-bhU"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="New route" id="4UY-bb-LUt">
+                            <connections>
+                                <segue destination="iPv-NR-fCN" kind="showDetail" id="V76-oI-99T"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RYI-0u-rcB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3473" y="-152"/>
+            <point key="canvasLocation" x="3163" y="-152"/>
+        </scene>
+        <!--Route Creator View Controller-->
+        <scene sceneID="uYX-AJ-kGs">
+            <objects>
+                <viewController id="iPv-NR-fCN" customClass="RouteCreatorViewController" customModule="Sokol" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="j5a-kc-sOd"/>
+                        <viewControllerLayoutGuide type="bottom" id="atH-Wl-2fe"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3ip-hD-SfB">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KQe-a4-ejQ">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B0O-Q9-5hg">
+                                <rect key="frame" x="532" y="20" width="48" height="30"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <action selector="cancel:" destination="iPv-NR-fCN" eventType="touchUpInside" id="00k-b4-evz"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EsS-Hl-q9J">
+                                <rect key="frame" x="472" y="58" width="108" height="30"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                <state key="normal" title="Calculate Route"/>
+                                <connections>
+                                    <action selector="calculateRoute:" destination="iPv-NR-fCN" eventType="touchUpInside" id="9Ag-ty-pZQ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="KQe-a4-ejQ" firstAttribute="leading" secondItem="3ip-hD-SfB" secondAttribute="leadingMargin" constant="-20" id="D3J-GW-roH"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="KQe-a4-ejQ" secondAttribute="trailing" constant="-20" id="Dzx-mD-rNs"/>
+                            <constraint firstItem="B0O-Q9-5hg" firstAttribute="top" secondItem="j5a-kc-sOd" secondAttribute="bottom" constant="20" id="Z8q-yR-YYt"/>
+                            <constraint firstItem="KQe-a4-ejQ" firstAttribute="top" secondItem="3ip-hD-SfB" secondAttribute="topMargin" id="pag-s8-teb"/>
+                            <constraint firstItem="EsS-Hl-q9J" firstAttribute="top" secondItem="B0O-Q9-5hg" secondAttribute="bottom" constant="15" id="ug3-c0-V5w"/>
+                            <constraint firstItem="EsS-Hl-q9J" firstAttribute="trailing" secondItem="3ip-hD-SfB" secondAttribute="trailingMargin" id="vKY-bH-4ZE"/>
+                            <constraint firstItem="atH-Wl-2fe" firstAttribute="top" secondItem="KQe-a4-ejQ" secondAttribute="bottom" id="vOI-V4-OA2"/>
+                            <constraint firstItem="B0O-Q9-5hg" firstAttribute="trailing" secondItem="3ip-hD-SfB" secondAttribute="trailingMargin" id="yGz-d7-oSN"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="mapView" destination="KQe-a4-ejQ" id="beI-SP-OdQ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WJ4-OZ-z2f" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3917" y="-136"/>
         </scene>
         <!--Container View Controller-->
         <scene sceneID="B7K-SK-FWn">
@@ -495,7 +554,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7GB-pb-saM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3989" y="-152"/>
+            <point key="canvasLocation" x="3963" y="613"/>
         </scene>
         <!--Facebook Friends Collection View Controller-->
         <scene sceneID="e5A-M7-qlY">
@@ -547,7 +606,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TmV-xT-sJC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4015" y="623"/>
+            <point key="canvasLocation" x="3893" y="1304"/>
         </scene>
         <!--Facebook Cell View Controller-->
         <scene sceneID="qwg-N8-5vA">
@@ -593,7 +652,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xyZ-p1-jH4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4068" y="1344"/>
+            <point key="canvasLocation" x="3130" y="1304"/>
         </scene>
         <!--Twitter Thoughts Table View Controller-->
         <scene sceneID="tKm-8j-YVy">
@@ -624,7 +683,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5IZ-uw-LqK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3387" y="1344"/>
+            <point key="canvasLocation" x="2483" y="1304"/>
         </scene>
         <!--Left Menu Table View Controller-->
         <scene sceneID="TVI-xV-zr3">

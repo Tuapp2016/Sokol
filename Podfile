@@ -11,6 +11,7 @@ target 'Sokol' do
   pod 'Fabric'
   pod 'TwitterKit'
   pod 'TwitterCore'
+  pod 'Polyline', '~> 3.0'
 
   # Pods for Sokol
 
@@ -24,6 +25,7 @@ target 'Sokol' do
   pod 'Fabric'
   pod 'TwitterKit'
   pod 'TwitterCore'
+  pod 'Polyline', '~> 3.0'
   end
 
 end

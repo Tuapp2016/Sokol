@@ -26,6 +26,9 @@
 		B58E4E3C1D1376DC00D5527A /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58E4E3B1D1376DC00D5527A /* ContainerViewController.swift */; };
 		B58E4E3E1D13799800D5527A /* LeftMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58E4E3D1D13799800D5527A /* LeftMenuTableViewController.swift */; };
 		B58E4E401D13B13B00D5527A /* LeftMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58E4E3F1D13B13B00D5527A /* LeftMenuTableViewCell.swift */; };
+		B5A3C6EE1D297BC3009DBF2E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A3C6ED1D297BC3009DBF2E /* MapKit.framework */; };
+		B5A3C6F01D297E90009DBF2E /* RouteCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3C6EF1D297E90009DBF2E /* RouteCreatorViewController.swift */; };
+		B5A3C6F21D29BCBD009DBF2E /* SokolAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3C6F11D29BCBD009DBF2E /* SokolAnnotation.swift */; };
 		B5B9F8BA1D1E1B110055287C /* FacebookFriendsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B9F8B91D1E1B110055287C /* FacebookFriendsCollectionViewController.swift */; };
 		B5B9F8BC1D1E1B710055287C /* FacebookFriendsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B9F8BB1D1E1B710055287C /* FacebookFriendsCollectionViewCell.swift */; };
 		B5B9F8BE1D1E343F0055287C /* FacebookCellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B9F8BD1D1E343F0055287C /* FacebookCellViewController.swift */; };
@@ -75,6 +78,9 @@
 		B58E4E3B1D1376DC00D5527A /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		B58E4E3D1D13799800D5527A /* LeftMenuTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftMenuTableViewController.swift; sourceTree = "<group>"; };
 		B58E4E3F1D13B13B00D5527A /* LeftMenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftMenuTableViewCell.swift; sourceTree = "<group>"; };
+		B5A3C6ED1D297BC3009DBF2E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		B5A3C6EF1D297E90009DBF2E /* RouteCreatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteCreatorViewController.swift; sourceTree = "<group>"; };
+		B5A3C6F11D29BCBD009DBF2E /* SokolAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SokolAnnotation.swift; sourceTree = "<group>"; };
 		B5B9F8B91D1E1B110055287C /* FacebookFriendsCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookFriendsCollectionViewController.swift; sourceTree = "<group>"; };
 		B5B9F8BB1D1E1B710055287C /* FacebookFriendsCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookFriendsCollectionViewCell.swift; sourceTree = "<group>"; };
 		B5B9F8BD1D1E343F0055287C /* FacebookCellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookCellViewController.swift; sourceTree = "<group>"; };
@@ -98,6 +104,7 @@
 			files = (
 				B56A73FA1D0B908F00DF1F9B /* FBSDKCoreKit.framework in Frameworks */,
 				B56A73FE1D0B908F00DF1F9B /* FBSDKShareKit.framework in Frameworks */,
+				B5A3C6EE1D297BC3009DBF2E /* MapKit.framework in Frameworks */,
 				B56A73FC1D0B908F00DF1F9B /* FBSDKLoginKit.framework in Frameworks */,
 				9BD5A8C46E58A900A559B527 /* Pods_Sokol.framework in Frameworks */,
 			);
@@ -120,6 +127,7 @@
 		8F09BDAA4A07F15367EDD0BD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B5A3C6ED1D297BC3009DBF2E /* MapKit.framework */,
 				7825C63399156668CC733094 /* Pods_Sokol.framework */,
 				C4A84B916E6F8FD527142610 /* Pods_SokolTests.framework */,
 			);
@@ -177,6 +185,8 @@
 				B5B9F8BB1D1E1B710055287C /* FacebookFriendsCollectionViewCell.swift */,
 				B5B9F8BD1D1E343F0055287C /* FacebookCellViewController.swift */,
 				B5EA15A21D21E854004CC7E8 /* LinkAccountsViewController.swift */,
+				B5A3C6EF1D297E90009DBF2E /* RouteCreatorViewController.swift */,
+				B5A3C6F11D29BCBD009DBF2E /* SokolAnnotation.swift */,
 			);
 			path = Sokol;
 			sourceTree = "<group>";
@@ -262,6 +272,11 @@
 					B57714E71D0272470020E856 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 496CMHX85U;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					B57714FB1D0272470020E856 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -430,6 +445,7 @@
 				B52A675C1D10CA3A0062980F /* ProfileTableViewCell.swift in Sources */,
 				B5C1FBF01D10557500BA9104 /* Utilities.swift in Sources */,
 				B5B9F8BA1D1E1B110055287C /* FacebookFriendsCollectionViewController.swift in Sources */,
+				B5A3C6F21D29BCBD009DBF2E /* SokolAnnotation.swift in Sources */,
 				B5EA15A31D21E854004CC7E8 /* LinkAccountsViewController.swift in Sources */,
 				B5CEF7FB1D0E32D800A776C2 /* SignUpTableViewController.swift in Sources */,
 				B5B9F8BC1D1E1B710055287C /* FacebookFriendsCollectionViewCell.swift in Sources */,
@@ -438,6 +454,7 @@
 				B5B9F8BE1D1E343F0055287C /* FacebookCellViewController.swift in Sources */,
 				B5C1FBF21D1069AA00BA9104 /* Constants.swift in Sources */,
 				B52A675E1D10EC1C0062980F /* ProfileImageTableViewCell.swift in Sources */,
+				B5A3C6F01D297E90009DBF2E /* RouteCreatorViewController.swift in Sources */,
 				B58E4E3E1D13799800D5527A /* LeftMenuTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
