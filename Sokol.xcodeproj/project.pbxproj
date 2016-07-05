@@ -29,6 +29,8 @@
 		B5A3C6EE1D297BC3009DBF2E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A3C6ED1D297BC3009DBF2E /* MapKit.framework */; };
 		B5A3C6F01D297E90009DBF2E /* RouteCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3C6EF1D297E90009DBF2E /* RouteCreatorViewController.swift */; };
 		B5A3C6F21D29BCBD009DBF2E /* SokolAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3C6F11D29BCBD009DBF2E /* SokolAnnotation.swift */; };
+		B5A3C6F41D2AD6D3009DBF2E /* RouteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3C6F31D2AD6D3009DBF2E /* RouteTableViewCell.swift */; };
+		B5A3C6F61D2ADDA7009DBF2E /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3C6F51D2ADDA7009DBF2E /* Route.swift */; };
 		B5B9F8BA1D1E1B110055287C /* FacebookFriendsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B9F8B91D1E1B110055287C /* FacebookFriendsCollectionViewController.swift */; };
 		B5B9F8BC1D1E1B710055287C /* FacebookFriendsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B9F8BB1D1E1B710055287C /* FacebookFriendsCollectionViewCell.swift */; };
 		B5B9F8BE1D1E343F0055287C /* FacebookCellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B9F8BD1D1E343F0055287C /* FacebookCellViewController.swift */; };
@@ -81,6 +83,8 @@
 		B5A3C6ED1D297BC3009DBF2E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		B5A3C6EF1D297E90009DBF2E /* RouteCreatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteCreatorViewController.swift; sourceTree = "<group>"; };
 		B5A3C6F11D29BCBD009DBF2E /* SokolAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SokolAnnotation.swift; sourceTree = "<group>"; };
+		B5A3C6F31D2AD6D3009DBF2E /* RouteTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteTableViewCell.swift; sourceTree = "<group>"; };
+		B5A3C6F51D2ADDA7009DBF2E /* Route.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		B5B9F8B91D1E1B110055287C /* FacebookFriendsCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookFriendsCollectionViewController.swift; sourceTree = "<group>"; };
 		B5B9F8BB1D1E1B710055287C /* FacebookFriendsCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookFriendsCollectionViewCell.swift; sourceTree = "<group>"; };
 		B5B9F8BD1D1E343F0055287C /* FacebookCellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookCellViewController.swift; sourceTree = "<group>"; };
@@ -187,6 +191,8 @@
 				B5EA15A21D21E854004CC7E8 /* LinkAccountsViewController.swift */,
 				B5A3C6EF1D297E90009DBF2E /* RouteCreatorViewController.swift */,
 				B5A3C6F11D29BCBD009DBF2E /* SokolAnnotation.swift */,
+				B5A3C6F31D2AD6D3009DBF2E /* RouteTableViewCell.swift */,
+				B5A3C6F51D2ADDA7009DBF2E /* Route.swift */,
 			);
 			path = Sokol;
 			sourceTree = "<group>";
@@ -442,12 +448,14 @@
 				B58E4E401D13B13B00D5527A /* LeftMenuTableViewCell.swift in Sources */,
 				B58E4E3C1D1376DC00D5527A /* ContainerViewController.swift in Sources */,
 				B57714EC1D0272470020E856 /* AppDelegate.swift in Sources */,
+				B5A3C6F41D2AD6D3009DBF2E /* RouteTableViewCell.swift in Sources */,
 				B52A675C1D10CA3A0062980F /* ProfileTableViewCell.swift in Sources */,
 				B5C1FBF01D10557500BA9104 /* Utilities.swift in Sources */,
 				B5B9F8BA1D1E1B110055287C /* FacebookFriendsCollectionViewController.swift in Sources */,
 				B5A3C6F21D29BCBD009DBF2E /* SokolAnnotation.swift in Sources */,
 				B5EA15A31D21E854004CC7E8 /* LinkAccountsViewController.swift in Sources */,
 				B5CEF7FB1D0E32D800A776C2 /* SignUpTableViewController.swift in Sources */,
+				B5A3C6F61D2ADDA7009DBF2E /* Route.swift in Sources */,
 				B5B9F8BC1D1E1B710055287C /* FacebookFriendsCollectionViewCell.swift in Sources */,
 				B5C1FBF71D108EB200BA9104 /* HomeViewController.swift in Sources */,
 				B5C1FBF91D108EC300BA9104 /* ProfileViewController.swift in Sources */,
