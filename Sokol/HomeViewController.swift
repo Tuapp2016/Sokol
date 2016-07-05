@@ -13,30 +13,32 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 import MapKit
 
-class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UIViewControllerPreviewingDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     var routes = [Route]()
+    var routesId = [String]()
     let ref = FIRDatabase.database().reference()
     //let ref = Firebase(url:"sokolunal.firebaseio.com")
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if traitCollection.forceTouchCapability == .Available {
+            registerForPreviewingWithDelegate(self, sourceView: view)
+        }
         //self.tableView.separatorStyle = .None
         //self.tableView.estimatedRowHeight = 150
         self.tableView.rowHeight = 150
-        self.tableView.allowsSelection = false
         let userByRoutes = ref.child("userByRoutes")
         let userByRoutesID = userByRoutes.child(FIRAuth.auth()!.currentUser!.uid)
         userByRoutesID.observeEventType(.Value, withBlock: {snapshot in
             if !(snapshot.value is NSNull){
                 let routesValues = snapshot.value as! NSDictionary
-                let routes = routesValues["routes"] as! [String]
-                self.getValues(routes)
+                self.routesId = routesValues["routes"] as! [String]
+                self.getValues(self.routesId)
                 
             }
         })
-        
     
         if (Utilities.provider == nil || Utilities.user == nil) {
             let userRef = self.ref.child("users")
@@ -56,6 +58,10 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        routes = []
+        tableView.reloadData()
+        getValues(routesId)
+        
     }
    
     deinit {
@@ -88,6 +94,7 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         cell.cardView.layer.masksToBounds = false
         cell.cardView.layer.cornerRadius = 10
         cell.cardView.layer.shadowOffset = CGSizeMake(-0.2, -0.2)
+        cell.cardView.tag = indexPath.row
         //let path:UIBezierPath = UIBezierPath(rect: cell.cardView.bounds)
         //cell.cardView.layer.shadowPath = path.CGPath
         cell.cardView.layer.shadowOpacity = 0.2
@@ -108,7 +115,7 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         let routesRef = ref.child("routes")
         for a in routesID{
             let routeID = routesRef.child(a)
-            routeID.observeEventType(.Value, withBlock: {snapshot in
+            routeID.observeSingleEventOfType(.Value, withBlock: {snapshot in
                 if !(snapshot.value is NSNull) {
                     let routeValues = snapshot.value as! NSDictionary
                     let lats = routeValues["latitudes"] as! [String]
@@ -162,6 +169,40 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         shareActionButton.backgroundColor = UIColor(red: 28.0/255.0, green: 165.0/255.0, blue: 253.0/255.0, alpha: 1.0)
         deleteActionButton.backgroundColor = UIColor.redColor()
         return [deleteActionButton,shareActionButton]
+    }
+    
+    @IBAction func openDetail(sender: AnyObject) {
+        let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("informationRoute") as! DetailRouteTableViewController
+        viewController.route = routes[sender.tag]
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "detailRoute" {
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let destinationController = segue.destinationViewController as! DetailRouteTableViewController
+                destinationController.route =  routes[indexPath.row]
+            }
+        }
+    }
+    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = tableView.indexPathForRowAtPoint(location) else{
+            return nil
+        }
+        guard let cell = tableView.cellForRowAtIndexPath(indexPath) else {
+            return nil
+        }
+        let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("informationRoute") as! DetailRouteTableViewController
+        viewController.route = routes[indexPath.row]
+        
+        viewController.preferredContentSize =  CGSize(width: 0.0, height: 450.0)
+        return viewController
+
+    }
+    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+        showViewController(viewControllerToCommit, sender: self)
     }
     
 

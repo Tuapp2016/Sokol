@@ -31,6 +31,9 @@
 		B5A3C6F21D29BCBD009DBF2E /* SokolAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3C6F11D29BCBD009DBF2E /* SokolAnnotation.swift */; };
 		B5A3C6F41D2AD6D3009DBF2E /* RouteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3C6F31D2AD6D3009DBF2E /* RouteTableViewCell.swift */; };
 		B5A3C6F61D2ADDA7009DBF2E /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3C6F51D2ADDA7009DBF2E /* Route.swift */; };
+		B5A3C6F81D2B4499009DBF2E /* HeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3C6F71D2B4499009DBF2E /* HeaderTableViewCell.swift */; };
+		B5A3C6FA1D2B44B9009DBF2E /* PointTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3C6F91D2B44B9009DBF2E /* PointTableViewCell.swift */; };
+		B5A3C6FC1D2B4730009DBF2E /* DetailRouteTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A3C6FB1D2B4730009DBF2E /* DetailRouteTableViewController.swift */; };
 		B5B9F8BA1D1E1B110055287C /* FacebookFriendsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B9F8B91D1E1B110055287C /* FacebookFriendsCollectionViewController.swift */; };
 		B5B9F8BC1D1E1B710055287C /* FacebookFriendsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B9F8BB1D1E1B710055287C /* FacebookFriendsCollectionViewCell.swift */; };
 		B5B9F8BE1D1E343F0055287C /* FacebookCellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B9F8BD1D1E343F0055287C /* FacebookCellViewController.swift */; };
@@ -85,6 +88,9 @@
 		B5A3C6F11D29BCBD009DBF2E /* SokolAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SokolAnnotation.swift; sourceTree = "<group>"; };
 		B5A3C6F31D2AD6D3009DBF2E /* RouteTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteTableViewCell.swift; sourceTree = "<group>"; };
 		B5A3C6F51D2ADDA7009DBF2E /* Route.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
+		B5A3C6F71D2B4499009DBF2E /* HeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderTableViewCell.swift; sourceTree = "<group>"; };
+		B5A3C6F91D2B44B9009DBF2E /* PointTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointTableViewCell.swift; sourceTree = "<group>"; };
+		B5A3C6FB1D2B4730009DBF2E /* DetailRouteTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailRouteTableViewController.swift; sourceTree = "<group>"; };
 		B5B9F8B91D1E1B110055287C /* FacebookFriendsCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookFriendsCollectionViewController.swift; sourceTree = "<group>"; };
 		B5B9F8BB1D1E1B710055287C /* FacebookFriendsCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookFriendsCollectionViewCell.swift; sourceTree = "<group>"; };
 		B5B9F8BD1D1E343F0055287C /* FacebookCellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookCellViewController.swift; sourceTree = "<group>"; };
@@ -193,6 +199,9 @@
 				B5A3C6F11D29BCBD009DBF2E /* SokolAnnotation.swift */,
 				B5A3C6F31D2AD6D3009DBF2E /* RouteTableViewCell.swift */,
 				B5A3C6F51D2ADDA7009DBF2E /* Route.swift */,
+				B5A3C6F71D2B4499009DBF2E /* HeaderTableViewCell.swift */,
+				B5A3C6F91D2B44B9009DBF2E /* PointTableViewCell.swift */,
+				B5A3C6FB1D2B4730009DBF2E /* DetailRouteTableViewController.swift */,
 			);
 			path = Sokol;
 			sourceTree = "<group>";
@@ -443,6 +452,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5A3C6FC1D2B4730009DBF2E /* DetailRouteTableViewController.swift in Sources */,
 				B57714EE1D0272470020E856 /* ViewController.swift in Sources */,
 				B56DF7971D1B2123002DB22A /* TwitterThoughtsTableViewController.swift in Sources */,
 				B58E4E401D13B13B00D5527A /* LeftMenuTableViewCell.swift in Sources */,
@@ -457,8 +467,10 @@
 				B5CEF7FB1D0E32D800A776C2 /* SignUpTableViewController.swift in Sources */,
 				B5A3C6F61D2ADDA7009DBF2E /* Route.swift in Sources */,
 				B5B9F8BC1D1E1B710055287C /* FacebookFriendsCollectionViewCell.swift in Sources */,
+				B5A3C6FA1D2B44B9009DBF2E /* PointTableViewCell.swift in Sources */,
 				B5C1FBF71D108EB200BA9104 /* HomeViewController.swift in Sources */,
 				B5C1FBF91D108EC300BA9104 /* ProfileViewController.swift in Sources */,
+				B5A3C6F81D2B4499009DBF2E /* HeaderTableViewCell.swift in Sources */,
 				B5B9F8BE1D1E343F0055287C /* FacebookCellViewController.swift in Sources */,
 				B5C1FBF21D1069AA00BA9104 /* Constants.swift in Sources */,
 				B52A675E1D10EC1C0062980F /* ProfileImageTableViewCell.swift in Sources */,

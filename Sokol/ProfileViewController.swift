@@ -494,8 +494,9 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
             let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("facebookFriends")
             let userProfile = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("userProfile")
             //userProfile.navigationController?.setViewControllers([viewController], animated: false)
-            
-            self.navigationController?.viewControllers = [userProfile,viewController]
+            //self.navigationController?.popToViewController(viewController, animated: true)
+            self.navigationController?.pushViewController(viewController, animated: true)
+            //self.navigationController?.viewControllers = [userProfile,viewController]
 
             
         }
@@ -503,7 +504,8 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
         if (indexPath.row == 3 && i < 4 && (provider == "facebook.com" || provider == "twitter.com")) || (indexPath.row == 2 && i < 4 && (provider == "google.com")) || (indexPath.row == 5 && i < 4 && (provider == "password" || provider == "sokol")) {
             let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("linkAccounts")
             let userProfile = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("userProfile")
-            self.navigationController?.viewControllers = [userProfile,viewController]
+            self.navigationController?.pushViewController(viewController, animated: true)
+            //self.navigationController?.viewControllers = [userProfile,viewController]
         }
         
         if indexPath.row > 3 && i < 4 && (provider == "facebook.com" || provider == "twitter.com"){
