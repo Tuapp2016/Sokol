@@ -19,7 +19,6 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     var routes = [Route]()
     var routesId = [String]()
     let ref = FIRDatabase.database().reference()
-    //let ref = Firebase(url:"sokolunal.firebaseio.com")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,16 +28,7 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         //self.tableView.separatorStyle = .None
         //self.tableView.estimatedRowHeight = 150
         self.tableView.rowHeight = 150
-        let userByRoutes = ref.child("userByRoutes")
-        let userByRoutesID = userByRoutes.child(FIRAuth.auth()!.currentUser!.uid)
-        userByRoutesID.observeEventType(.Value, withBlock: {snapshot in
-            if !(snapshot.value is NSNull){
-                let routesValues = snapshot.value as! NSDictionary
-                self.routesId = routesValues["routes"] as! [String]
-                self.getValues(self.routesId)
-                
-            }
-        })
+        
     
         if (Utilities.provider == nil || Utilities.user == nil) {
             let userRef = self.ref.child("users")
@@ -58,10 +48,30 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: true)
         routes = []
         tableView.reloadData()
-        getValues(routesId)
-        
+        let userByRoutes = ref.child("userByRoutes")
+        let userByRoutesID = userByRoutes.child(FIRAuth.auth()!.currentUser!.uid)
+        userByRoutesID.observeEventType(.Value, withBlock: {snapshot in
+            if !(snapshot.value is NSNull){
+                let routesValues = snapshot.value as! NSDictionary
+                self.routesId = routesValues["routes"] as! [String]
+                self.getValues(self.routesId)
+                
+            }
+        })
+    }
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        let routesRef = ref.child("routes")
+        let userByRoutes = ref.child("userByRoutes")
+        let userByRoutesID = userByRoutes.child(FIRAuth.auth()!.currentUser!.uid)
+        userByRoutesID.removeAllObservers()
+        for i in routes{
+            let routeID = routesRef.child(i.id)
+            routeID.removeAllObservers()
+        }
     }
    
     deinit {
@@ -115,7 +125,7 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         let routesRef = ref.child("routes")
         for a in routesID{
             let routeID = routesRef.child(a)
-            routeID.observeSingleEventOfType(.Value, withBlock: {snapshot in
+            routeID.observeEventType(.Value, withBlock: {snapshot in
                 if !(snapshot.value is NSNull) {
                     let routeValues = snapshot.value as! NSDictionary
                     let lats = routeValues["latitudes"] as! [String]
@@ -131,14 +141,49 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
                         i += 1
                     }
                     let newRoute =  Route(id: a, name: routeValues["name"] as! String, description: routeValues["description"] as! String, annotations: annotations )
-                    self.routes.append(newRoute)
+                    if self.isNewRoute(newRoute){
+                        self.routes.append(newRoute)
+                    }else{
+                        for a in self.routes {
+                            if a.id == newRoute.id {
+                                a.id =  newRoute.id
+                                a.annotations = newRoute.annotations
+                                a.name = newRoute.name
+                                a.description = newRoute.description
+                            }
+                        }
+                    }
                     NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                         self.tableView.reloadData()
                     })
+                }else{
+                    let id = routeID.key
+                    routeID.removeAllObservers()
+                    var i = 0
+                    for a in self.routes{
+                        if  a.id ==  id {
+                            break
+                        }
+                        i += 1
+                    }
+                    if self.routes.count > 0 {
+                        self.routes.removeAtIndex(i)
+                        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                            self.tableView.reloadData()
+                        })
+                    }
                 }
             })
         }
         
+    }
+    func isNewRoute(route:Route) -> Bool{
+        for a in routes{
+            if a.id == route.id {
+                return false
+            }
+        }
+        return true
     }
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let shareActionButton = UITableViewRowAction(style: .Default, title: "Share", handler: {(action,indexPath) in
@@ -152,6 +197,7 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             let routes = self.ref.child("routes")
             let routeId = routes.child(route.id)
+            routeId.removeAllObservers()
             routeId.removeValue()
             let userByRoute = self.ref.child("userByRoutes")
             let userByRouteId = userByRoute.child(FIRAuth.auth()!.currentUser!.uid)

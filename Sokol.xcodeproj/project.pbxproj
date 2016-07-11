@@ -23,6 +23,7 @@
 		B57714F31D0272470020E856 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B57714F21D0272470020E856 /* Assets.xcassets */; };
 		B57714F61D0272470020E856 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B57714F41D0272470020E856 /* LaunchScreen.storyboard */; };
 		B57715011D0272470020E856 /* SokolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57715001D0272470020E856 /* SokolTests.swift */; };
+		B577CF301D332E70004FA827 /* RouteModifierViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B577CF2F1D332E70004FA827 /* RouteModifierViewController.swift */; };
 		B58E4E3C1D1376DC00D5527A /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58E4E3B1D1376DC00D5527A /* ContainerViewController.swift */; };
 		B58E4E3E1D13799800D5527A /* LeftMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58E4E3D1D13799800D5527A /* LeftMenuTableViewController.swift */; };
 		B58E4E401D13B13B00D5527A /* LeftMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58E4E3F1D13B13B00D5527A /* LeftMenuTableViewCell.swift */; };
@@ -80,6 +81,7 @@
 		B57714FC1D0272470020E856 /* SokolTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SokolTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B57715001D0272470020E856 /* SokolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SokolTests.swift; sourceTree = "<group>"; };
 		B57715021D0272470020E856 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B577CF2F1D332E70004FA827 /* RouteModifierViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteModifierViewController.swift; sourceTree = "<group>"; };
 		B58E4E3B1D1376DC00D5527A /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		B58E4E3D1D13799800D5527A /* LeftMenuTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftMenuTableViewController.swift; sourceTree = "<group>"; };
 		B58E4E3F1D13B13B00D5527A /* LeftMenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftMenuTableViewCell.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				B5A3C6F71D2B4499009DBF2E /* HeaderTableViewCell.swift */,
 				B5A3C6F91D2B44B9009DBF2E /* PointTableViewCell.swift */,
 				B5A3C6FB1D2B4730009DBF2E /* DetailRouteTableViewController.swift */,
+				B577CF2F1D332E70004FA827 /* RouteModifierViewController.swift */,
 			);
 			path = Sokol;
 			sourceTree = "<group>";
@@ -455,6 +458,7 @@
 				B5A3C6FC1D2B4730009DBF2E /* DetailRouteTableViewController.swift in Sources */,
 				B57714EE1D0272470020E856 /* ViewController.swift in Sources */,
 				B56DF7971D1B2123002DB22A /* TwitterThoughtsTableViewController.swift in Sources */,
+				B577CF301D332E70004FA827 /* RouteModifierViewController.swift in Sources */,
 				B58E4E401D13B13B00D5527A /* LeftMenuTableViewCell.swift in Sources */,
 				B58E4E3C1D1376DC00D5527A /* ContainerViewController.swift in Sources */,
 				B57714EC1D0272470020E856 /* AppDelegate.swift in Sources */,

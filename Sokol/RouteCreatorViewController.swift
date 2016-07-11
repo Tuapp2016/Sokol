@@ -30,7 +30,6 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
         super.viewDidLoad()
         mapView.delegate = self
         mapView.showsScale = true
-        mapView.showsScale = true
         mapView.showsCompass =  false
         mapView.mapType = .Standard
         
@@ -252,36 +251,24 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
         return render
     }
     func drawRoute(jsonResult:NSDictionary){
+        
         var coordinates = [CLLocationCoordinate2D]()
         let routes = jsonResult["routes"] as! [AnyObject]
         let route = routes[0] as! NSDictionary
-        /*let legs =  route["legs"] as! [AnyObject]
-        let leg = legs[0] as! NSDictionary
-        let steps = leg["steps"] as! [AnyObject]
-        for step in steps {
-            let endLocation = step["end_location"] as! NSDictionary
-            let startLocation = step["start_location"] as! NSDictionary
-            let startLat = startLocation["lat"] as! Double
-            let startLng = startLocation["lng"] as! Double
-            let endLat = endLocation["lat"] as! Double
-            let endLng =  endLocation["lng"] as! Double
-            
-            coordinates.append(CLLocationCoordinate2D(latitude: startLat, longitude: startLng))
-            coordinates.append(CLLocationCoordinate2D(latitude: endLat, longitude: endLng))
-            
-        }*/
         let overview = route["overview_polyline"] as! NSDictionary
         let points = overview["points"] as! String
         let polylines = Polyline(encodedPolyline: points,precision: 1e5)
         coordinates = polylines.coordinates!
         let polyline = MKPolyline(coordinates: &coordinates, count: coordinates.count)
         mapView.addOverlay(polyline)
+        
+        
     }
     
     @IBAction func calculateRoute(sender: AnyObject) {
         mapView.removeOverlays(mapView.overlays)
         var i = 0
-        isRouteCalculated = true
+        
         while i < (annotations.count-1) {
             let origin =  String(annotations[i].coordinate.latitude)+","+String(annotations[i].coordinate.longitude)
             let end =  String(annotations[i+1].coordinate.latitude)+","+String(annotations[i+1].coordinate.longitude)
@@ -295,11 +282,18 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
                 if let data = data {
                     do{
                         let jsonResult = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
-                        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                            self.drawRoute(jsonResult)
+                        let status = jsonResult["status"] as! String
+                        if !(status == "ZERO_RESULTS"){
+                            self.isRouteCalculated = true
+                            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                                self.drawRoute(jsonResult)
                             
-                        })
-                        
+                            })
+                        }else{
+                            self.presentViewController(Utilities.alertMessage("Error", message: "We can't find any route.\n Please try to move or add more points"), animated: true, completion: nil)
+                            
+                        }
+                    
                         
                     }catch {
                         print (error)
@@ -370,11 +364,9 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
         }
         else{
             let route = ref.child("routes")
-            let time = NSDate()
             
-            let timeId = String(time.timeIntervalSince1970).stringByReplacingOccurrencesOfString(".", withString: ",", options: .LiteralSearch, range: nil)
             
-            let routeId = route.child(timeId)
+            let routeId = route.childByAutoId()
         
             var lats:[String] = []
             var lngs:[String] = []
@@ -405,13 +397,13 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
             userByRouteID.observeSingleEventOfType(.Value, withBlock: {snapshot in
                 if snapshot.value is NSNull{
                     var otherValues = [String]()
-                    otherValues.append(timeId)
+                    otherValues.append(routeId.key)
                     userByRouteID.setValue(["routes":otherValues])
                 }else{
                     let routesValues =  snapshot.value as! NSDictionary
                     var routes = routesValues["routes"] as! [String]
                     
-                    routes.append(timeId)
+                    routes.append(routeId.key)
                     userByRouteID.updateChildValues(["routes":routes])
                 }
             })
@@ -426,7 +418,7 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
         }
         
         let newLength = text.characters.count + string.characters.count - range.length
-        return newLength <= 15 // Bool
+        return newLength <= 15
     }
     
 

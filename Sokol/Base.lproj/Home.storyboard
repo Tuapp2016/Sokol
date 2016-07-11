@@ -33,12 +33,6 @@
                                                 <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="379-GK-OJv" customClass="UIControl">
                                                     <rect key="frame" x="8" y="11" width="285" height="128"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NIj-Dn-xfj">
-                                                            <rect key="frame" x="8" y="45" width="42" height="21"/>
-                                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Dx-GZ-1tR">
                                                             <rect key="frame" x="8" y="82" width="42" height="21"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
@@ -49,6 +43,12 @@
                                                             <rect key="frame" x="8" y="8" width="42" height="21"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
                                                             <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NIj-Dn-xfj">
+                                                            <rect key="frame" x="8" y="45" width="42" height="21"/>
+                                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
@@ -144,19 +144,34 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6gj-nx-s7c">
-                                            <rect key="frame" x="8" y="49" width="42" height="21"/>
+                                            <rect key="frame" x="8" y="47" width="42" height="21"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SLd-Zd-VKM">
+                                            <rect key="frame" x="246" y="30" width="70" height="33"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="65" id="2Ft-gn-7NM"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                            <state key="normal" title="Modify"/>
+                                            <connections>
+                                                <segue destination="Lrw-2P-DY5" kind="show" identifier="confirmRoute" id="3qc-g7-EI8"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailingMargin" secondItem="6gj-nx-s7c" secondAttribute="trailing" constant="15" id="H1N-KG-bUp"/>
+                                        <constraint firstItem="SLd-Zd-VKM" firstAttribute="centerY" secondItem="RLf-5B-Iol" secondAttribute="centerY" id="232-F0-mh9"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="6gj-nx-s7c" secondAttribute="trailing" constant="80" id="H1N-KG-bUp"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="SLd-Zd-VKM" secondAttribute="bottom" constant="10" id="Mj4-oO-LWa"/>
                                         <constraint firstItem="jQl-i5-FlP" firstAttribute="top" secondItem="RLf-5B-Iol" secondAttribute="topMargin" constant="15" id="PbO-dO-e1E"/>
                                         <constraint firstItem="6gj-nx-s7c" firstAttribute="leading" secondItem="RLf-5B-Iol" secondAttribute="leadingMargin" constant="15" id="Yvb-e0-NZ5"/>
+                                        <constraint firstItem="SLd-Zd-VKM" firstAttribute="trailing" secondItem="RLf-5B-Iol" secondAttribute="trailingMargin" constant="-10" id="aQZ-is-XuH"/>
                                         <constraint firstItem="6gj-nx-s7c" firstAttribute="top" secondItem="jQl-i5-FlP" secondAttribute="bottom" constant="15" id="eHi-Pf-30b"/>
                                         <constraint firstItem="jQl-i5-FlP" firstAttribute="leading" secondItem="RLf-5B-Iol" secondAttribute="leadingMargin" constant="15" id="mAf-he-may"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="jQl-i5-FlP" secondAttribute="trailing" constant="15" id="pi8-4P-JAz"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="jQl-i5-FlP" secondAttribute="trailing" constant="80" id="pi8-4P-JAz"/>
+                                        <constraint firstItem="SLd-Zd-VKM" firstAttribute="top" secondItem="RLf-5B-Iol" secondAttribute="topMargin" constant="10" id="udn-Pe-4gk"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -226,10 +241,54 @@
                             <outlet property="delegate" destination="5IH-lM-xN3" id="Qkb-Gm-Jgz"/>
                         </connections>
                     </tableView>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aRL-Ly-LhO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3614" y="-871"/>
+            <point key="canvasLocation" x="3742" y="-855"/>
+        </scene>
+        <!--Route Modifier View Controller-->
+        <scene sceneID="qFA-4E-Ghz">
+            <objects>
+                <viewController id="Lrw-2P-DY5" customClass="RouteModifierViewController" customModule="Sokol" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="JuK-bO-2aX"/>
+                        <viewControllerLayoutGuide type="bottom" id="P6D-HD-UBl"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="h83-Dv-tjT">
+                        <rect key="frame" x="0.0" y="0.0" width="324" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pih-Sf-M6q">
+                                <rect key="frame" x="-4" y="0.0" width="332" height="600"/>
+                            </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Lp-lU-u3A">
+                                <rect key="frame" x="235" y="52" width="69" height="30"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                <state key="normal" title="Confirm"/>
+                                <connections>
+                                    <action selector="confirmNewRoute:" destination="Lrw-2P-DY5" eventType="touchUpInside" id="wGp-zj-LdQ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="P6D-HD-UBl" firstAttribute="top" secondItem="pih-Sf-M6q" secondAttribute="bottom" id="6CY-Gl-RVc"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="pih-Sf-M6q" secondAttribute="trailing" id="Jdw-kQ-31N"/>
+                            <constraint firstItem="0Lp-lU-u3A" firstAttribute="trailing" secondItem="h83-Dv-tjT" secondAttribute="trailingMargin" constant="-20" id="f0E-OW-6Bv"/>
+                            <constraint firstItem="0Lp-lU-u3A" firstAttribute="top" secondItem="JuK-bO-2aX" secondAttribute="bottom" constant="40" id="uzQ-cO-q0f"/>
+                            <constraint firstItem="pih-Sf-M6q" firstAttribute="leading" secondItem="h83-Dv-tjT" secondAttribute="leadingMargin" id="vRW-JX-L1X"/>
+                            <constraint firstItem="pih-Sf-M6q" firstAttribute="top" secondItem="h83-Dv-tjT" secondAttribute="topMargin" id="yrf-Zs-eRv"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="mapView" destination="pih-Sf-M6q" id="JDB-Oh-SE9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7g7-Ds-KfV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4364" y="-855"/>
         </scene>
         <!--Route Creator View Controller-->
         <scene sceneID="uYX-AJ-kGs">
@@ -246,14 +305,6 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KQe-a4-ejQ">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B0O-Q9-5hg">
-                                <rect key="frame" x="532" y="20" width="48" height="30"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                                <state key="normal" title="Cancel"/>
-                                <connections>
-                                    <action selector="cancel:" destination="iPv-NR-fCN" eventType="touchUpInside" id="00k-b4-evz"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EsS-Hl-q9J">
                                 <rect key="frame" x="472" y="58" width="108" height="30"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
@@ -268,6 +319,14 @@
                                 <state key="normal" title="Save Route"/>
                                 <connections>
                                     <action selector="saveRoute:" destination="iPv-NR-fCN" eventType="touchUpInside" id="DtG-uH-4NS"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B0O-Q9-5hg">
+                                <rect key="frame" x="532" y="20" width="48" height="30"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <action selector="cancel:" destination="iPv-NR-fCN" eventType="touchUpInside" id="00k-b4-evz"/>
                                 </connections>
                             </button>
                         </subviews>
