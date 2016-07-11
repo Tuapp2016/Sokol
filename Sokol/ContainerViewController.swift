@@ -9,7 +9,7 @@
 import UIKit
 
 class ContainerViewController: UIViewController,UIScrollViewDelegate {
-    let leftMenuWidth:CGFloat = 258
+    let leftMenuWidth:CGFloat = 255
     @IBOutlet weak var scrollView: UIScrollView!
 
     override func viewDidLoad() {

@@ -25,18 +25,6 @@ class FacebookFriendsCollectionViewController: UICollectionViewController,UIView
         if traitCollection.forceTouchCapability == .Available{
             registerForPreviewingWithDelegate(self, sourceView: view)
         }
-        FIRAuth.auth()?.addAuthStateDidChangeListener({(auth,user) in
-            if user == nil {
-                let userRef = self.ref.child("users")
-                if let uid = Utilities.user?.uid{
-                    let userId =  userRef.child(uid)
-                    userId.removeAllObservers()
-                }
-                Utilities.user = nil
-                
-                self.dismissViewControllerAnimated(true, completion: {})
-            }
-        })
         collectionView?.backgroundColor = UIColor.whiteColor()
 
         getFriendsFacebook("me/friends")
@@ -120,7 +108,7 @@ class FacebookFriendsCollectionViewController: UICollectionViewController,UIView
             
             fbRequest.startWithCompletionHandler({ (connection : FBSDKGraphRequestConnection!, result : AnyObject!, error : NSError!) -> Void in
                 if error != nil {
-                    self.presentViewController(Utilities.alertMessage("Error", message: "There was an error")
+                    self.presentViewController(Utilities.alertMessage("Error", message: "There was an error.\n Please Log out and make the log in with the facebook account again")
                         , animated: false, completion:nil)
                 }else{
                     let data = result.objectForKey("data") as! NSArray
