@@ -28,26 +28,27 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         //self.tableView.separatorStyle = .None
         //self.tableView.estimatedRowHeight = 150
         self.tableView.rowHeight = 150
-        
+
     
-        if (Utilities.provider == nil || Utilities.user == nil) {
-            let userRef = self.ref.child("users")
-            if let uid = Utilities.user?.uid{
-                let userId =  userRef.child(uid)
-                userId.removeAllObservers()
-            }
-            Utilities.user = nil
-            Utilities.linking = false
-            Utilities.provider = nil
-            try! FIRAuth.auth()?.signOut()
-            self.dismissViewControllerAnimated(true, completion: {})
-        }
         NSNotificationCenter.defaultCenter().addObserver(self,selector: "switchTabRoutes", name: "switchTabRoutes", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "switchTabProfile", name: "switchTabProfile", object: nil)
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        if Utilities.user == nil || Utilities.provider == nil {
+            let userRef = self.ref.child("user")
+            userRef.removeAllObservers()
+            let userIdRef = userRef.child((FIRAuth.auth()?.currentUser?.uid)!)
+            userIdRef.removeAllObservers()
+            self.ref.removeAllObservers()
+            try! FIRAuth.auth()?.signOut()
+            Utilities.user = nil
+            Utilities.linking = false
+            let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("leftMenu")
+            viewController.dismissViewControllerAnimated(true, completion: {});
+            self.dismissViewControllerAnimated(true, completion: {})
+        }
         navigationController?.setNavigationBarHidden(false, animated: true)
         routes = []
         tableView.reloadData()
@@ -66,11 +67,13 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         super.viewWillDisappear(animated)
         let routesRef = ref.child("routes")
         let userByRoutes = ref.child("userByRoutes")
-        let userByRoutesID = userByRoutes.child(FIRAuth.auth()!.currentUser!.uid)
-        userByRoutesID.removeAllObservers()
-        for i in routes{
-            let routeID = routesRef.child(i.id)
-            routeID.removeAllObservers()
+        if let user = Utilities.user?.uid {
+            let userByRoutesID = userByRoutes.child(user)
+            userByRoutesID.removeAllObservers()
+            for i in routes{
+                let routeID = routesRef.child(i.id)
+                routeID.removeAllObservers()
+            }
         }
     }
    
@@ -98,7 +101,7 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         let route = routes[indexPath.row]
         let cell = tableView.dequeueReusableCellWithIdentifier("routeCell") as! RouteTableViewCell
         cell.nameText.text = route.name
-        cell.descriptionText.text =  route.description
+        cell.descriptionText.text =  route.descriptionRoute
         let checks = getChecks(route.annotations)
         cell.informationText.text = "This route has " + String(checks) + " checkpoints"
         cell.cardView.layer.masksToBounds = false
@@ -149,7 +152,7 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
                                 a.id =  newRoute.id
                                 a.annotations = newRoute.annotations
                                 a.name = newRoute.name
-                                a.description = newRoute.description
+                                a.descriptionRoute = newRoute.descriptionRoute
                             }
                         }
                     }

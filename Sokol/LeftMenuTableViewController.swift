@@ -151,16 +151,15 @@ class LeftMenuTableViewController: UITableViewController {
         switch indexPath.row {
         case 0:
             NSNotificationCenter.defaultCenter().postNotificationName("switchTabRoutes", object: nil)
-            NSNotificationCenter.defaultCenter().postNotificationName("closeMenuViaNotification", object: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName("closeMenuViaNotification", object: nil)
         case 1:
             NSNotificationCenter.defaultCenter().postNotificationName("switchTabProfile", object: nil)
-            NSNotificationCenter.defaultCenter().postNotificationName("closeMenuViaNotification", object: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName("closeMenuViaNotification", object: nil)
         case 2:
             let userRef = self.ref.child("user")
             let userIdRef = userRef.child((FIRAuth.auth()?.currentUser?.uid)!)
             userIdRef.removeAllObservers()
             self.ref.removeAllObservers()
-         
             
             try! FIRAuth.auth()?.signOut()
             Utilities.user = nil
@@ -170,7 +169,6 @@ class LeftMenuTableViewController: UITableViewController {
             let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("leftMenu")
             viewController.dismissViewControllerAnimated(true, completion: {});
             self.dismissViewControllerAnimated(true, completion: {})
-            
         default:
             print("")
         }

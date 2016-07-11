@@ -35,24 +35,24 @@ class ViewController: UIViewController,GIDSignInUIDelegate{
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         Utilities.linking =  false
-        //try! FIRAuth.auth()?.signOut()
         FIRAuth.auth()?.addAuthStateDidChangeListener{ auth, user in
+            let appDelegate  = UIApplication.sharedApplication().delegate as! AppDelegate
+            let viewController = appDelegate.window!.rootViewController as? ContainerViewController
+            Utilities.user =  user
             if let user = user{
                 //try! FIRAuth.auth()?.signOut()
-                let appDelegate  = UIApplication.sharedApplication().delegate as! AppDelegate
-                let viewController = appDelegate.window!.rootViewController as? ContainerViewController
-                Utilities.user =  user
                 if viewController == nil {
                     let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
                     if Utilities.provider == nil {
                         Utilities.provider =  FIRAuth.auth()?.currentUser?.providerData[0].providerID
-                        
                     }
-                    
                     self.presentViewController(viewController, animated: true, completion: nil)
                 }
                 
             }else{
+                if viewController != nil {
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                }
                 //let facebookLogin = FBSDKLoginManager()
                 //facebookLogin.logOut()
                 if let userId = Twitter.sharedInstance().sessionStore.session()?.userID {
@@ -196,9 +196,8 @@ class ViewController: UIViewController,GIDSignInUIDelegate{
                             })
                             //userIdRef.removeAllObservers()
                             Utilities.provider = "facebook.com"
-                            if Utilities.user == nil {
-                                Utilities.user = user
-                            }
+                            Utilities.user = user
+                            
                             //self.presentViewController(viewController, animated: true, completion: nil)
                             
                         }

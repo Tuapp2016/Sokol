@@ -20,17 +20,7 @@ class TwitterThoughtsTableViewController: UITableViewController,TWTRTweetViewDel
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        FIRAuth.auth()?.addAuthStateDidChangeListener({(auth,user) in
-            if user == nil {
-                let userRef = self.ref.child("users")
-                if let uid = Utilities.user?.uid{
-                    let userId =  userRef.child(uid)
-                    userId.removeAllObservers()
-                }
-                Utilities.user = nil
-                self.dismissViewControllerAnimated(true, completion: {})
-            }
-        })
+        
         self.refreshControl?.addTarget(self, action: "handleRefresh", forControlEvents: UIControlEvents.ValueChanged)
         
         tableView.registerClass(TWTRTweetTableViewCell.self, forCellReuseIdentifier: tweetTableReuseIdentifier)
@@ -51,7 +41,7 @@ class TwitterThoughtsTableViewController: UITableViewController,TWTRTweetViewDel
         let request = client.URLRequestWithMethod("GET", URL: "https://api.twitter.com/1.1/search/tweets.json?q=%23SokolApp", parameters: nil, error: nil)
         client.sendTwitterRequest(request, completion: { (response, data, connectionError) in
             if connectionError != nil {
-                self.presentViewController(Utilities.alertMessage("Error", message: "There was an error with the conncection"), animated: true, completion: nil)
+                self.presentViewController(Utilities.alertMessage("Error", message: "There was an error.\n Please Log out and make the log in with the twitter account again"), animated: true, completion: nil)
             }else{
                 do {
                     let json = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as? NSDictionary

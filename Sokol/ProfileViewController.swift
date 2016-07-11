@@ -696,6 +696,7 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
     
     @IBAction func logOut(sender: AnyObject) {
         let userRef = self.ref.child("user")
+        userRef.removeAllObservers()
         let userIdRef = userRef.child((FIRAuth.auth()?.currentUser?.uid)!)
         userIdRef.removeAllObservers()
         self.ref.removeAllObservers()

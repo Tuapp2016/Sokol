@@ -202,7 +202,7 @@ class SignUpTableViewController: UITableViewController, UIImagePickerControllerD
                         Utilities.sokolLinking = true
                         self.dismissViewControllerAnimated(true, completion: {});
                     }else{
-                        self.presentViewController(Utilities.alertMessage("error", message:"There was an error"), animated: false, completion: nil)
+                        self.presentViewController(Utilities.alertMessage("error", message:error!.description), animated: false, completion: nil)
                     }
                 }
             }

@@ -13,6 +13,7 @@ class DetailRouteTableViewController: UITableViewController {
     
     var route:Route?
     let ref  = FIRDatabase.database().reference()
+    var routeTemp:Route?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +29,11 @@ class DetailRouteTableViewController: UITableViewController {
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationItem.hidesBackButton = false
+        if let route = route {
+            routeTemp = route.copy() as! Route
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -82,7 +87,7 @@ class DetailRouteTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerCell = tableView.dequeueReusableCellWithIdentifier("headerCell") as! HeaderTableViewCell
         headerCell.nameText.text =  route!.name
-        headerCell.descriptionText.text = route!.description
+        headerCell.descriptionText.text = route!.descriptionRoute
         
         return headerCell
         
@@ -207,7 +212,18 @@ class DetailRouteTableViewController: UITableViewController {
             }
             let destinationController = segue.destinationViewController as! RouteModifierViewController
             destinationController.route = route
+            destinationController.routeTemp = routeTemp
         }
+    }
+    @IBAction func close(segue:UIStoryboardSegue) {
+        if let viewController = segue.sourceViewController as? RouteModifierViewController {
+            if let route = viewController.routeTemp {
+                self.routeTemp = route.copy() as! Route
+                self.route = route.copy() as! Route
+                tableView.reloadData()
+            }
+        }
+        
     }
     func snapshot(cell:UIView) -> UIView {
         UIGraphicsBeginImageContextWithOptions(cell.bounds.size, false, 0.0)

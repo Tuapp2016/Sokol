@@ -271,11 +271,21 @@
                                     <action selector="confirmNewRoute:" destination="Lrw-2P-DY5" eventType="touchUpInside" id="wGp-zj-LdQ"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Y0-Gv-irN">
+                                <rect key="frame" x="238" y="90" width="62" height="30"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <segue destination="Hjg-HY-aYD" kind="unwind" identifier="closeConfirmRoute" unwindAction="close:" id="Jhe-WF-ggU"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="P6D-HD-UBl" firstAttribute="top" secondItem="pih-Sf-M6q" secondAttribute="bottom" id="6CY-Gl-RVc"/>
+                            <constraint firstItem="6Y0-Gv-irN" firstAttribute="top" secondItem="0Lp-lU-u3A" secondAttribute="bottom" constant="15" id="9ps-JA-vyJ"/>
                             <constraint firstAttribute="trailingMargin" secondItem="pih-Sf-M6q" secondAttribute="trailing" id="Jdw-kQ-31N"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="6Y0-Gv-irN" secondAttribute="trailing" constant="20" id="bKQ-Av-ymB"/>
                             <constraint firstItem="0Lp-lU-u3A" firstAttribute="trailing" secondItem="h83-Dv-tjT" secondAttribute="trailingMargin" constant="-20" id="f0E-OW-6Bv"/>
                             <constraint firstItem="0Lp-lU-u3A" firstAttribute="top" secondItem="JuK-bO-2aX" secondAttribute="bottom" constant="40" id="uzQ-cO-q0f"/>
                             <constraint firstItem="pih-Sf-M6q" firstAttribute="leading" secondItem="h83-Dv-tjT" secondAttribute="leadingMargin" id="vRW-JX-L1X"/>
@@ -283,10 +293,12 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="confirm" destination="0Lp-lU-u3A" id="HoL-0k-Ayu"/>
                         <outlet property="mapView" destination="pih-Sf-M6q" id="JDB-Oh-SE9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7g7-Ds-KfV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="Hjg-HY-aYD" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="4364" y="-855"/>
         </scene>

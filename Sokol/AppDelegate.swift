@@ -17,9 +17,18 @@ import TwitterKit
 class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
     
     var window: UIWindow?
+    
     override init() {
         // Firebase Init
         FIRApp.configure()
+        FIRDatabase.database().persistenceEnabled = true
+        let ref = FIRDatabase.database().reference()
+        let userRef = ref.child("users")
+        userRef.keepSynced(true)
+        let routesRef = ref.child("routes")
+        routesRef.keepSynced(true)
+        let userByRoutesRef = ref.child("userByRoutes")
+        userByRoutesRef.keepSynced(true)
     }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -104,10 +113,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
                 }else{
                     let ref = FIRDatabase.database().reference()
                 //ref.removeAllObservers()
-                    if Utilities.user == nil {
-                        Utilities.user = user
-                        
-                    }
+                    
+                    Utilities.user = user
+                
                     Utilities.provider = "google.com"
 
                     //let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
