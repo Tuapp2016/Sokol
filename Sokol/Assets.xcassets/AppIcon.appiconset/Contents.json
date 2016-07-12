@@ -3,79 +3,79 @@
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "sokol_logo.png",
+      "filename" : "sokol_logo-2.png",
       "scale" : "2x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "sokol_logo-2.png",
+      "filename" : "sokol_logo-1.png",
       "scale" : "3x"
-    },
-    {
-      "size" : "40x40",
-      "idiom" : "iphone",
-      "filename" : "sokol_logo-3.png",
-      "scale" : "2x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
       "filename" : "sokol_logo-4.png",
-      "scale" : "3x"
+      "scale" : "2x"
     },
     {
-      "size" : "60x60",
+      "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "sokol_logo-5.png",
-      "scale" : "2x"
+      "filename" : "sokol_logo-10.png",
+      "scale" : "3x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
       "filename" : "sokol_logo-6.png",
+      "scale" : "2x"
+    },
+    {
+      "size" : "60x60",
+      "idiom" : "iphone",
+      "filename" : "sokol_logo-12.png",
       "scale" : "3x"
     },
     {
       "size" : "29x29",
       "idiom" : "ipad",
-      "filename" : "sokol_logo-7.png",
+      "filename" : "sokol_logo.png",
       "scale" : "1x"
     },
     {
       "size" : "29x29",
       "idiom" : "ipad",
-      "filename" : "sokol_logo-1.png",
+      "filename" : "sokol_logo-3.png",
       "scale" : "2x"
     },
     {
       "size" : "40x40",
+      "idiom" : "ipad",
+      "filename" : "sokol_logo-5.png",
+      "scale" : "1x"
+    },
+    {
+      "size" : "40x40",
+      "idiom" : "ipad",
+      "filename" : "sokol_logo-7.png",
+      "scale" : "2x"
+    },
+    {
+      "size" : "76x76",
       "idiom" : "ipad",
       "filename" : "sokol_logo-8.png",
       "scale" : "1x"
     },
     {
-      "size" : "40x40",
+      "size" : "76x76",
       "idiom" : "ipad",
       "filename" : "sokol_logo-9.png",
       "scale" : "2x"
     },
     {
-      "size" : "76x76",
-      "idiom" : "ipad",
-      "filename" : "sokol_logo-10.png",
-      "scale" : "1x"
-    },
-    {
-      "size" : "76x76",
-      "idiom" : "ipad",
-      "filename" : "sokol_logo-11.png",
-      "scale" : "2x"
-    },
-    {
       "size" : "83.5x83.5",
       "idiom" : "ipad",
-      "filename" : "sokol_logo-12.png",
+      "filename" : "sokol_logo-11.png",
       "scale" : "2x"
     }
   ],

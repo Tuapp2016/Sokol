@@ -29,11 +29,11 @@
                                 </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="sokol_logo" translatesAutoresizingMaskIntoConstraints="NO" id="ERA-Tb-hsC">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="sokol" translatesAutoresizingMaskIntoConstraints="NO" id="ERA-Tb-hsC">
                                 <rect key="frame" x="192" y="183" width="240" height="128"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="175" id="Zgi-Cb-tOn"/>
-                                    <constraint firstAttribute="height" constant="175" id="fge-sl-Q92"/>
+                                    <constraint firstAttribute="width" constant="300" id="Zgi-Cb-tOn"/>
+                                    <constraint firstAttribute="height" constant="300" id="fge-sl-Q92"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bNi-YC-AZ7">
@@ -69,6 +69,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="sokol_logo" width="48" height="48"/>
+        <image name="sokol" width="250" height="250"/>
     </resources>
 </document>
