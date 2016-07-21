@@ -45,7 +45,6 @@ class TwitterThoughtsTableViewController: UITableViewController,TWTRTweetViewDel
             }else{
                 do {
                     let json = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as? NSDictionary
-                    
                     let tweets = json!["statuses"] as! [AnyObject]
                     self.tweetsID = []
                     for t in tweets {

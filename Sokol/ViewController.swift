@@ -37,10 +37,9 @@ class ViewController: UIViewController,GIDSignInUIDelegate{
         Utilities.linking =  false
         FIRAuth.auth()?.addAuthStateDidChangeListener{ auth, user in
             let appDelegate  = UIApplication.sharedApplication().delegate as! AppDelegate
-            let viewController = appDelegate.window!.rootViewController as? ContainerViewController
+            let viewController = appDelegate.window!.rootViewController as? HomeViewController
             Utilities.user =  user
             if let user = user{
-                //try! FIRAuth.auth()?.signOut()
                 if viewController == nil {
                     let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
                     if Utilities.provider == nil {
@@ -50,11 +49,6 @@ class ViewController: UIViewController,GIDSignInUIDelegate{
                 }
                 
             }else{
-                if viewController != nil {
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                }
-                //let facebookLogin = FBSDKLoginManager()
-                //facebookLogin.logOut()
                 if let userId = Twitter.sharedInstance().sessionStore.session()?.userID {
                     Twitter.sharedInstance().sessionStore.logOutUserID(userId)
                 }

@@ -29,6 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
         routesRef.keepSynced(true)
         let userByRoutesRef = ref.child("userByRoutes")
         userByRoutesRef.keepSynced(true)
+        let followRoutes = ref.child("followRoutesByUser")
+        followRoutes.keepSynced(true)
     }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {

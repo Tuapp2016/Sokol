@@ -28,14 +28,22 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         //self.tableView.separatorStyle = .None
         //self.tableView.estimatedRowHeight = 150
         self.tableView.rowHeight = 150
-
     
         NSNotificationCenter.defaultCenter().addObserver(self,selector: "switchTabRoutes", name: "switchTabRoutes", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "switchTabProfile", name: "switchTabProfile", object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "switchTabFollow", name: "switchTabFollow", object: nil)
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        if let user = FIRAuth.auth()?.currentUser {
+            // User is signed in.
+        } else {
+            let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
+            self.presentViewController(viewController, animated: true, completion: nil)
+            
+        }
         if Utilities.user == nil || Utilities.provider == nil {
             let userRef = self.ref.child("user")
             userRef.removeAllObservers()
@@ -60,6 +68,11 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
                 self.routesId = routesValues["routes"] as! [String]
                 self.getValues(self.routesId)
                 
+            }else{
+                self.routes = []
+                NSOperationQueue.mainQueue().addOperationWithBlock({() in
+                    self.tableView.reloadData()
+                })
             }
         })
     }
@@ -81,11 +94,14 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     func switchTabProfile(){
-        tabBarController?.selectedIndex = 1
+        tabBarController?.selectedIndex = 2
         
     }
     func switchTabRoutes() {
         tabBarController?.selectedIndex = 0
+    }
+    func switchTabFollow(){
+        tabBarController?.selectedIndex = 1
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -117,7 +133,7 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     func getChecks(annotations:[SokolAnnotation]) -> Int{
         var i = 0
         for a in annotations {
-            if a .checkPoint {
+            if a.checkPoint {
                 i += 1
             }
         }
@@ -146,34 +162,47 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
                     let newRoute =  Route(id: a, name: routeValues["name"] as! String, description: routeValues["description"] as! String, annotations: annotations )
                     if self.isNewRoute(newRoute){
                         self.routes.append(newRoute)
-                    }else{
-                        for a in self.routes {
-                            if a.id == newRoute.id {
-                                a.id =  newRoute.id
-                                a.annotations = newRoute.annotations
-                                a.name = newRoute.name
-                                a.descriptionRoute = newRoute.descriptionRoute
-                            }
-                        }
-                    }
-                    NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                        self.tableView.reloadData()
-                    })
-                }else{
-                    let id = routeID.key
-                    routeID.removeAllObservers()
-                    var i = 0
-                    for a in self.routes{
-                        if  a.id ==  id {
-                            break
-                        }
-                        i += 1
-                    }
-                    if self.routes.count > 0 {
-                        self.routes.removeAtIndex(i)
+                        
                         NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                             self.tableView.reloadData()
                         })
+                    }else{
+                        let i = self.checkIdIndex(newRoute.id)
+                        self.routes.removeAtIndex(i)
+                        self.routes.insert(newRoute, atIndex: i)
+                        let indexPath = NSIndexPath(forRow: (i), inSection: 0)
+                        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                            self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Right)
+                        })
+                        
+                    }
+                    
+                    
+                    
+                }else{
+                    let id = routeID.key
+                    routeID.removeAllObservers()
+                    let i = self.checkIdIndex(id)
+                    if self.routes.count > 0 {
+                        self.routes.removeAtIndex(i)
+                        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                            let indexPath = NSIndexPath(forRow: i, inSection: 0)
+                            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Left)
+                        })
+                    }
+                    let userByRoute = self.ref.child("userByRoutes")
+                    if let user = FIRAuth.auth()?.currentUser {
+                        let userByRouteId = userByRoute.child(user.uid)
+                        if self.routes.count == 0 {
+                            
+                            userByRouteId.removeValue()
+                        }else{
+                            var ids = [String]()
+                            for a in self.routes {
+                                ids.append(a.id)
+                            }
+                            userByRouteId.setValue(["routes":ids])
+                        }
                     }
                 }
             })
@@ -188,6 +217,17 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         }
         return true
     }
+    func checkIdIndex(id:String) -> Int {
+        var i = 0
+        for a in routes{
+            if a.id == id{
+                return i
+            }
+            i += 1
+            
+        }
+        return -1
+    }
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let shareActionButton = UITableViewRowAction(style: .Default, title: "Share", handler: {(action,indexPath) in
             let route = self.routes[indexPath.row]
@@ -197,22 +237,26 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         })
         let deleteActionButton = UITableViewRowAction(style: .Default, title: "  Delete          ", handler: {(action,indexPath) in
             let route = self.routes.removeAtIndex(indexPath.row)
-            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Left)
             let routes = self.ref.child("routes")
             let routeId = routes.child(route.id)
             routeId.removeAllObservers()
             routeId.removeValue()
             let userByRoute = self.ref.child("userByRoutes")
-            let userByRouteId = userByRoute.child(FIRAuth.auth()!.currentUser!.uid)
-            if self.routes.count == 0 {
-                userByRouteId.removeValue()
-            }else{
-                var ids = [String]()
-                for a in self.routes {
-                    ids.append(a.id)
+            if let user = FIRAuth.auth()?.currentUser {
+                let userByRouteId = userByRoute.child(user.uid)
+                if self.routes.count == 0 {
+                
+                    userByRouteId.removeValue()
+                }else{
+                    var ids = [String]()
+                    for a in self.routes {
+                        ids.append(a.id)
+                    }
+                    userByRouteId.setValue(["routes":ids])
                 }
-                userByRouteId.setValue(["routes":ids])
             }
+            
         })
         
         shareActionButton.backgroundColor = UIColor(red: 28.0/255.0, green: 165.0/255.0, blue: 253.0/255.0, alpha: 1.0)
