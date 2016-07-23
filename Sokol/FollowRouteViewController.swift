@@ -1,0 +1,319 @@
+//
+//  FollowRouteViewController.swift
+//  Sokol
+//
+//  Created by Andres Rene Gutierrez on 21/07/2016.
+//  Copyright © 2016 Andres Rene Gutierrez. All rights reserved.
+//
+
+import UIKit
+import MapKit
+import Firebase
+import Polyline
+import CoreLocation
+
+class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelegate {
+    var route:Route?
+    var is3D = false
+    var location:CLLocation?
+    var checkCount = 0
+    @IBOutlet weak var mapView: MKMapView!
+    
+    @IBOutlet weak var cancel: UIButton!
+    var locationManager = CLLocationManager()
+    
+    @IBOutlet weak var start: UIButton!
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        mapView.delegate = self
+        mapView.showsScale = true
+        mapView.showsCompass = false
+        mapView.mapType = .Standard
+        mapView.showsBuildings = true
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate =  self
+            locationManager.requestAlwaysAuthorization()
+            //locationManager.requestWhenInUseAuthorization()
+            locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+            locationManager.distanceFilter = kCLDistanceFilterNone
+            locationManager.activityType = .AutomotiveNavigation
+            locationManager.startUpdatingLocation()
+        }
+
+        // Do any additional setup after loading the view.
+    }
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        
+    }
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+        checkCount = getCheckPoints()
+        
+        mapView.showAnnotations(route!.annotations,animated: true)
+        calculaterRoute()
+        
+    }
+    func getCheckPoints() -> Int {
+        var i = 0
+        for a in route!.annotations {
+            if a.checkPoint{
+                i += 1
+            }
+        }
+        return i
+    }
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+        if annotation.isKindOfClass(MKUserLocation) {
+            return nil
+        }
+        var annotationView:MKPinAnnotationView? = mapView.dequeueReusableAnnotationViewWithIdentifier("myPin") as? MKPinAnnotationView
+        if annotationView == nil {
+            annotationView =  MKPinAnnotationView(annotation: annotation, reuseIdentifier: "myPin")
+            annotationView?.canShowCallout = true
+        }
+        if let a = getAnnotation(annotation) {
+            if a.checkPoint {
+                annotationView?.pinTintColor = UIColor.greenColor()
+            }else{
+                annotationView?.pinTintColor = UIColor.redColor()
+            }
+        }
+    
+        return annotationView
+    }
+    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
+        if overlay is MKCircle {
+            let circleRenderer = MKCircleRenderer(overlay: overlay)
+            circleRenderer.lineWidth = 2.0
+            circleRenderer.strokeColor = UIColor.purpleColor()
+            circleRenderer.fillColor = UIColor.purpleColor().colorWithAlphaComponent(0.4)
+            return circleRenderer
+        }else{
+            let render = MKPolylineRenderer(overlay: overlay)
+            render.lineWidth = 5.0
+            render.strokeColor = UIColor.purpleColor()
+            render.alpha = 0.5
+            return render
+        }
+    }
+    func drawRoute(jsonResult:NSDictionary){
+        var coordinates = [CLLocationCoordinate2D]()
+        let routes = jsonResult["routes"] as! [AnyObject]
+        let route = routes[0] as! NSDictionary
+        let overview = route["overview_polyline"] as! NSDictionary
+        let points = overview["points"] as! String
+        let polylines = Polyline(encodedPolyline: points)
+        coordinates = polylines.coordinates!
+        let polyline = MKPolyline(coordinates: &coordinates, count: coordinates.count)
+        mapView.addOverlay(polyline)
+
+    }
+    func getAnnotation(annotation:MKAnnotation) -> SokolAnnotation? {
+        for a in route!.annotations {
+            if  a.coordinate.longitude == annotation.coordinate.longitude && a.coordinate.latitude == annotation.coordinate.latitude {
+                return a
+            }
+        }
+        return nil
+    }
+    func mapView(mapView: MKMapView, didAddAnnotationViews views: [MKAnnotationView]) {
+        let annotationView = views[0]
+        let endFrame = annotationView.frame
+        annotationView.frame = CGRectOffset(endFrame, 0, -600)
+        UIView.animateWithDuration(0.3, animations: { () in
+                annotationView.frame = endFrame
+        })
+        
+    }
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        switch status {
+        case .AuthorizedAlways:
+            locationManager.startUpdatingLocation()
+            mapView.showsUserLocation =  true
+        case .AuthorizedWhenInUse:
+            locationManager.startUpdatingLocation()
+            mapView.showsUserLocation =  true
+        default:
+            print("The user doesn't allow to know where he is")
+        }
+    }
+    func regionWithAnnotation(annotation:SokolAnnotation) -> CLCircularRegion{
+        let region = CLCircularRegion(center: annotation.coordinate, radius: 200.0, identifier: annotation.id!)
+        region.notifyOnEntry = true
+        region.notifyOnExit = false
+        return region
+    }
+    func startMonitoringAnnotation(annotation:SokolAnnotation){
+        if !CLLocationManager.isMonitoringAvailableForClass(CLCircularRegion){
+            self.presentViewController(Utilities.alertMessage("Error", message: "Geofencing is not supported on this device!"), animated: true, completion: nil)
+        }
+        var isMonitoring = false
+        let region = regionWithAnnotation(annotation)
+        for r in locationManager.monitoredRegions {
+            if let reg = r  as? CLCircularRegion{
+                if reg.identifier == region.identifier {
+                    isMonitoring = true
+                }
+            }
+        }
+        if !isMonitoring{
+            locationManager.startMonitoringForRegion(region)
+            addRadiusOverlayForAnnotation(annotation)
+        }
+    }
+    func stopMonitoringAnnotations(){
+        for region in locationManager.monitoredRegions{
+            if let circularRegion = region as? CLCircularRegion{
+                locationManager.stopMonitoringForRegion(circularRegion)
+            }
+        }
+        removeOverlayForAnnotations()
+    }
+    func addRadiusOverlayForAnnotation(annotation:SokolAnnotation){
+        mapView.addOverlay(MKCircle(centerCoordinate: annotation.coordinate, radius: 50.0))
+    }
+
+    func removeOverlayForAnnotations(){
+        for overlay in mapView.overlays{
+            if let o = overlay as? MKCircle{
+                mapView.removeOverlay(o)
+            }
+        }
+    }
+    func getNearestAnnotations()-> [SokolAnnotation]{
+        var annotations = [SokolAnnotation]()
+        for a in route!.annotations {
+            if a.checkPoint {
+                annotations.append(a)
+            }
+        }
+        annotations.sortInPlace{(a:SokolAnnotation,b:SokolAnnotation) -> Bool in
+            let R = 6371e3
+            let phiA = a.coordinate.latitude.degreesToRadians
+            let phiB = a.coordinate.latitude.degreesToRadians
+            let phiUser = location!.coordinate.latitude.degreesToRadians
+            let deltaPhiA = (location!.coordinate.latitude - a.coordinate.latitude).degreesToRadians
+            let deltaPhiB = (location!.coordinate.latitude - b.coordinate.latitude).degreesToRadians
+            let deltaLamdaA = (location!.coordinate.longitude - a.coordinate.longitude).degreesToRadians
+            let deltaLamdaB = (location!.coordinate.longitude - b.coordinate.longitude).degreesToRadians
+            
+            var aA = sin(deltaPhiA/2.0) * sin(deltaPhiA/2.0 ) + cos(phiA) * cos(phiUser)
+            aA += sin(deltaLamdaA/2.0) * sin(deltaLamdaA/2.0)
+
+            let cA = 2 * atan2(sqrt(aA), sqrt(1 - aA))
+            let dA = R * cA
+            
+            var aB = sin(deltaPhiB/2.0) * sin(deltaPhiB/2.0 ) + cos(phiB) * cos(phiUser)
+            aB += sin(deltaLamdaB/2.0) * sin(deltaLamdaB/2.0)
+            let cB = 2 * atan2(sqrt(aB), sqrt(1 - aB))
+            let dB = R * cB
+            return dA < dB
+        }
+        let ann = Array(annotations[0..<20])
+        return ann
+    }
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        location = locations.last
+        if is3D {
+            if checkCount < 21 {
+                for a in route!.annotations {
+                    if a.checkPoint {
+                        startMonitoringAnnotation(a)
+                    }
+                }
+            }else{//We need to find the nearest annotations to the user
+                stopMonitoringAnnotations()
+                let annotations = getNearestAnnotations()
+                for a in annotations{
+                    startMonitoringAnnotation(a)
+                }
+                
+            }
+            let center = CLLocationCoordinate2D(latitude: location!.coordinate.latitude, longitude: location!.coordinate.longitude)
+            let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
+            self.mapView.setRegion(region, animated: true)
+            let altitude:CLLocationDistance = 400.0
+            let heading:CLLocationDirection = 0.0
+            let camera = MKMapCamera(lookingAtCenterCoordinate: center, fromDistance: altitude, pitch: 80.0, heading: heading)
+            mapView.setCamera(camera, animated: true)
+        }
+    }
+    func calculaterRoute(){
+        mapView.removeOverlays(mapView.overlays)
+        var i = 0
+        let annotations = route!.annotations
+        while  i < (annotations.count - 1) {
+            let origin = String(annotations[i].coordinate.latitude) + "," + String(annotations[i].coordinate.longitude)
+            let end = String(annotations[i+1].coordinate.latitude) + "," + String(annotations[i+1].coordinate.longitude)
+            let urlString = "https://maps.googleapis.com/maps/api/directions/json?origin="+origin+"&destination="+end+"&key="+Constants.DIRECTION_KEY
+            let request = NSURLRequest(URL: NSURL(string:urlString)!)
+            let urlSession = NSURLSession.sharedSession()
+            let task = urlSession.dataTaskWithRequest(request,completionHandler: {(data,response,error)-> Void in
+                if let error = error {
+                    print(error)
+                }
+                if let data = data {
+                    do{
+                        let jsonResult = try NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers) as! NSDictionary
+                        let status = jsonResult["status"] as! String
+                        if !(status == "ZERO_RESULTS"){
+                            NSOperationQueue.mainQueue().addOperationWithBlock({() in
+                                self.drawRoute(jsonResult)
+                            })
+                        }else{
+                            self.presentViewController(Utilities.alertMessage("Error", message: "We can't find any route.\n"), animated: true, completion: nil)
+                        }
+                    }catch {
+                        print(error)
+                    }
+                }
+            })
+            task.resume()
+            i += 1
+            
+        }
+    }
+    func locationManager(manager: CLLocationManager, monitoringDidFailForRegion region: CLRegion?, withError error: NSError) {
+        self.presentViewController(Utilities.alertMessage("Error", message: "Monitoring failed for region "), animated: true, completion: nil)
+    }
+    
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+        self.presentViewController(Utilities.alertMessage("Error", message: "Location Manager failed"), animated: true, completion: nil)
+       
+    }
+    
+
+    @IBAction func startRoute(sender: AnyObject) {
+        start.removeFromSuperview()
+        cancel.setTitle("Finish route", forState: .Normal)
+        self.presentViewController(Utilities.alertMessage("Message", message: "We are going to track your position and inform to the responsible of the route"), animated: true, completion: nil)
+        is3D = true
+        if location != nil {
+            let altitude:CLLocationDistance = 400.0
+            let heading:CLLocationDirection = 0.0
+            let camera = MKMapCamera(lookingAtCenterCoordinate: CLLocationCoordinate2D(latitude: location!.coordinate.latitude,longitude: location!.coordinate.longitude), fromDistance: altitude, pitch: 80.0, heading: heading)
+            mapView.setCamera(camera, animated: true)
+        }
+        
+    }
+    @IBAction func cancelRoute(sender: AnyObject) {
+        is3D = false
+        stopMonitoringAnnotations()
+        locationManager.stopUpdatingLocation()
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    
+
+}
+extension Double{
+    var degreesToRadians:Double {return Double(self) * M_PI / 180}
+}

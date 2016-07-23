@@ -12,11 +12,15 @@ import FBSDKLoginKit
 import FBSDKCoreKit
 import Fabric
 import TwitterKit
+import CoreLocation
+
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocationManagerDelegate {
     
     var window: UIWindow?
+    let locationMannager = CLLocationManager()
+    
     
     override init() {
         // Firebase Init
@@ -40,7 +44,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
             UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor(), NSFontAttributeName:barFont]
             
         }
-        
         UITabBar.appearance().tintColor = UIColor(red: 22.0/255.0, green: 109.0/255.0, blue: 186.0/255.0, alpha: 1.0)
         UITabBar.appearance().barTintColor = UIColor.blackColor()
         //FIRApp.configure()
@@ -50,6 +53,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
         GIDSignIn.sharedInstance().delegate = self
         Twitter.sharedInstance().startWithConsumerKey(Constants.TWITTER_KEY, consumerSecret: Constants.TWITTER_SECRET_KEY)
         Fabric.with([Twitter.self])
+        locationMannager.delegate = self
+        locationMannager.requestAlwaysAuthorization()
+        let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge,.Sound], categories: nil)
+        UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+        UIApplication.sharedApplication().cancelAllLocalNotifications()
+        
         
         return FBSDKApplicationDelegate.sharedInstance().application(application,didFinishLaunchingWithOptions: launchOptions)
     }
@@ -147,6 +156,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate {
             })
         }
     }
+    func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        let notification = UILocalNotification()
+        notification.alertBody = "You are coressed for a checkpoint"
+        notification.soundName = "Default"
+        UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+        
+    
+    }
+    func locationManager(manager: CLLocationManager, didExitRegion region: CLRegion) {
+        
+    }
+    
 
 
 

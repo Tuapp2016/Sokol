@@ -41,7 +41,7 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.requestAlwaysAuthorization()
-            locationManager.requestWhenInUseAuthorization()
+            //locationManager.requestWhenInUseAuthorization()
             locationManager.startUpdatingLocation()
             
         }
@@ -122,7 +122,8 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
         if text == "" {
             text = "Whitout description"
         }
-        let annotation = SokolAnnotation(coordinate: tappedCoordinate, title:text , subtitle: "This point is the number " + String(annotations.count + 1) , checkPoint: checkPoint!.on)
+        let id = NSUUID().UUIDString
+        let annotation = SokolAnnotation(coordinate: tappedCoordinate, title:text , subtitle: "This point is the number " + String(annotations.count + 1) , checkPoint: checkPoint!.on,id:id)
         
         
         annotations.append(annotation)
@@ -214,7 +215,7 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
     func changePin(sender:UISwitch){
         let a = annotations.removeAtIndex(sender.tag)
         mapView.removeAnnotation(a)
-        let newAnnotation =  SokolAnnotation(coordinate: a.coordinate, title: a.title!, subtitle: a.subtitle!, checkPoint: sender.on)
+        let newAnnotation =  SokolAnnotation(coordinate: a.coordinate, title: a.title!, subtitle: a.subtitle!, checkPoint: sender.on,id:a.id!)
         annotations.insert(newAnnotation, atIndex: sender.tag)
         mapView.showAnnotations(annotations, animated: true)
         
@@ -372,12 +373,14 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
             var lngs:[String] = []
             var checks:[Bool] = []
             var pointNames:[String] = []
+            var ids:[String] = []
             
             for a in annotations {
                 lats.append(String(a.coordinate.latitude))
                 lngs.append(String(a.coordinate.longitude))
                 checks.append(a.checkPoint)
                 pointNames.append((a.title!))
+                ids.append(a.id!)
             }
             
             
@@ -387,6 +390,7 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
                 "longitudes":lngs,
                 "checkPoints":checks,
                 "pointNames":pointNames,
+                "ids":ids,
                 "userID":FIRAuth.auth()!.currentUser!.uid
             ]
         
@@ -419,6 +423,18 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
         
         let newLength = text.characters.count + string.characters.count - range.length
         return newLength <= 15
+    }
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        switch status {
+        case .AuthorizedAlways:
+            locationManager.startUpdatingLocation()
+            mapView.showsUserLocation =  true
+        case .AuthorizedWhenInUse:
+            locationManager.startUpdatingLocation()
+            mapView.showsUserLocation =  true
+        default:
+            print("The user doesn't allow to know where he is")
+        }
     }
     
 

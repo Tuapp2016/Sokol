@@ -47,6 +47,7 @@
 		B5CEF7FB1D0E32D800A776C2 /* SignUpTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CEF7FA1D0E32D800A776C2 /* SignUpTableViewController.swift */; };
 		B5E36C511D414B7600C70C29 /* Follow.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5E36C4F1D414B7600C70C29 /* Follow.storyboard */; };
 		B5E36C531D414CF200C70C29 /* FollowTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E36C521D414CF200C70C29 /* FollowTableViewController.swift */; };
+		B5E36C551D41BA9900C70C29 /* FollowRouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E36C541D41BA9900C70C29 /* FollowRouteViewController.swift */; };
 		B5EA15A31D21E854004CC7E8 /* LinkAccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EA15A21D21E854004CC7E8 /* LinkAccountsViewController.swift */; };
 		F2D11BDFF37F527B40E51A3C /* Pods_SokolTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A84B916E6F8FD527142610 /* Pods_SokolTests.framework */; };
 /* End PBXBuildFile section */
@@ -107,6 +108,7 @@
 		B5CEF7FA1D0E32D800A776C2 /* SignUpTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpTableViewController.swift; sourceTree = "<group>"; };
 		B5E36C501D414B7600C70C29 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Follow.storyboard; sourceTree = "<group>"; };
 		B5E36C521D414CF200C70C29 /* FollowTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowTableViewController.swift; sourceTree = "<group>"; };
+		B5E36C541D41BA9900C70C29 /* FollowRouteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowRouteViewController.swift; sourceTree = "<group>"; };
 		B5EA15A21D21E854004CC7E8 /* LinkAccountsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkAccountsViewController.swift; sourceTree = "<group>"; };
 		C4A84B916E6F8FD527142610 /* Pods_SokolTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SokolTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6F091C12DA211C4C70E4657 /* Pods-Sokol.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sokol.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Sokol/Pods-Sokol.debug.xcconfig"; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 				B5A3C6FB1D2B4730009DBF2E /* DetailRouteTableViewController.swift */,
 				B577CF2F1D332E70004FA827 /* RouteModifierViewController.swift */,
 				B5E36C521D414CF200C70C29 /* FollowTableViewController.swift */,
+				B5E36C541D41BA9900C70C29 /* FollowRouteViewController.swift */,
 			);
 			path = Sokol;
 			sourceTree = "<group>";
@@ -297,6 +300,9 @@
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 496CMHX85U;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.Maps.iOS = {
 								enabled = 1;
 							};
@@ -488,6 +494,7 @@
 				B52A675E1D10EC1C0062980F /* ProfileImageTableViewCell.swift in Sources */,
 				B5A3C6F01D297E90009DBF2E /* RouteCreatorViewController.swift in Sources */,
 				B58E4E3E1D13799800D5527A /* LeftMenuTableViewController.swift in Sources */,
+				B5E36C551D41BA9900C70C29 /* FollowRouteViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

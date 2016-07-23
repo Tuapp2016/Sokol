@@ -6,6 +6,60 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
+        <!--Follow Route View Controller-->
+        <scene sceneID="bW5-Nx-vDP">
+            <objects>
+                <viewController storyboardIdentifier="followRoute" id="M8U-HI-8Bc" customClass="FollowRouteViewController" customModule="Sokol" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="bsD-Tk-PzJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="zdH-gr-Epv"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Zt5-Qc-jwD">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="jkv-fw-1YG">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2bC-lV-gdo">
+                                <rect key="frame" x="509" y="48" width="63" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <action selector="cancelRoute:" destination="M8U-HI-8Bc" eventType="touchUpInside" id="i0I-jv-OCG"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mbE-zF-puz">
+                                <rect key="frame" x="480" y="86" width="92" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <state key="normal" title="Start route"/>
+                                <connections>
+                                    <action selector="startRoute:" destination="M8U-HI-8Bc" eventType="touchUpInside" id="LKV-VR-bVc"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="jkv-fw-1YG" firstAttribute="top" secondItem="bsD-Tk-PzJ" secondAttribute="bottom" id="7xE-ff-hJb"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="jkv-fw-1YG" secondAttribute="trailing" constant="-20" id="9Im-Sw-CtU"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="mbE-zF-puz" secondAttribute="trailing" constant="15" id="QuK-3d-esn"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="2bC-lV-gdo" secondAttribute="trailing" constant="15" id="Xyb-R9-HyS"/>
+                            <constraint firstItem="jkv-fw-1YG" firstAttribute="leading" secondItem="Zt5-Qc-jwD" secondAttribute="leadingMargin" constant="-20" id="bMs-G8-tjB"/>
+                            <constraint firstItem="mbE-zF-puz" firstAttribute="top" secondItem="2bC-lV-gdo" secondAttribute="bottom" constant="15" id="cnc-vb-ydP"/>
+                            <constraint firstItem="2bC-lV-gdo" firstAttribute="top" secondItem="bsD-Tk-PzJ" secondAttribute="bottom" constant="30" id="jqT-9i-p1Z"/>
+                            <constraint firstItem="zdH-gr-Epv" firstAttribute="top" secondItem="jkv-fw-1YG" secondAttribute="bottom" id="vhd-SX-Di8"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="cancel" destination="2bC-lV-gdo" id="xKQ-FD-0S4"/>
+                        <outlet property="mapView" destination="jkv-fw-1YG" id="7H5-f7-l2d"/>
+                        <outlet property="start" destination="mbE-zF-puz" id="Xc1-fz-iuK"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fJb-0P-3cY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3600" y="-796"/>
+        </scene>
         <!--Sokol-->
         <scene sceneID="ZLj-Bc-hnk">
             <objects>
@@ -28,7 +82,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aOf-zi-U7r">
                                                     <rect key="frame" x="8" y="82" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zUl-m9-jwP">
@@ -40,7 +94,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dcb-XC-5xC">
                                                     <rect key="frame" x="8" y="45" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -56,6 +110,9 @@
                                                 <constraint firstAttribute="trailing" secondItem="zUl-m9-jwP" secondAttribute="trailing" constant="15" id="gW7-QM-5ND"/>
                                                 <constraint firstAttribute="trailing" secondItem="dcb-XC-5xC" secondAttribute="trailing" constant="15" id="yEp-j6-31Y"/>
                                             </constraints>
+                                            <connections>
+                                                <action selector="openFollowRoute:" destination="see-KR-EeI" eventType="touchUpInside" id="dCd-n6-SJY"/>
+                                            </connections>
                                         </view>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -71,6 +128,7 @@
                                     <outlet property="descriptionText" destination="dcb-XC-5xC" id="Ky0-20-4dS"/>
                                     <outlet property="informationText" destination="aOf-zi-U7r" id="nvZ-2V-UAp"/>
                                     <outlet property="nameText" destination="zUl-m9-jwP" id="Lcq-Uf-MKL"/>
+                                    <segue destination="M8U-HI-8Bc" kind="showDetail" identifier="openFollowRoute" id="lCP-cO-MXd"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

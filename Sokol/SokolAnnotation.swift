@@ -15,11 +15,13 @@ class SokolAnnotation:NSObject,MKAnnotation{
     var title:String?
     var subtitle: String?
     var checkPoint:Bool
-    init (coordinate:CLLocationCoordinate2D,title:String,subtitle:String,checkPoint:Bool){
+    var id:String?
+    init (coordinate:CLLocationCoordinate2D,title:String,subtitle:String,checkPoint:Bool,id:String){
         self.title = title
         self.coordinate = coordinate
         self.subtitle =  subtitle
         self.checkPoint = checkPoint
+        self.id = id
         
     }
 }

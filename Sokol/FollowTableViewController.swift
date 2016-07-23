@@ -77,16 +77,18 @@ class FollowTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("routeCell", forIndexPath: indexPath) as! RouteTableViewCell
-        let route = routes[indexPath.row]
-        cell.nameText.text = route.name
-        cell.descriptionText.text = route.descriptionRoute
-        let checks = getChecks(route.annotations)
-        cell.informationText.text = "This route has " + String(checks) + " checkpoints"
-        cell.cardView.layer.masksToBounds = false
-        cell.cardView.layer.cornerRadius = 10
-        cell.cardView.layer.shadowOffset = CGSizeMake(-0.2, -0.2)
-        cell.cardView.tag = indexPath.row
-        cell.cardView.layer.shadowOpacity = 0.2
+        if indexPath.row < routes.count{
+            let route = routes[indexPath.row]
+            cell.nameText.text = route.name
+            cell.descriptionText.text = route.descriptionRoute
+            let checks = getChecks(route.annotations)
+            cell.informationText.text = "This route has " + String(checks) + " checkpoints"
+            cell.cardView.layer.masksToBounds = false
+            cell.cardView.layer.cornerRadius = 10
+            cell.cardView.layer.shadowOffset = CGSizeMake(-0.2, -0.2)
+            cell.cardView.tag = indexPath.row
+            cell.cardView.layer.shadowOpacity = 0.2
+        }
         
         return cell
 
@@ -159,7 +161,8 @@ class FollowTableViewController: UITableViewController {
                     var annotations = [SokolAnnotation]()
                     for (index,element) in lats.enumerate(){
                         let coord = CLLocationCoordinate2D(latitude: Double(element)! , longitude: Double(lngs[index])!)
-                        let a = SokolAnnotation(coordinate: coord, title: names[index], subtitle: "This point is the number " + String(index + 1), checkPoint: check[index])
+                        let id = NSUUID().UUIDString
+                        let a = SokolAnnotation(coordinate: coord, title: names[index], subtitle: "This point is the number " + String(index + 1), checkPoint: check[index],id: id)
                         annotations.append(a)
                     }
                     let followRouteRef = self.ref.child("followRoutesByUser")
@@ -214,10 +217,11 @@ class FollowTableViewController: UITableViewController {
                     let lngs = values["longitudes"] as! [String]
                     let check = values["checkPoints"] as! [Bool]
                     let names = values["pointNames"] as! [String]
+                    let ids = values["ids"] as! [String]
                     var annotations = [SokolAnnotation]()
                     for (index,element) in lats.enumerate(){
                         let coord = CLLocationCoordinate2D(latitude: Double(element)! , longitude: Double(lngs[index])!)
-                        let a = SokolAnnotation(coordinate: coord, title: names[index], subtitle: "This point is the number " + String(index + 1), checkPoint: check[index])
+                        let a = SokolAnnotation(coordinate: coord, title: names[index], subtitle: "This point is the number " + String(index + 1), checkPoint: check[index],id: ids[index])
                         annotations.append(a)
                     }
                     let route = Route(id: id, name: name , description: description, annotations: annotations)
@@ -293,7 +297,21 @@ class FollowTableViewController: UITableViewController {
         unfollowActionButton.backgroundColor = UIColor.redColor()
         return [unfollowActionButton]
     }
+    
+    @IBAction func openFollowRoute(sender: AnyObject) {
+        let viewController = UIStoryboard(name: "Follow", bundle: nil).instantiateViewControllerWithIdentifier("followRoute") as! FollowRouteViewController
+        viewController.route =  routes[sender.tag]
+        self.presentViewController(viewController, animated: true, completion: nil)
+    }
     @IBAction func toggleMenu(sender:AnyObject){
         NSNotificationCenter.defaultCenter().postNotificationName("toggleMenu",object:nil)
+    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "openFollowRoute" {
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let destinationController = segue.destinationViewController as! FollowRouteViewController
+                destinationController.route = self.routes[indexPath.row]
+            }
+        }
     }
 }

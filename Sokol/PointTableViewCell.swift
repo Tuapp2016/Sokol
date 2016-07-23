@@ -10,6 +10,8 @@ import UIKit
 
 class PointTableViewCell: UITableViewCell {
 
+    
+    @IBOutlet weak var pointNameText: UILabel!
     @IBOutlet weak var checkpoint: UISwitch!
     @IBOutlet weak var longitudeText: UILabel!
     @IBOutlet weak var latitudeText: UILabel!

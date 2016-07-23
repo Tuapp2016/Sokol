@@ -151,18 +151,18 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
                     let lngs =  routeValues["longitudes"] as! [String]
                     let check = routeValues["checkPoints"] as! [Bool]
                     let names = routeValues["pointNames"] as! [String]
+                    let ids = routeValues["ids"] as! [String]
                     var annotations = [SokolAnnotation]()
                     var i = 0
                     while i < lats.count {
                         let coordinate = CLLocationCoordinate2D(latitude: Double(lats[i])!, longitude: Double(lngs[i])!)
-                        let newAnnotation = SokolAnnotation(coordinate: coordinate, title: names[i], subtitle: "This point is the number " + String(i+1), checkPoint: check[i])
+                        let newAnnotation = SokolAnnotation(coordinate: coordinate, title: names[i], subtitle: "This point is the number " + String(i+1), checkPoint: check[i],id:ids[i])
                         annotations.append(newAnnotation)
                         i += 1
                     }
                     let newRoute =  Route(id: a, name: routeValues["name"] as! String, description: routeValues["description"] as! String, annotations: annotations )
                     if self.isNewRoute(newRoute){
                         self.routes.append(newRoute)
-                        
                         NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                             self.tableView.reloadData()
                         })
