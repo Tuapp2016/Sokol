@@ -26,6 +26,13 @@ class LinkAccountsViewController: UIViewController,GIDSignInUIDelegate {
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        if let user = FIRAuth.auth()?.currentUser {
+            // User is signed in.
+        } else {
+            let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
+            self.presentViewController(viewController, animated: true, completion: nil)
+            
+        }
         GIDSignIn.sharedInstance().uiDelegate = self
         let logInButton = TWTRLogInButton(logInCompletion: {session, error in
             if Utilities.linking{

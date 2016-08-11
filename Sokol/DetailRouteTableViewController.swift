@@ -19,16 +19,18 @@ class DetailRouteTableViewController: UITableViewController {
         super.viewDidLoad()
         let longPress = UILongPressGestureRecognizer(target: self, action: "movePoint:")
         tableView.addGestureRecognizer(longPress)
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-       
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        tabBarController?.tabBar.hidden = false
+
+        if let user = FIRAuth.auth()?.currentUser {
+            // User is signed in.
+        } else {
+            let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
+            self.presentViewController(viewController, animated: true, completion: nil)
+            
+        }
         navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationItem.hidesBackButton = false
         if let route = route {

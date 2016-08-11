@@ -24,6 +24,13 @@ class FollowTableViewController: UITableViewController {
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
+        if let user = FIRAuth.auth()?.currentUser {
+            // User is signed in.
+        } else {
+            let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
+            self.presentViewController(viewController, animated: true, completion: nil)
+            
+        }
         let followRouteRef = ref.child("followRoutesByUser")
         if let user = FIRAuth.auth()?.currentUser {
             // User is signed in.

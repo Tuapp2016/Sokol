@@ -58,7 +58,53 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fJb-0P-3cY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3600" y="-796"/>
+            <point key="canvasLocation" x="3604" y="-712"/>
+        </scene>
+        <!--Directions-->
+        <scene sceneID="HNW-bB-t1f">
+            <objects>
+                <tableViewController id="znU-Mp-m5b" customClass="DirectionsTableViewController" customModule="Sokol" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="4Nm-d9-oNW">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="50" id="GqI-bz-4W0" customClass="DirectionsTableViewCell" customModule="Sokol" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="92" width="600" height="50"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GqI-bz-4W0" id="R0M-jD-jru">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="49.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X90-jL-hnj">
+                                            <rect key="frame" x="8" y="14" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="X90-jL-hnj" secondAttribute="trailing" constant="5" id="1gy-AK-NYw"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="X90-jL-hnj" secondAttribute="bottom" constant="5" id="Gge-te-zyT"/>
+                                        <constraint firstItem="X90-jL-hnj" firstAttribute="top" secondItem="R0M-jD-jru" secondAttribute="topMargin" constant="5" id="MqY-t2-0hU"/>
+                                        <constraint firstItem="X90-jL-hnj" firstAttribute="leading" secondItem="R0M-jD-jru" secondAttribute="leadingMargin" constant="5" id="kxN-do-LZJ"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="direction" destination="X90-jL-hnj" id="VHj-cP-Aym"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="znU-Mp-m5b" id="zU3-00-58Y"/>
+                            <outlet property="delegate" destination="znU-Mp-m5b" id="RAF-oK-3xe"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Directions" id="Vqm-fv-JVA"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lwf-3A-ZRr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5347" y="-679"/>
         </scene>
         <!--Sokol-->
         <scene sceneID="ZLj-Bc-hnk">
@@ -178,6 +224,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JjN-nf-y2k" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2283" y="-870"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="jtp-Og-no4">
+            <objects>
+                <navigationController storyboardIdentifier="directionsRoute" automaticallyAdjustsScrollViewInsets="NO" id="oyX-p9-jJc" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="t2k-Uw-XSp">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="znU-Mp-m5b" kind="relationship" relationship="rootViewController" id="DaK-4q-Z9m"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8Jz-Xu-8FL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4535" y="-679"/>
         </scene>
     </scenes>
     <resources>

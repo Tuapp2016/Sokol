@@ -94,6 +94,7 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
         
         
     }
+
     func cancelPin(){
         addPin!.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -113,6 +114,16 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        tabBarController?.tabBar.hidden = true
+        if let user = FIRAuth.auth()?.currentUser {
+            // User is signed in.
+        } else {
+            locationManager.stopUpdatingLocation()
+            locationManager.delegate = nil
+            let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
+            self.presentViewController(viewController, animated: true, completion: nil)
+            
+        }
         navigationController?.setNavigationBarHidden(true, animated: true)
         locationManager.startUpdatingLocation()
         mapView.showAnnotations(route!.annotations, animated: true)
@@ -153,6 +164,7 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
                       "ids":ids
         ]
         routeID.updateChildValues(values as [NSObject : AnyObject])
+        self.mapView.showsUserLocation = false
         navigationController?.popToRootViewControllerAnimated(true)
         //self.dismissViewControllerAnimated(true, completion: nil)
         

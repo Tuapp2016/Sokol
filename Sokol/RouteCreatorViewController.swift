@@ -101,6 +101,15 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        if let user = FIRAuth.auth()?.currentUser {
+            // User is signed in.
+        } else {
+            locationManager.stopUpdatingLocation()
+            locationManager.delegate = nil
+            let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
+            self.presentViewController(viewController, animated: true, completion: nil)
+            
+        }
         locationManager.startUpdatingLocation()
     }
     override func viewWillDisappear(animated: Bool) {
@@ -241,7 +250,8 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
     
     
     @IBAction func cancel(sender: AnyObject) {
-      self.dismissViewControllerAnimated(true, completion: nil)
+        self.mapView.showsUserLocation = false
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
@@ -412,7 +422,7 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
                 }
             })
             
-                
+            self.mapView.showsUserLocation = false
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }

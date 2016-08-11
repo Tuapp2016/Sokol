@@ -37,6 +37,7 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        tabBarController?.tabBar.hidden = false
         if let user = FIRAuth.auth()?.currentUser {
             // User is signed in.
         } else {
