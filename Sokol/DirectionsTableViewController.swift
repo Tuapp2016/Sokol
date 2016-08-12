@@ -44,7 +44,9 @@ class DirectionsTableViewController: UITableViewController {
     func cancelDirections(sender:AnyObject){
         dismissViewControllerAnimated(true, completion: nil)
     }
-    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+    }
     
 
 }

@@ -38,7 +38,7 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.hidden = false
-        if let user = FIRAuth.auth()?.currentUser {
+        if let _ = FIRAuth.auth()?.currentUser {
             // User is signed in.
         } else {
             let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
@@ -48,8 +48,10 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         if Utilities.user == nil || Utilities.provider == nil {
             let userRef = self.ref.child("user")
             userRef.removeAllObservers()
-            let userIdRef = userRef.child((FIRAuth.auth()?.currentUser?.uid)!)
-            userIdRef.removeAllObservers()
+            if let user = FIRAuth.auth()?.currentUser {
+                let userIdRef = userRef.child(user.uid)
+                userIdRef.removeAllObservers()
+            }
             self.ref.removeAllObservers()
             try! FIRAuth.auth()?.signOut()
             Utilities.user = nil
@@ -177,9 +179,6 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
                         })
                         
                     }
-                    
-                    
-                    
                 }else{
                     let id = routeID.key
                     routeID.removeAllObservers()

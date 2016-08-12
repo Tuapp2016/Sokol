@@ -60,6 +60,7 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
         
         mapView.showAnnotations(route!.annotations,animated: true)
         calculaterRoute()
+        addOverlays()
         
     }
     deinit{
@@ -172,7 +173,7 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
         }
     }
     func regionWithAnnotation(annotation:SokolAnnotation) -> CLCircularRegion{
-        let region = CLCircularRegion(center: annotation.coordinate, radius: 200.0, identifier: annotation.id!)
+        let region = Geofence(center: annotation.coordinate, radius: 200.0, identifier: annotation.id!,sokolAnnotation: annotation)
         region.notifyOnEntry = true
         region.notifyOnExit = false
         return region
@@ -202,6 +203,13 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
             }
         }
         removeOverlayForAnnotations()
+    }
+    func addOverlays(){
+        for region in locationManager!.monitoredRegions{
+            if let circularRegion = region as? CLCircularRegion{
+                mapView.addOverlay(MKCircle(centerCoordinate: circularRegion.center, radius: 50.0))
+            }
+        }
     }
     func addRadiusOverlayForAnnotation(annotation:SokolAnnotation){
         mapView.addOverlay(MKCircle(centerCoordinate: annotation.coordinate, radius: 50.0))
@@ -331,7 +339,7 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
             }
             start.setTitle("Show directions", forState: .Normal)
 
-        }else { //Here we should open our directions view
+        }else {//Here we should open our directions view
             let storyboard = UIStoryboard(name: "Follow", bundle: nil)
             let navigation = storyboard.instantiateViewControllerWithIdentifier("directionsRoute") as! UINavigationController
             var directionsController = navigation.viewControllers[0] as! DirectionsTableViewController

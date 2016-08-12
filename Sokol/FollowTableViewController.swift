@@ -24,7 +24,7 @@ class FollowTableViewController: UITableViewController {
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-        if let user = FIRAuth.auth()?.currentUser {
+        if let _ = FIRAuth.auth()?.currentUser {
             // User is signed in.
         } else {
             let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
@@ -32,13 +32,6 @@ class FollowTableViewController: UITableViewController {
             
         }
         let followRouteRef = ref.child("followRoutesByUser")
-        if let user = FIRAuth.auth()?.currentUser {
-            // User is signed in.
-        } else {
-            let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
-            self.presentViewController(viewController, animated: true, completion: nil)
-            
-        }
         if let user = FIRAuth.auth()?.currentUser{
             let followRouteUserRef = followRouteRef.child(user.uid)
             followRouteUserRef.observeEventType(.Value, withBlock: {(snapshot) in
@@ -235,8 +228,8 @@ class FollowTableViewController: UITableViewController {
                     let i = self.checkIdIndex(id)
                     if i == -1 {
                         self.routes.append(route)
-                        
                         NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                            
                             self.tableView.reloadData()
                             
                         })

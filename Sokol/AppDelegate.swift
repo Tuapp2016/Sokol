@@ -157,10 +157,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
         }
     }
     func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        let notification = UILocalNotification()
-        notification.alertBody = "You are coressed for a checkpoint"
-        notification.soundName = "Default"
-        UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+        if let r =  region as? CLCircularRegion{
+            let geofence = r as! Geofence
+            let notification = UILocalNotification()
+            notification.alertTitle = "You are coressed for the checkpoint"
+            let text = geofence.sokolAnnotation.title! == "Without description" ? "without title":"with the title: \(geofence.sokolAnnotation.title!)"
+            let time = NSDate()
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd hh:mm"
+            notification.alertBody = "\(geofence.sokolAnnotation.subtitle), \(text)\n\(dateFormatter.stringFromDate(time))"
+            notification.soundName = "Default"
+            UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+        }
+        
         
     
     }
