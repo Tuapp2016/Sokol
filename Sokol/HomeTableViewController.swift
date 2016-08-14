@@ -1,8 +1,8 @@
 //
-//  HomeViewController.swift
+//  HomeTableViewController.swift
 //  Sokol
 //
-//  Created by Andres Rene Gutierrez on 14/06/2016.
+//  Created by Andres Rene Gutierrez on 14/08/2016.
 //  Copyright © 2016 Andres Rene Gutierrez. All rights reserved.
 //
 
@@ -13,27 +13,38 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 import MapKit
 
-class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UIViewControllerPreviewingDelegate {
-    
-    @IBOutlet weak var tableView: UITableView!
+class HomeTableViewController: UITableViewController,UIViewControllerPreviewingDelegate,UISearchResultsUpdating {
+
     var routes = [Route]()
+    var routesSearch = [Route]()
     var routesId = [String]()
     let ref = FIRDatabase.database().reference()
+    var searchController:UISearchController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        searchController = UISearchController(searchResultsController: nil)
+        tableView.tableHeaderView = searchController.searchBar
+        searchController.searchResultsUpdater =  self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search route..."
+        searchController.searchBar.tintColor = UIColor.whiteColor()
+        searchController.searchBar.barTintColor = UIColor(red: 30.0/250.0, green: 30.0/250.0, blue: 30.0/250.0, alpha: 1.0)
         if traitCollection.forceTouchCapability == .Available {
             registerForPreviewingWithDelegate(self, sourceView: view)
         }
-        //self.tableView.separatorStyle = .None
-        //self.tableView.estimatedRowHeight = 150
+        tableView.separatorStyle = .None
         self.tableView.rowHeight = 150
-    
+        
         NSNotificationCenter.defaultCenter().addObserver(self,selector: "switchTabRoutes", name: "switchTabRoutes", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "switchTabProfile", name: "switchTabProfile", object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "switchTabFollow", name: "switchTabFollow", object: nil)
         // Do any additional setup after loading the view.
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -92,7 +103,6 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             }
         }
     }
-   
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
@@ -106,18 +116,22 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     func switchTabFollow(){
         tabBarController?.selectedIndex = 1
     }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     @IBAction func toggleMenu(sender:AnyObject){
         NSNotificationCenter.defaultCenter().postNotificationName("toggleMenu",object:nil)
     }
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return routes.count
+
+    
+
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if searchController.active{
+            return routesSearch.count
+        }else {
+            return routes.count
+        }
     }
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let route = routes[indexPath.row]
+
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let route = searchController.active ? routesSearch[indexPath.row] : routes[indexPath.row]
         let cell = tableView.dequeueReusableCellWithIdentifier("routeCell") as! RouteTableViewCell
         cell.nameText.text = route.name
         cell.descriptionText.text =  route.descriptionRoute
@@ -133,6 +147,7 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         return cell
         
     }
+
     func getChecks(annotations:[SokolAnnotation]) -> Int{
         var i = 0
         for a in annotations {
@@ -228,7 +243,7 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         }
         return -1
     }
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let shareActionButton = UITableViewRowAction(style: .Default, title: "Share", handler: {(action,indexPath) in
             let route = self.routes[indexPath.row]
             let text = "This is the code of my route\n Please subscribe to it.\n The route id is " + route.id
@@ -246,7 +261,7 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
             if let user = FIRAuth.auth()?.currentUser {
                 let userByRouteId = userByRoute.child(user.uid)
                 if self.routes.count == 0 {
-                
+                    
                     userByRouteId.removeValue()
                 }else{
                     var ids = [String]()
@@ -266,17 +281,24 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
     
     @IBAction func openDetail(sender: AnyObject) {
         let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("informationRoute") as! DetailRouteTableViewController
-        viewController.route = routes[sender.tag]
+        viewController.route = searchController.active ? routesSearch[sender.tag] : routes[sender.tag]
         self.navigationController?.pushViewController(viewController, animated: true)
     }
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        if searchController.active {
+            return false
+        }else{
+            return true
+        }
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "detailRoute" {
             if let indexPath = tableView.indexPathForSelectedRow {
                 let destinationController = segue.destinationViewController as! DetailRouteTableViewController
-                destinationController.route =  routes[indexPath.row]
+                destinationController.route =  searchController.active ? routesSearch[indexPath.row] : routes[indexPath.row]
             }
         }
     }
@@ -292,11 +314,23 @@ class HomeViewController: UIViewController,UITableViewDelegate,UITableViewDataSo
         
         viewController.preferredContentSize =  CGSize(width: 0.0, height: 450.0)
         return viewController
-
+        
     }
     func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
         showViewController(viewControllerToCommit, sender: self)
     }
-    
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        if let searchText = searchController.searchBar.text {
+            filterContentForSearchText(searchText)
+            tableView.reloadData()
+        }
+    }
+    func filterContentForSearchText(searchText:String){
+        routesSearch = routes.filter({(r:Route)-> Bool in
+            let nameMatch = r.name.rangeOfString(searchText,options: NSStringCompareOptions.CaseInsensitiveSearch)
+            return nameMatch != nil
+        })
+        
+    }
 
 }

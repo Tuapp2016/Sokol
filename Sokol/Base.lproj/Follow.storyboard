@@ -58,7 +58,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fJb-0P-3cY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3604" y="-712"/>
+            <point key="canvasLocation" x="3676" y="-880"/>
         </scene>
         <!--Directions-->
         <scene sceneID="HNW-bB-t1f">
@@ -79,7 +79,7 @@
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X90-jL-hnj">
                                             <rect key="frame" x="8" y="14" width="42" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -104,7 +104,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lwf-3A-ZRr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5347" y="-679"/>
+            <point key="canvasLocation" x="3233" y="1"/>
         </scene>
         <!--Sokol-->
         <scene sceneID="ZLj-Bc-hnk">
@@ -241,7 +241,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Jz-Xu-8FL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4535" y="-679"/>
+            <point key="canvasLocation" x="2421" y="1"/>
         </scene>
     </scenes>
     <resources>

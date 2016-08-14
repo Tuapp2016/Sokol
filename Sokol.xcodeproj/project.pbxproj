@@ -38,11 +38,11 @@
 		B5B9F8BA1D1E1B110055287C /* FacebookFriendsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B9F8B91D1E1B110055287C /* FacebookFriendsCollectionViewController.swift */; };
 		B5B9F8BC1D1E1B710055287C /* FacebookFriendsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B9F8BB1D1E1B710055287C /* FacebookFriendsCollectionViewCell.swift */; };
 		B5B9F8BE1D1E343F0055287C /* FacebookCellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B9F8BD1D1E343F0055287C /* FacebookCellViewController.swift */; };
+		B5BEF02A1D60DFD600D110DC /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BEF0291D60DFD600D110DC /* HomeTableViewController.swift */; };
 		B5C06F5D1D19A0FF0090AAE9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B5C06F5C1D19A0FF0090AAE9 /* GoogleService-Info.plist */; };
 		B5C1FBF01D10557500BA9104 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C1FBEF1D10557500BA9104 /* Utilities.swift */; };
 		B5C1FBF21D1069AA00BA9104 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C1FBF11D1069AA00BA9104 /* Constants.swift */; };
 		B5C1FBF51D1082F600BA9104 /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5C1FBF31D1082F600BA9104 /* Home.storyboard */; };
-		B5C1FBF71D108EB200BA9104 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C1FBF61D108EB200BA9104 /* HomeViewController.swift */; };
 		B5C1FBF91D108EC300BA9104 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C1FBF81D108EC300BA9104 /* ProfileViewController.swift */; };
 		B5CEF7FB1D0E32D800A776C2 /* SignUpTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CEF7FA1D0E32D800A776C2 /* SignUpTableViewController.swift */; };
 		B5E36C511D414B7600C70C29 /* Follow.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5E36C4F1D414B7600C70C29 /* Follow.storyboard */; };
@@ -102,11 +102,11 @@
 		B5B9F8B91D1E1B110055287C /* FacebookFriendsCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookFriendsCollectionViewController.swift; sourceTree = "<group>"; };
 		B5B9F8BB1D1E1B710055287C /* FacebookFriendsCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookFriendsCollectionViewCell.swift; sourceTree = "<group>"; };
 		B5B9F8BD1D1E343F0055287C /* FacebookCellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookCellViewController.swift; sourceTree = "<group>"; };
+		B5BEF0291D60DFD600D110DC /* HomeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTableViewController.swift; sourceTree = "<group>"; };
 		B5C06F5C1D19A0FF0090AAE9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B5C1FBEF1D10557500BA9104 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		B5C1FBF11D1069AA00BA9104 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B5C1FBF41D1082F600BA9104 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Home.storyboard; sourceTree = "<group>"; };
-		B5C1FBF61D108EB200BA9104 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		B5C1FBF81D108EC300BA9104 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		B5CEF7FA1D0E32D800A776C2 /* SignUpTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpTableViewController.swift; sourceTree = "<group>"; };
 		B5E36C501D414B7600C70C29 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Follow.storyboard; sourceTree = "<group>"; };
@@ -198,7 +198,6 @@
 				B5CEF7FA1D0E32D800A776C2 /* SignUpTableViewController.swift */,
 				B5C1FBEF1D10557500BA9104 /* Utilities.swift */,
 				B5C1FBF11D1069AA00BA9104 /* Constants.swift */,
-				B5C1FBF61D108EB200BA9104 /* HomeViewController.swift */,
 				B5C1FBF81D108EC300BA9104 /* ProfileViewController.swift */,
 				B52A675B1D10CA3A0062980F /* ProfileTableViewCell.swift */,
 				B52A675D1D10EC1C0062980F /* ProfileImageTableViewCell.swift */,
@@ -223,6 +222,7 @@
 				B5EF2C961D5CD5520027D8E1 /* DirectionsTableViewController.swift */,
 				B5EF2C981D5CFA900027D8E1 /* DirectionsTableViewCell.swift */,
 				B5EF2C9C1D5D39010027D8E1 /* Geofence.swift */,
+				B5BEF0291D60DFD600D110DC /* HomeTableViewController.swift */,
 			);
 			path = Sokol;
 			sourceTree = "<group>";
@@ -497,8 +497,8 @@
 				B5B9F8BC1D1E1B710055287C /* FacebookFriendsCollectionViewCell.swift in Sources */,
 				B5EF2C991D5CFA900027D8E1 /* DirectionsTableViewCell.swift in Sources */,
 				B5A3C6FA1D2B44B9009DBF2E /* PointTableViewCell.swift in Sources */,
-				B5C1FBF71D108EB200BA9104 /* HomeViewController.swift in Sources */,
 				B5C1FBF91D108EC300BA9104 /* ProfileViewController.swift in Sources */,
+				B5BEF02A1D60DFD600D110DC /* HomeTableViewController.swift in Sources */,
 				B5A3C6F81D2B4499009DBF2E /* HeaderTableViewCell.swift in Sources */,
 				B5B9F8BE1D1E343F0055287C /* FacebookCellViewController.swift in Sources */,
 				B5C1FBF21D1069AA00BA9104 /* Constants.swift in Sources */,

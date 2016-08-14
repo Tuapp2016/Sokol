@@ -37,7 +37,7 @@ class ViewController: UIViewController,GIDSignInUIDelegate{
         Utilities.linking =  false
         FIRAuth.auth()?.addAuthStateDidChangeListener{ auth, user in
             let appDelegate  = UIApplication.sharedApplication().delegate as! AppDelegate
-            let viewController = appDelegate.window!.rootViewController as? HomeViewController
+            let viewController = appDelegate.window!.rootViewController as? HomeTableViewController
             Utilities.user =  user
             if let user = user{
                 if viewController == nil {

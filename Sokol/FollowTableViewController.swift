@@ -10,14 +10,23 @@ import UIKit
 import Firebase
 import MapKit
 
-class FollowTableViewController: UITableViewController {
+class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
     var routes = [Route]()
+    var routesSearch = [Route]()
     var addAlertController:UIAlertController?
     var routeIdText:UITextField?
     let ref = FIRDatabase.database().reference()
     var routeIds = [String]()
+    var searchController:UISearchController!
     override func viewDidLoad() {
         super.viewDidLoad()
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.placeholder = "Search route..."
+        searchController.searchBar.tintColor = UIColor.whiteColor()
+        searchController.searchBar.barTintColor =  UIColor(red: 30.0/255.0, green: 30.0/2550.0, blue: 30.0/255.0, alpha: 1.0)
+        tableView.tableHeaderView = searchController.searchBar
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchResultsUpdater = self
         tableView.rowHeight = 150
         tableView.separatorStyle = .None
         
@@ -69,8 +78,11 @@ class FollowTableViewController: UITableViewController {
 
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return routes.count
+        if searchController.active {
+            return routesSearch.count
+        }else{
+            return routes.count
+        }
     }
 
     
@@ -78,7 +90,7 @@ class FollowTableViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("routeCell", forIndexPath: indexPath) as! RouteTableViewCell
         if indexPath.row < routes.count{
-            let route = routes[indexPath.row]
+            let route = searchController.active ? routesSearch[indexPath.row] : routes[indexPath.row]
             cell.nameText.text = route.name
             cell.descriptionText.text = route.descriptionRoute
             let checks = getChecks(route.annotations)
@@ -300,18 +312,37 @@ class FollowTableViewController: UITableViewController {
     
     @IBAction func openFollowRoute(sender: AnyObject) {
         let viewController = UIStoryboard(name: "Follow", bundle: nil).instantiateViewControllerWithIdentifier("followRoute") as! FollowRouteViewController
-        viewController.route =  routes[sender.tag]
+        viewController.route = searchController.active ? routesSearch[sender.tag] : routes[sender.tag]
         self.presentViewController(viewController, animated: true, completion: nil)
     }
     @IBAction func toggleMenu(sender:AnyObject){
         NSNotificationCenter.defaultCenter().postNotificationName("toggleMenu",object:nil)
     }
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        if searchController.active {
+            return false
+        }else{
+            return true
+        }
+    }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "openFollowRoute" {
             if let indexPath = tableView.indexPathForSelectedRow {
                 let destinationController = segue.destinationViewController as! FollowRouteViewController
-                destinationController.route = self.routes[indexPath.row]
+                destinationController.route = searchController.active ? self.routesSearch[indexPath.row] : self.routes[indexPath.row]
             }
         }
+    }
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        if let searchText = searchController.searchBar.text {
+            filterContentForSearchText(searchText)
+            tableView.reloadData()
+        }
+    }
+    func filterContentForSearchText(searchText:String){
+        routesSearch =  routes.filter({(r:Route)-> Bool in
+            let nameMatch = r.name.rangeOfString(searchText,options: NSStringCompareOptions.CaseInsensitiveSearch)
+            return nameMatch != nil
+        })
     }
 }
