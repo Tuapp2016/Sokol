@@ -163,9 +163,9 @@
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstItem="jxU-mP-rat" firstAttribute="leading" secondItem="ucx-Dr-3s8" secondAttribute="leadingMargin" id="Jo9-7F-4CY"/>
+                                        <constraint firstItem="jxU-mP-rat" firstAttribute="leading" secondItem="ucx-Dr-3s8" secondAttribute="leadingMargin" constant="20" id="Jo9-7F-4CY"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="jxU-mP-rat" secondAttribute="bottom" constant="10" id="ORF-K3-r1l"/>
-                                        <constraint firstItem="jxU-mP-rat" firstAttribute="trailing" secondItem="ucx-Dr-3s8" secondAttribute="trailingMargin" constant="-5" id="Yuh-81-JyI"/>
+                                        <constraint firstItem="jxU-mP-rat" firstAttribute="trailing" secondItem="ucx-Dr-3s8" secondAttribute="trailingMargin" constant="-25" id="Yuh-81-JyI"/>
                                         <constraint firstItem="jxU-mP-rat" firstAttribute="top" secondItem="ucx-Dr-3s8" secondAttribute="topMargin" constant="10" id="cff-m0-dGs"/>
                                     </constraints>
                                 </tableViewCellContentView>

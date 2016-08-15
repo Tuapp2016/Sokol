@@ -14,7 +14,8 @@ import FBSDKLoginKit
 import MapKit
 
 class HomeTableViewController: UITableViewController,UIViewControllerPreviewingDelegate,UISearchResultsUpdating {
-
+    var routesBySection:[String:[Route]] = [:]
+    var routesSectionTitles = [String]()
     var routes = [Route]()
     var routesSearch = [Route]()
     var routesId = [String]()
@@ -35,6 +36,7 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
         }
         tableView.separatorStyle = .None
         self.tableView.rowHeight = 150
+        self.tableView.setContentOffset(CGPointMake(0, 44.0), animated: false)
         
         NSNotificationCenter.defaultCenter().addObserver(self,selector: "switchTabRoutes", name: "switchTabRoutes", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "switchTabProfile", name: "switchTabProfile", object: nil)
@@ -84,9 +86,7 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
                 
             }else{
                 self.routes = []
-                NSOperationQueue.mainQueue().addOperationWithBlock({() in
-                    self.tableView.reloadData()
-                })
+                self.createDictionary()
             }
         })
     }
@@ -126,12 +126,40 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
         if searchController.active{
             return routesSearch.count
         }else {
-            return routes.count
+            let key = routesSectionTitles[section]
+            if let routesValues = routesBySection[key]{
+                return routesValues.count
+            }
+            return 0
+            
         }
     }
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        if searchController.active{
+            return 1
+        }
+        return routesSectionTitles.count
+        
+    }
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if searchController.active{
+            return nil
+        }
+        return routesSectionTitles[section]
+        
+    }
+    
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let route = searchController.active ? routesSearch[indexPath.row] : routes[indexPath.row]
+        var route:Route =  Route(id: "", name: "", description: "", annotations: [])
+        if searchController.active {
+            route = routesSearch[indexPath.row]
+        }else{
+            let key = routesSectionTitles[indexPath.section]
+            if let r = routesBySection[key] {
+                route =  r[indexPath.row]
+            }
+        }
         let cell = tableView.dequeueReusableCellWithIdentifier("routeCell") as! RouteTableViewCell
         cell.nameText.text = route.name
         cell.descriptionText.text =  route.descriptionRoute
@@ -140,12 +168,29 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
         cell.cardView.layer.masksToBounds = false
         cell.cardView.layer.cornerRadius = 10
         cell.cardView.layer.shadowOffset = CGSizeMake(-0.2, -0.2)
-        cell.cardView.tag = indexPath.row
+        if searchController.active{
+            cell.cardView.tag = indexPath.row
+        }else{
+            cell.cardView.tag = ((indexPath.section * 10000)+30000) + (indexPath.row*10)
+        }
         //let path:UIBezierPath = UIBezierPath(rect: cell.cardView.bounds)
         //cell.cardView.layer.shadowPath = path.CGPath
         cell.cardView.layer.shadowOpacity = 0.2
         return cell
         
+    }
+    override func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
+        if searchController.active{
+            return nil
+        }
+        return routesSectionTitles
+    }
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50.0
+    }
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let headerView = view as! UITableViewHeaderFooterView
+        headerView.textLabel?.font = UIFont(name: "Avenir", size: 25.0)
     }
 
     func getChecks(annotations:[SokolAnnotation]) -> Int{
@@ -179,18 +224,21 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
                         i += 1
                     }
                     let newRoute =  Route(id: a, name: routeValues["name"] as! String, description: routeValues["description"] as! String, annotations: annotations )
+                    
                     if self.isNewRoute(newRoute){
-                        self.routes.append(newRoute)
                         NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                            self.tableView.reloadData()
+                            self.routes.append(newRoute)
+                            
+                            self.createDictionary()
                         })
                     }else{
                         let i = self.checkIdIndex(newRoute.id)
-                        self.routes.removeAtIndex(i)
-                        self.routes.insert(newRoute, atIndex: i)
-                        let indexPath = NSIndexPath(forRow: (i), inSection: 0)
+                        //let indexPath = NSIndexPath(forRow: (i), inSection: 0)
                         NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                            self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Right)
+                            self.routes.removeAtIndex(i)
+                            self.routes.insert(newRoute, atIndex: i)
+                        
+                            self.createDictionary()
                         })
                         
                     }
@@ -199,17 +247,17 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
                     routeID.removeAllObservers()
                     let i = self.checkIdIndex(id)
                     if self.routes.count > 0 {
-                        self.routes.removeAtIndex(i)
                         NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                            let indexPath = NSIndexPath(forRow: i, inSection: 0)
-                            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Left)
+                            let r = self.routes.removeAtIndex(i)
+                            
+                            self.createDictionary()
+                            
                         })
                     }
                     let userByRoute = self.ref.child("userByRoutes")
                     if let user = FIRAuth.auth()?.currentUser {
                         let userByRouteId = userByRoute.child(user.uid)
                         if self.routes.count == 0 {
-                            
                             userByRouteId.removeValue()
                         }else{
                             var ids = [String]()
@@ -223,6 +271,25 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
             })
         }
         
+    }
+    func createDictionary(){
+        routesBySection = [:]
+        for r in routes {
+            let key = r.name.substringToIndex(r.name.startIndex.advancedBy(1))
+            if var routesTemp = routesBySection[key]{
+                routesTemp.append(r)
+                routesBySection[key] = routesTemp
+            }else{
+                routesBySection[key] = [r]
+            }
+        }
+        routesSectionTitles = [String](routesBySection.keys)
+        routesSectionTitles = routesSectionTitles.sort({ $0 < $1 })
+        
+        NSOperationQueue.mainQueue().addOperationWithBlock({
+            self.tableView.reloadSectionIndexTitles()
+            self.tableView.reloadData()
+        })
     }
     func isNewRoute(route:Route) -> Bool{
         for a in routes{
@@ -252,7 +319,8 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
         })
         let deleteActionButton = UITableViewRowAction(style: .Default, title: "  Delete          ", handler: {(action,indexPath) in
             let route = self.routes.removeAtIndex(indexPath.row)
-            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Left)
+            //self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Left)
+            self.createDictionary()
             let routes = self.ref.child("routes")
             let routeId = routes.child(route.id)
             routeId.removeAllObservers()
@@ -271,6 +339,7 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
                     userByRouteId.setValue(["routes":ids])
                 }
             }
+            //We need to unsubscribe this route this route from all the users who have subscribed this
             
         })
         
@@ -281,7 +350,16 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
     
     @IBAction func openDetail(sender: AnyObject) {
         let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("informationRoute") as! DetailRouteTableViewController
-        viewController.route = searchController.active ? routesSearch[sender.tag] : routes[sender.tag]
+        if searchController.active{
+            viewController.route = routesSearch[sender.tag]
+        }else{
+            let row = ((sender.tag - 30000) % 10000)/10
+            let section = ((sender.tag - (row*10))-30000)/10000
+            if let r =  routesBySection[routesSectionTitles[section]]{
+                viewController.route = r[row]
+
+            }
+        }
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -298,7 +376,18 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
         if segue.identifier == "detailRoute" {
             if let indexPath = tableView.indexPathForSelectedRow {
                 let destinationController = segue.destinationViewController as! DetailRouteTableViewController
-                destinationController.route =  searchController.active ? routesSearch[indexPath.row] : routes[indexPath.row]
+                if searchController.active {
+                    print(indexPath.row)
+                    destinationController.route = routesSearch[indexPath.row]
+                }else{
+                    if let routesTemp = routesBySection[routesSectionTitles[indexPath.section]]{
+                        print(indexPath.row)
+                        print(routesTemp)
+                        destinationController.route = routesTemp[indexPath.row]
+
+                    }
+                }
+                
             }
         }
     }
@@ -310,7 +399,11 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
             return nil
         }
         let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("informationRoute") as! DetailRouteTableViewController
-        viewController.route = routes[indexPath.row]
+        if let r = routesBySection[routesSectionTitles[indexPath.section]]{
+            viewController.route = r[indexPath.row]
+        }else{
+            return nil
+        }
         
         viewController.preferredContentSize =  CGSize(width: 0.0, height: 450.0)
         return viewController

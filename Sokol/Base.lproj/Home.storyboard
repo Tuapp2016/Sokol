@@ -7,7 +7,7 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--Home Table View Controller-->
+        <!--Sokol-->
         <scene sceneID="qmv-ut-v3M">
             <objects>
                 <tableViewController id="Qlk-pc-g25" customClass="HomeTableViewController" customModule="Sokol" customModuleProvider="target" sceneMemberID="viewController">
@@ -75,7 +75,7 @@
                                     <outlet property="descriptionText" destination="dXi-sW-7b9" id="rrn-4k-71b"/>
                                     <outlet property="informationText" destination="Ggr-Cs-wYd" id="bSy-5A-GfN"/>
                                     <outlet property="nameText" destination="XWM-Jk-UJc" id="BWF-7X-osT"/>
-                                    <segue destination="5IH-lM-xN3" kind="show" id="i0y-FI-JaD"/>
+                                    <segue destination="5IH-lM-xN3" kind="show" identifier="detailRoute" id="i0y-FI-JaD"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -84,7 +84,7 @@
                             <outlet property="delegate" destination="Qlk-pc-g25" id="fjA-3a-hSG"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="Eix-o2-chn">
+                    <navigationItem key="navigationItem" title="Sokol" id="Eix-o2-chn">
                         <barButtonItem key="leftBarButtonItem" image="menu" id="Ca4-kL-Lah">
                             <connections>
                                 <action selector="toggleMenu:" destination="Qlk-pc-g25" id="ZBS-F7-X1t"/>

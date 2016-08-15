@@ -11,6 +11,8 @@ import Firebase
 import MapKit
 
 class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
+    var routesBySection:[String:[Route]] = [:]
+    var routesSectionTitles = [String]()
     var routes = [Route]()
     var routesSearch = [Route]()
     var addAlertController:UIAlertController?
@@ -29,6 +31,8 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
         searchController.searchResultsUpdater = self
         tableView.rowHeight = 150
         tableView.separatorStyle = .None
+        self.tableView.setContentOffset(CGPointMake(0, 44.0), animated: false)
+
         
     }
     override func viewWillAppear(animated: Bool) {
@@ -50,7 +54,8 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
                     self.getRoutes(self.routeIds)
                 }else{
                     self.routes = []
-                    self.tableView.reloadData()
+                    self.routeIds = []
+                    self.createDictionary()
                 }
             })
         }
@@ -81,8 +86,24 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
         if searchController.active {
             return routesSearch.count
         }else{
-            return routes.count
+            let key = routesSectionTitles[section]
+            if let routesValues = routesBySection[key]{
+                return routesValues.count
+            }
+            return 0
         }
+    }
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        if searchController.active{
+            return 1
+        }
+        return routesSectionTitles.count
+    }
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if searchController.active{
+            return nil
+        }
+        return routesSectionTitles[section]
     }
 
     
@@ -90,7 +111,12 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("routeCell", forIndexPath: indexPath) as! RouteTableViewCell
         if indexPath.row < routes.count{
-            let route = searchController.active ? routesSearch[indexPath.row] : routes[indexPath.row]
+            var route = Route(id: "", name: "", description: "", annotations: [])
+            if searchController.active{
+                route = routesSearch[indexPath.row]
+            }else{
+                route = routes[indexPath.row]
+            }
             cell.nameText.text = route.name
             cell.descriptionText.text = route.descriptionRoute
             let checks = getChecks(route.annotations)
@@ -98,7 +124,11 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
             cell.cardView.layer.masksToBounds = false
             cell.cardView.layer.cornerRadius = 10
             cell.cardView.layer.shadowOffset = CGSizeMake(-0.2, -0.2)
-            cell.cardView.tag = indexPath.row
+            if searchController.active{
+                cell.cardView.tag = indexPath.row
+            }else{
+                cell.cardView.tag = ((indexPath.section * 10000)+30000) + (indexPath.row * 10)
+            }
             cell.cardView.layer.shadowOpacity = 0.2
         }
         
@@ -106,8 +136,21 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
 
 
     }
+    override func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
+        if searchController.active{
+            return nil
+        }
+        return routesSectionTitles
+    }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
+    }
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50.0
+    }
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let headerView = view as! UITableViewHeaderFooterView
+        headerView.textLabel?.font = UIFont(name: "Avenir", size: 25.0)
     }
     func getChecks(annotations:[SokolAnnotation]) -> Int{
         var i = 0
@@ -184,9 +227,9 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
                         followRouteUserRef.updateChildValues(["routes":self.routeIds])
                     }
                     let route = Route(id: id!, name: name , description: description, annotations: annotations)
-                    self.routes.append(route)
                     NSOperationQueue.mainQueue().addOperationWithBlock({() in
-                        self.tableView.reloadData()
+                        self.routes.append(route)
+                        self.createDictionary()
                     })
                 }
             })
@@ -239,20 +282,19 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
                     let route = Route(id: id, name: name , description: description, annotations: annotations)
                     let i = self.checkIdIndex(id)
                     if i == -1 {
-                        self.routes.append(route)
+                        
                         NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                            
-                            self.tableView.reloadData()
-                            
+                            self.routes.append(route)
+                            self.createDictionary()
                         })
                         
                         
                     }else{//We should update the value because the user changes something in the route
-                        self.routes.removeAtIndex(i)
-                        self.routes.insert(route, atIndex: i)
-                        let indexPath = NSIndexPath(forRow: (i), inSection: 0)
+                        
                         NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                            self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Right)
+                            self.routes.removeAtIndex(i)
+                            self.routes.insert(route, atIndex: i)
+                            self.createDictionary()
                         })
                         
                     }
@@ -263,10 +305,8 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
                     let i = self.checkIdIndex(id)
                     if i != -1{
                         if self.routes.count > 0{
-                        self.routes.removeAtIndex(i)
-                            NSOperationQueue.mainQueue().addOperationWithBlock({() in
-                                let indexPath = NSIndexPath(forRow: i, inSection: 0)
-                                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Left)
+                            NSOperationQueue.mainQueue().addOperationWithBlock({() in                                self.routes.removeAtIndex(i)
+                                self.createDictionary()
                             })
                         }
                     }
@@ -291,18 +331,20 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let unfollowActionButton = UITableViewRowAction(style: .Default, title: "Unfollow", handler: {(action,indexPath) in
             self.routes.removeAtIndex(indexPath.row)
-            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Left)
+            //self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Left)
+            self.createDictionary()
             let followRoutes = self.ref.child("followRoutesByUser")
             if let user = FIRAuth.auth()?.currentUser {
                 let followRoutesId = followRoutes.child(user.uid)
                 if self.routes.count == 0{
-                    followRoutes.removeValue()
+                    //followRoutesId.removeAllObservers()
+                    followRoutesId.removeValue()
                 }else{
                     var ids = [String]()
                     for a in self.routes {
                         ids.append(a.id)
                     }
-                    followRoutes.updateChildValues(["routes":ids])
+                    followRoutesId.updateChildValues(["routes":ids])
                 }
             }
         })
@@ -312,11 +354,37 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
     
     @IBAction func openFollowRoute(sender: AnyObject) {
         let viewController = UIStoryboard(name: "Follow", bundle: nil).instantiateViewControllerWithIdentifier("followRoute") as! FollowRouteViewController
-        viewController.route = searchController.active ? routesSearch[sender.tag] : routes[sender.tag]
+        if searchController.active{
+            viewController.route = routesSearch[sender.tag]
+        }else{
+            let row = ((sender.tag - 30000) % 10000)/10
+            let section = ((sender.tag - (row*10))-30000)/10000
+            if let r =  routesBySection[routesSectionTitles[section]]{
+                viewController.route = r[row]
+                
+            }
+        }
         self.presentViewController(viewController, animated: true, completion: nil)
     }
     @IBAction func toggleMenu(sender:AnyObject){
         NSNotificationCenter.defaultCenter().postNotificationName("toggleMenu",object:nil)
+    }
+    func createDictionary(){
+        routesBySection = [:]
+        for r in routes{
+            let key = r.name.substringToIndex(r.name.startIndex.advancedBy(1))
+            if var routesTemp = routesBySection[key]{
+                routesTemp.append(r)
+                routesBySection[key] = routesTemp
+            }else{
+                routesBySection[key] = [r]
+            }
+        }
+        routesSectionTitles = [String](routesBySection.keys)
+        NSOperationQueue.mainQueue().addOperationWithBlock({()
+            self.tableView.reloadSectionIndexTitles()
+            self.tableView.reloadData()
+        })
     }
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         if searchController.active {
@@ -329,7 +397,14 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
         if segue.identifier == "openFollowRoute" {
             if let indexPath = tableView.indexPathForSelectedRow {
                 let destinationController = segue.destinationViewController as! FollowRouteViewController
-                destinationController.route = searchController.active ? self.routesSearch[indexPath.row] : self.routes[indexPath.row]
+                if searchController.active{
+                    destinationController.route = self.routesSearch[indexPath.row]
+                }else{
+                    let key = routesSectionTitles[indexPath.section]
+                    if let r = routesBySection[key]{
+                        destinationController.route = r[indexPath.row]
+                    }
+                }
             }
         }
     }
