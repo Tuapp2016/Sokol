@@ -115,7 +115,11 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
             if searchController.active{
                 route = routesSearch[indexPath.row]
             }else{
-                route = routes[indexPath.row]
+                let key = routesSectionTitles[indexPath.section]
+                if let r = routesBySection[key] {
+                    route =  r[indexPath.row]
+                }
+
             }
             cell.nameText.text = route.name
             cell.descriptionText.text = route.descriptionRoute
@@ -381,6 +385,7 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
             }
         }
         routesSectionTitles = [String](routesBySection.keys)
+        routesSectionTitles = routesSectionTitles.sort({ $0 < $1 })
         NSOperationQueue.mainQueue().addOperationWithBlock({()
             self.tableView.reloadSectionIndexTitles()
             self.tableView.reloadData()
@@ -420,4 +425,5 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
             return nameMatch != nil
         })
     }
+    
 }
