@@ -19,16 +19,18 @@ class DetailRouteTableViewController: UITableViewController {
         super.viewDidLoad()
         let longPress = UILongPressGestureRecognizer(target: self, action: "movePoint:")
         tableView.addGestureRecognizer(longPress)
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-       
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        tabBarController?.tabBar.hidden = false
+
+        if let user = FIRAuth.auth()?.currentUser {
+            // User is signed in.
+        } else {
+            let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
+            self.presentViewController(viewController, animated: true, completion: nil)
+            
+        }
         navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationItem.hidesBackButton = false
         if let route = route {
@@ -66,6 +68,7 @@ class DetailRouteTableViewController: UITableViewController {
         cell.latitudeText.text = "Lat: " + String(lat)
         cell.longitudeText.text = "Lng " + String(lng)
         cell.checkpoint.on = check
+        cell.pointNameText.text = route?.annotations[indexPath.row].title
         cell.checkpoint.tag = indexPath.row
         cell.checkpoint.addTarget(self, action: "changeCheckpoint:", forControlEvents: .ValueChanged)
         // Configure the cell...
@@ -100,16 +103,19 @@ class DetailRouteTableViewController: UITableViewController {
             var lats = [String]()
             var lngs = [String]()
             var pointNames = [String]()
+            var ids = [String]()
             for a in route!.annotations{
                 checks.append(a.checkPoint)
                 lats.append(String(a.coordinate.latitude))
                 lngs.append(String(a.coordinate.longitude))
                 pointNames.append(a.title!)
+                ids.append(a.id!)
             }
             let values = ["latitudes":lats,
                           "longitudes":lngs,
                           "checkPoints":checks,
-                          "pointNames":pointNames
+                          "pointNames":pointNames,
+                          "ids":ids
             ]
             
             routeId.updateChildValues(values as [NSObject : AnyObject])

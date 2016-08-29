@@ -162,6 +162,13 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        if let _ = FIRAuth.auth()?.currentUser {
+            // User is signed in.
+        } else {
+            let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
+            self.presentViewController(viewController, animated: true, completion: nil)
+            
+        }
         tableView.reloadData()
     
     }

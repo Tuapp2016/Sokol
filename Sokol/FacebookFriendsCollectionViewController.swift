@@ -30,6 +30,15 @@ class FacebookFriendsCollectionViewController: UICollectionViewController,UIView
         getFriendsFacebook("me/friends")
 
     }
+    override func viewWillAppear(animated: Bool) {
+        if let user = FIRAuth.auth()?.currentUser {
+            // User is signed in.
+        } else {
+            let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
+            self.presentViewController(viewController, animated: true, completion: nil)
+            
+        }
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

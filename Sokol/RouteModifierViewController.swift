@@ -40,7 +40,7 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.requestAlwaysAuthorization()
-            locationManager.requestWhenInUseAuthorization()
+            //locationManager.requestWhenInUseAuthorization()
             locationManager.startUpdatingLocation()
             
         }
@@ -94,6 +94,7 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
         
         
     }
+
     func cancelPin(){
         addPin!.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -104,7 +105,8 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
         if text == "" {
             text = "Without description"
         }
-        let annotation = SokolAnnotation(coordinate: tappedCoordinate, title: text, subtitle: "This point is the number " + String((route!.annotations.count) + 1), checkPoint: checkPoint!.on)
+        let id = NSUUID().UUIDString
+        let annotation = SokolAnnotation(coordinate: tappedCoordinate, title: text, subtitle: "This point is the number " + String((route!.annotations.count) + 1), checkPoint: checkPoint!.on,id:id)
         route!.annotations.append(annotation)
         mapView.showAnnotations(route!.annotations, animated: true)
         calculateRoute()
@@ -112,6 +114,16 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        tabBarController?.tabBar.hidden = true
+        if let user = FIRAuth.auth()?.currentUser {
+            // User is signed in.
+        } else {
+            locationManager.stopUpdatingLocation()
+            locationManager.delegate = nil
+            let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
+            self.presentViewController(viewController, animated: true, completion: nil)
+            
+        }
         navigationController?.setNavigationBarHidden(true, animated: true)
         locationManager.startUpdatingLocation()
         mapView.showAnnotations(route!.annotations, animated: true)
@@ -136,19 +148,23 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
         var lngs = [String]()
         var checks = [Bool]()
         var pointNames = [String]()
+        var ids = [String]()
         for a in route!.annotations{
             lats.append(String(a.coordinate.latitude))
             lngs.append(String(a.coordinate.longitude))
             checks.append(a.checkPoint)
             pointNames.append(a.title!)
+            ids.append(a.id!)
             
         }
         let values = ["latitudes":lats,
                       "longitudes":lngs,
                       "checkPoints":checks,
-                      "pointNames":pointNames
+                      "pointNames":pointNames,
+                      "ids":ids
         ]
         routeID.updateChildValues(values as [NSObject : AnyObject])
+        self.mapView.showsUserLocation = false
         navigationController?.popToRootViewControllerAnimated(true)
         //self.dismissViewControllerAnimated(true, completion: nil)
         
@@ -265,7 +281,7 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
     func changePin(sender:UISwitch){
         let a = route!.annotations.removeAtIndex(sender.tag)
         mapView.removeAnnotation(a)
-        let newAnnotation = SokolAnnotation(coordinate: a.coordinate, title: a.title!, subtitle: a.subtitle!, checkPoint: sender.on)
+        let newAnnotation = SokolAnnotation(coordinate: a.coordinate, title: a.title!, subtitle: a.subtitle!, checkPoint: sender.on,id:a.id!)
         route!.annotations.insert(newAnnotation, atIndex: sender.tag)
         mapView.showAnnotations(route!.annotations, animated: true)
     }
@@ -319,6 +335,18 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
         }
         let newLength = text.characters.count + string.characters.count - range.length
         return newLength <= 15
+    }
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        switch status {
+        case .AuthorizedAlways:
+            locationManager.startUpdatingLocation()
+            mapView.showsUserLocation =  true
+        case .AuthorizedWhenInUse:
+            locationManager.startUpdatingLocation()
+            mapView.showsUserLocation =  true
+        default:
+            print("The user doesn't allow to know where he is")
+        }
     }
 
     /*

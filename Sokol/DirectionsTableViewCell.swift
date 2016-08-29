@@ -1,20 +1,16 @@
 //
-//  PointTableViewCell.swift
+//  DirectionsTableViewCell.swift
 //  Sokol
 //
-//  Created by Andres Rene Gutierrez on 04/07/2016.
+//  Created by Andres Rene Gutierrez on 11/08/2016.
 //  Copyright © 2016 Andres Rene Gutierrez. All rights reserved.
 //
 
 import UIKit
 
-class PointTableViewCell: UITableViewCell {
-
+class DirectionsTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var pointNameText: UILabel!
-    @IBOutlet weak var checkpoint: UISwitch!
-    @IBOutlet weak var longitudeText: UILabel!
-    @IBOutlet weak var latitudeText: UILabel!
+    @IBOutlet weak var direction: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
