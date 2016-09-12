@@ -46,6 +46,7 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
         }
         // Do any additional setup after loading the view.
     }
+  
     func addAnnotation(sender:UILongPressGestureRecognizer){
         if sender.state != .Ended {
             return

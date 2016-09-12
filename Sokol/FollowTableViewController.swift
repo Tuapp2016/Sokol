@@ -35,6 +35,7 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
 
         
     }
+  
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         if let _ = FIRAuth.auth()?.currentUser {
@@ -208,7 +209,7 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
             routeIdRef.observeSingleEventOfType(.Value, withBlock: {(snapshot)
                 in
                 if snapshot.value is NSNull{
-                    self.presentViewController(Utilities.alertMessage("Error", message: "This id doesn't exist.\n Please enter again the id"), animated: true, completion: nil)
+                    self.presentViewController(Utilities.alertMessage("Error", message: "This id doesn't exist.\n Please enter the id again"), animated: true, completion: nil)
                 }else {
                     let values = snapshot.value as! NSDictionary
                     let name =  values["name"] as! String
@@ -224,6 +225,7 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
                         let a = SokolAnnotation(coordinate: coord, title: names[index], subtitle: "This point is the number " + String(index + 1), checkPoint: check[index],id: id)
                         annotations.append(a)
                     }
+                    
                     let followRouteRef = self.ref.child("followRoutesByUser")
                     if let user = FIRAuth.auth()?.currentUser{
                         let followRouteUserRef = followRouteRef.child(user.uid)
@@ -234,6 +236,7 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
                     NSOperationQueue.mainQueue().addOperationWithBlock({() in
                         self.routes.append(route)
                         self.createDictionary()
+                        FIRMessaging.messaging().subscribeToTopic("/topics/"+id!)
                     })
                 }
             })
@@ -290,6 +293,9 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
                         NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                             self.routes.append(route)
                             self.createDictionary()
+                            
+                            FIRMessaging.messaging().subscribeToTopic("/topics/"+route.id)
+
                         })
                         
                         
@@ -334,7 +340,10 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
     }
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let unfollowActionButton = UITableViewRowAction(style: .Default, title: "Unfollow", handler: {(action,indexPath) in
-            self.routes.removeAtIndex(indexPath.row)
+            let route = self.routes.removeAtIndex(indexPath.row)
+            NSOperationQueue.mainQueue().addOperationWithBlock({() in
+                FIRMessaging.messaging().unsubscribeFromTopic("/topics/"+route.id)
+            })
             //self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Left)
             self.createDictionary()
             let followRoutes = self.ref.child("followRoutesByUser")

@@ -24,6 +24,7 @@ class LeftMenuTableViewController: UITableViewController {
         tableView.backgroundColor = UIColor(red: 22.0/255.0, green: 109.0/255.0, blue: 186.0/255.0, alpha: 1.0)
         
     }
+    
     override func viewWillAppear(animated: Bool) {
         tableView.reloadData()
         if let user = FIRAuth.auth()?.currentUser{

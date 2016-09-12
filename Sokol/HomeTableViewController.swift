@@ -44,6 +44,11 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "switchTabFollow", name: "switchTabFollow", object: nil)
         // Do any additional setup after loading the view.
     }
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        UIApplication.sharedApplication().keyWindow!.rootViewController = self
+        UIApplication.sharedApplication().keyWindow!.makeKeyAndVisible()
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

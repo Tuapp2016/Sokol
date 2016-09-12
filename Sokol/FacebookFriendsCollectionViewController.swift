@@ -30,6 +30,7 @@ class FacebookFriendsCollectionViewController: UICollectionViewController,UIView
         getFriendsFacebook("me/friends")
 
     }
+    
     override func viewWillAppear(animated: Bool) {
         if let user = FIRAuth.auth()?.currentUser {
             // User is signed in.

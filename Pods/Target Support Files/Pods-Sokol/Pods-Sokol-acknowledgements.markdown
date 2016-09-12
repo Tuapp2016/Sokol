@@ -25,11 +25,19 @@ Copyright 2016 Google
 
 Copyright 2016 Google Inc.
 
+## FirebaseMessaging
+
+Copyright 2016 Google Inc.
+
 ## GoogleAppUtilities
 
 Copyright 2015 Google Inc.
 
 ## GoogleAuthUtilities
+
+Copyright 2015 Google Inc.
+
+## GoogleIPhoneUtilities
 
 Copyright 2015 Google Inc.
 

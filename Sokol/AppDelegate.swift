@@ -58,7 +58,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
         let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge,.Sound], categories: nil)
         UIApplication.sharedApplication().registerUserNotificationSettings(settings)
         UIApplication.sharedApplication().cancelAllLocalNotifications()
+        UIApplication.sharedApplication().registerForRemoteNotifications()
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.tokenRefreshNotification),
+                                                         name: kFIRInstanceIDTokenRefreshNotification, object: nil)
         
         return FBSDKApplicationDelegate.sharedInstance().application(application,didFinishLaunchingWithOptions: launchOptions)
     }
@@ -78,6 +81,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
             sourceApplication: sourceApplication,
             annotation: annotation) ||  GIDSignIn.sharedInstance().handleURL(url,sourceApplication: options[UIApplicationOpenURLOptionsSourceApplicationKey] as? String,annotation: options[UIApplicationOpenURLOptionsAnnotationKey])
     }
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+        let information = userInfo["aps"] as! NSDictionary
+        dispatch_async(dispatch_get_main_queue(), {
+            UIApplication.sharedApplication().keyWindow?.rootViewController!.presentViewController(Utilities.alertMessage("Notification", message: "Hola"), animated: true, completion: nil)
+            return
+            
+        })
+        print(userInfo)
+
+        
+    }
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        FIRInstanceID.instanceID().setAPNSToken(deviceToken, type: FIRInstanceIDAPNSTokenType.Sandbox)
+    }
     
 
     func applicationWillResignActive(application: UIApplication) {
@@ -86,8 +103,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        FIRMessaging.messaging().disconnect()
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
@@ -96,6 +112,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
 
     func applicationDidBecomeActive(application: UIApplication) {
         FBSDKAppEvents.activateApp()
+        connectToFCM()
     }
    
     
@@ -108,8 +125,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
     func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!,
                 withError error: NSError!) {
         if let error = error {
-        self.window?.rootViewController?.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
-            return
+            
+            dispatch_async(dispatch_get_main_queue(), {
+                UIApplication.sharedApplication().keyWindow?.rootViewController!.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
+                return
+                
+            })
+
+        
         }
         
         let authentication = user.authentication
@@ -158,16 +181,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
     }
     func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
         if let r =  region as? CLCircularRegion{
-            let geofence = r as! Geofence
-            let notification = UILocalNotification()
-            notification.alertTitle = "You are coressed for the checkpoint"
-            let text = geofence.sokolAnnotation.title! == "Without description" ? "without title":"with the title: \(geofence.sokolAnnotation.title!)"
-            let time = NSDate()
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd hh:mm"
-            notification.alertBody = "\(geofence.sokolAnnotation.subtitle), \(text)\n\(dateFormatter.stringFromDate(time))"
-            notification.soundName = "Default"
-            UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+            if UIApplication.sharedApplication().applicationState == .Active{
+                dispatch_async(dispatch_get_main_queue(), {
+                    UIApplication.sharedApplication().keyWindow?.rootViewController!.presentViewController(Utilities.alertMessage("Checkpoint", message: "You have just crossed for a checkpoint"), animated: true, completion: nil)
+                    return
+                    
+                })
+                
+            }else{
+                let geofence = r as! Geofence
+                let notification = UILocalNotification()
+                notification.alertTitle = "You are coressed for the checkpoint"
+                let text = geofence.sokolAnnotation.title! == "Without description" ? "without title":"with the title: \(geofence.sokolAnnotation.title!)"
+                let time = NSDate()
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd hh:mm"
+                notification.alertBody = "\(geofence.sokolAnnotation.subtitle), \(text)\n\(dateFormatter.stringFromDate(time))"
+                notification.soundName = "Default"
+                UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+            }
         }
         
         
@@ -175,6 +207,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
     }
     func locationManager(manager: CLLocationManager, didExitRegion region: CLRegion) {
         
+    }
+    func tokenRefreshNotification(notification: NSNotification){
+        if let refresedToken = FIRInstanceID.instanceID().token() {
+            print("Instance ID \(refresedToken)")
+        }
+        connectToFCM()
+    }
+    func connectToFCM(){
+        FIRMessaging.messaging().connectWithCompletion{ (error) in
+            if (error != nil) {
+                print("Unable to connect with FCM. \(error)" )
+            }else{
+                print("Connected to FCM.")
+            }
+            
+        }
     }
     
 

@@ -56,6 +56,7 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
     }
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
+       
         checkCount = getCheckPoints()
         
         mapView.showAnnotations(route!.annotations,animated: true)

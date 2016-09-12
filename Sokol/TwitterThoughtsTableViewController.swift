@@ -32,6 +32,7 @@ class TwitterThoughtsTableViewController: UITableViewController,TWTRTweetViewDel
         
                 // Do any additional setup after loading the view.
     }
+   
     override func viewWillAppear(animated: Bool) {
         if let user = FIRAuth.auth()?.currentUser {
             // User is signed in.
