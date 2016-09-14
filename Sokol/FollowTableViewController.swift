@@ -339,7 +339,7 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
         }
     }
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let unfollowActionButton = UITableViewRowAction(style: .Default, title: "Unfollow", handler: {(action,indexPath) in
+        let unfollowActionButton = UITableViewRowAction(style: .Default, title: "  Unfollow  ", handler: {(action,indexPath) in
             let route = self.routes.removeAtIndex(indexPath.row)
             NSOperationQueue.mainQueue().addOperationWithBlock({() in
                 FIRMessaging.messaging().unsubscribeFromTopic("/topics/"+route.id)

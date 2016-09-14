@@ -46,6 +46,11 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
         }
         // Do any additional setup after loading the view.
     }
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        UIApplication.sharedApplication().keyWindow!.rootViewController = self
+        UIApplication.sharedApplication().keyWindow!.makeKeyAndVisible()
+    }
   
     func addAnnotation(sender:UILongPressGestureRecognizer){
         if sender.state != .Ended {

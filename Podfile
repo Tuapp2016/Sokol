@@ -14,6 +14,8 @@ target 'Sokol' do
   pod 'TwitterKit'
   pod 'TwitterCore'
   pod 'Polyline', '~> 3.0'
+  pod 'ReachabilitySwift'
+
 
   # Pods for Sokol
 

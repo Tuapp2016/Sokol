@@ -13,6 +13,7 @@ import FBSDKCoreKit
 import Fabric
 import TwitterKit
 
+
 class ViewController: UIViewController,GIDSignInUIDelegate{
     
     @IBOutlet weak var signInButtonGoogle: GIDSignInButton!

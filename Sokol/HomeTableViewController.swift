@@ -12,6 +12,8 @@ import TwitterKit
 import FBSDKCoreKit
 import FBSDKLoginKit
 import MapKit
+import ReachabilitySwift
+
 
 class HomeTableViewController: UITableViewController,UIViewControllerPreviewingDelegate,UISearchResultsUpdating {
     var routesBySection:[String:[Route]] = [:]
@@ -21,6 +23,8 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
     var routesId = [String]()
     let ref = FIRDatabase.database().reference()
     var searchController:UISearchController!
+    var reachability:Reachability?
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +52,24 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
         super.viewDidAppear(animated)
         UIApplication.sharedApplication().keyWindow!.rootViewController = self
         UIApplication.sharedApplication().keyWindow!.makeKeyAndVisible()
+        do{
+            reachability = try Reachability.reachabilityForInternetConnection()
+            if (reachability!.isReachableViaWiFi() || reachability!.isReachableViaWWAN())  {
+                if let firebaseToken = FIRInstanceID.instanceID().token(){
+                    let strategy: RegisterToken =  RegisterToken()
+                    let sendeMessageClient:SendMessageClient = SendMessageClient(strategy: strategy)
+                    sendeMessageClient.sendMessage(firebaseToken, title: "Register token", id: nil, page: nil)
+                }
+            }else{
+                if let firebaseToken = FIRInstanceID.instanceID().token(){
+                    SmallCache.sharedInstance.cacheOpertaions["token"] = ["token": firebaseToken]
+                }
+            }
+        }catch{
+            print("Error")
+        }
+        
+        
     }
 
     override func didReceiveMemoryWarning() {

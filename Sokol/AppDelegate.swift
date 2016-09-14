@@ -13,12 +13,13 @@ import FBSDKCoreKit
 import Fabric
 import TwitterKit
 import CoreLocation
-
+import ReachabilitySwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocationManagerDelegate {
     
     var window: UIWindow?
+    var reachability: Reachability?
     let locationMannager = CLLocationManager()
     
     
@@ -36,8 +37,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
         let followRoutes = ref.child("followRoutesByUser")
         followRoutes.keepSynced(true)
     }
+    
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        do{
+            reachability = try Reachability.reachabilityForInternetConnection()
+        }catch {
+            print("Unable to create Reachibility")
+        }
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "reachabilityChanged:", name: ReachabilityChangedNotification, object: reachability)
+        do{
+            try reachability?.startNotifier()
+        }catch{
+            print("Could not start reachability notifier")
+        }
         UINavigationBar.appearance().barTintColor = UIColor(red: 22.0/255.0, green: 109.0/255.0, blue: 186.0/255.0, alpha: 1.0)
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
         if let barFont = UIFont(name: "Avenir-Light", size: 24){
@@ -83,13 +96,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
     }
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         let information = userInfo["aps"] as! NSDictionary
+        
+        let alert = information["alert"] as! NSDictionary
         dispatch_async(dispatch_get_main_queue(), {
-            UIApplication.sharedApplication().keyWindow?.rootViewController!.presentViewController(Utilities.alertMessage("Notification", message: "Hola"), animated: true, completion: nil)
+            UIApplication.sharedApplication().keyWindow?.rootViewController!.presentViewController(Utilities.alertMessage(alert["title"] as! String, message: alert["body"] as! String ), animated: true, completion: nil)
             return
             
         })
         print(userInfo)
-
         
     }
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
@@ -104,6 +118,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
 
     func applicationDidEnterBackground(application: UIApplication) {
         FIRMessaging.messaging().disconnect()
+    
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
@@ -113,6 +128,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
     func applicationDidBecomeActive(application: UIApplication) {
         FBSDKAppEvents.activateApp()
         connectToFCM()
+        
     }
    
     
@@ -181,10 +197,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
     }
     func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
         if let r =  region as? CLCircularRegion{
+            let dateFormater = NSDateFormatter()
+            dateFormater.dateFormat = "yyyy-MM-dd, HH:mm:ss"
+            dateFormater.timeZone = NSTimeZone(name: "COT")
+            let str = dateFormater.stringFromDate(NSDate())
+            let geofence = r as! Geofence
+
+            if reachability?.currentReachabilityStatus == .ReachableViaWiFi || reachability?.currentReachabilityStatus == .ReachableViaWWAN {
+                //Here we must connect with our endpoint and send the notification
+                let strategy:SendTopic = SendTopic()
+                let sendMessageClient:SendMessageClient = SendMessageClient(strategy: strategy)
+                sendMessageClient.sendMessage("the route with id: \(geofence.identifier) just crossed for a checkpoint at \(str)", title: "Notification checkpoint", id: geofence.identifier, page: nil)
+            }else{
+                SmallCache.sharedInstance.cacheOpertaions[NSUUID().UUIDString] = ["title":"Notification checkpoint","body":"The route with id: \(geofence.identifier) just crossed for a checkpoint at \(str)","id":geofence.identifier,"time":str]
+            }
             if UIApplication.sharedApplication().applicationState == .Active{
                 dispatch_async(dispatch_get_main_queue(), {
                     UIApplication.sharedApplication().keyWindow?.rootViewController!.presentViewController(Utilities.alertMessage("Checkpoint", message: "You have just crossed for a checkpoint"), animated: true, completion: nil)
-                    return
                     
                 })
                 
@@ -193,10 +222,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
                 let notification = UILocalNotification()
                 notification.alertTitle = "You are coressed for the checkpoint"
                 let text = geofence.sokolAnnotation.title! == "Without description" ? "without title":"with the title: \(geofence.sokolAnnotation.title!)"
-                let time = NSDate()
-                let dateFormatter = NSDateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd hh:mm"
-                notification.alertBody = "\(geofence.sokolAnnotation.subtitle), \(text)\n\(dateFormatter.stringFromDate(time))"
+                let dateFormater = NSDateFormatter()
+                dateFormater.dateFormat = "yyyy-MM-dd, HH:mm:ss"
+                dateFormater.timeZone = NSTimeZone(name: "COT")
+                let str = dateFormater.stringFromDate(NSDate())
+                notification.alertBody = "\(geofence.sokolAnnotation.subtitle), \(text)\n\(str)"
                 notification.soundName = "Default"
                 UIApplication.sharedApplication().presentLocalNotificationNow(notification)
             }
@@ -204,6 +234,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
         
         
     
+    }
+    func reachabilityChanged(note:NSNotification){
+        let reachability = note.object as! Reachability
+        if reachability.isReachable() {
+            let strategy:SendTopic = SendTopic()
+            let sendMessageClient:SendMessageClient = SendMessageClient(strategy: strategy)
+            for (key,value) in SmallCache.sharedInstance.cacheOpertaions{
+                sendMessageClient.sendMessage(value["body"]!, title: value["title"]!, id: value["id"], page: nil)
+            }
+            SmallCache.sharedInstance.cacheOpertaions = [:]
+            
+
+        }else{
+            print("Network not reachable")
+        }
     }
     func locationManager(manager: CLLocationManager, didExitRegion region: CLRegion) {
         
@@ -223,6 +268,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
             }
             
         }
+    }
+    func getDocumentsDirectory() -> String {
+        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
     }
     
 
