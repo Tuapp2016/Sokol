@@ -8,15 +8,24 @@
 
 import Foundation
 
-class SmallCache{
-    var cacheOpertaions:[String:[String:String]] = [:]
-    static let sharedInstance = SmallCache(cacheOpertaions: nil)
-    private init(cacheOpertaions:[String:[String:String]]?) {
-        if let a = cacheOpertaions{
-            self.cacheOpertaions = a
-        }else{
-            self.cacheOpertaions = [:]
+class SmallCache: NSObject,NSCoding{
+    var cacheOperations:NSMutableDictionary = [:]
+    static let sharedInstance = SmallCache(cacheOperations: nil)
+    private init(cacheOperations:NSMutableDictionary?){
+        if let a = cacheOperations{
+            self.cacheOperations = a
         }
+        super.init()
     }
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(cacheOperations,forKey: "sokolCache")
+    }
+    required convenience init?(coder aDecoder: NSCoder) {
+        let cacheOperations = aDecoder.decodeObjectForKey("sokolCache") as! NSMutableDictionary
+        
+        self.init(cacheOperations: cacheOperations)
+    }
+    
+
     
 }

@@ -118,6 +118,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
 
     func applicationDidEnterBackground(application: UIApplication) {
         FIRMessaging.messaging().disconnect()
+        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(SmallCache.sharedInstance, toFile: cacheURL().path!)
+        if !isSuccessfulSave {
+            print("Failed to save meals...")
+        }
+        
+        
     
     }
 
@@ -128,7 +134,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
     func applicationDidBecomeActive(application: UIApplication) {
         FBSDKAppEvents.activateApp()
         connectToFCM()
-        
+        if let cache = NSKeyedUnarchiver.unarchiveObjectWithFile(cacheURL().path!) as? SmallCache{
+            SmallCache.sharedInstance.cacheOperations = cache.cacheOperations
+        }
     }
    
     
@@ -141,11 +149,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
     func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!,
                 withError error: NSError!) {
         if let error = error {
-            
             dispatch_async(dispatch_get_main_queue(), {
                 UIApplication.sharedApplication().keyWindow?.rootViewController!.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
                 return
-                
             })
 
         
@@ -162,8 +168,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
                     self.window?.rootViewController?.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
                 }else{
                     let ref = FIRDatabase.database().reference()
-                //ref.removeAllObservers()
-                    
+                    //ref.removeAllObservers()
                     Utilities.user = user
                 
                     Utilities.provider = "google.com"
@@ -209,7 +214,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
                 let sendMessageClient:SendMessageClient = SendMessageClient(strategy: strategy)
                 sendMessageClient.sendMessage("the route with id: \(geofence.identifier) just crossed for a checkpoint at \(str)", title: "Notification checkpoint", id: geofence.identifier, page: nil)
             }else{
-                SmallCache.sharedInstance.cacheOpertaions[NSUUID().UUIDString] = ["title":"Notification checkpoint","body":"The route with id: \(geofence.identifier) just crossed for a checkpoint at \(str)","id":geofence.identifier,"time":str]
+                SmallCache.sharedInstance.cacheOperations[NSUUID().UUIDString] = ["title":"Notification checkpoint","body":"The route with id: \(geofence.identifier) just crossed for a checkpoint at \(str)","id":geofence.identifier,"time":str]
             }
             if UIApplication.sharedApplication().applicationState == .Active{
                 dispatch_async(dispatch_get_main_queue(), {
@@ -239,11 +244,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
         let reachability = note.object as! Reachability
         if reachability.isReachable() {
             let strategy:SendTopic = SendTopic()
+            let strategyRegister:RegisterToken = RegisterToken()
             let sendMessageClient:SendMessageClient = SendMessageClient(strategy: strategy)
-            for (key,value) in SmallCache.sharedInstance.cacheOpertaions{
-                sendMessageClient.sendMessage(value["body"]!, title: value["title"]!, id: value["id"], page: nil)
+            for (key,value) in SmallCache.sharedInstance.cacheOperations{
+                let myValue = value as? [String:String]
+                switch key as! String {
+                case "token":
+                    sendMessageClient.strategy = strategyRegister
+                    sendMessageClient.sendMessage(myValue!["token"]!, title:"Register token" , id: nil, page:nil )
+                default:
+                    sendMessageClient.strategy = strategy
+                    sendMessageClient.sendMessage(myValue!["body"]!, title: myValue!["title"]!, id: myValue!["id"], page: nil)
+                }
+                
             }
-            SmallCache.sharedInstance.cacheOpertaions = [:]
+            SmallCache.sharedInstance.cacheOperations = [:]
             
 
         }else{
@@ -269,14 +284,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
             
         }
     }
-    func getDocumentsDirectory() -> String {
-        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-        let documentsDirectory = paths[0]
-        return documentsDirectory
+    func cacheURL() -> NSURL{
+        let documentDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+        return documentDirectory.URLByAppendingPathComponent("sokol")
     }
     
-
-
 
 }
 

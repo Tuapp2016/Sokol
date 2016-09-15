@@ -57,12 +57,13 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
             if (reachability!.isReachableViaWiFi() || reachability!.isReachableViaWWAN())  {
                 if let firebaseToken = FIRInstanceID.instanceID().token(){
                     let strategy: RegisterToken =  RegisterToken()
+                    SmallCache.sharedInstance.cacheOperations["token"] = nil
                     let sendeMessageClient:SendMessageClient = SendMessageClient(strategy: strategy)
                     sendeMessageClient.sendMessage(firebaseToken, title: "Register token", id: nil, page: nil)
                 }
             }else{
                 if let firebaseToken = FIRInstanceID.instanceID().token(){
-                    SmallCache.sharedInstance.cacheOpertaions["token"] = ["token": firebaseToken]
+                    SmallCache.sharedInstance.cacheOperations["token"] = ["token": firebaseToken]
                 }
             }
         }catch{

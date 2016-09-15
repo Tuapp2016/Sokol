@@ -349,7 +349,7 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
                 
                 sendMessageClient.sendMessage("The route with id: \(route!.id) just started at \(str)", title: "Notification start route", id: route?.id, page: nil)
             }else{
-                SmallCache.sharedInstance.cacheOpertaions["startRoute"] = ["title":"Notification start route","body":"The route with id: \(route!.id) just started at \(str)","id":route!.id,"time":str]
+                SmallCache.sharedInstance.cacheOperations["startRoute"] = ["title":"Notification start route","body":"The route with id: \(route!.id) just started at \(str)","id":route!.id,"time":str]
             }
             cancel.setTitle("Finish route", forState: .Normal)
             
@@ -395,7 +395,7 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
                 let sendMessageClient:SendMessageClient = SendMessageClient(strategy: strategy)
                 sendMessageClient.sendMessage("The route with id: \(route!.id) just finished at \(str)", title: "Notification finish route", id: route?.id, page: nil)
             }else{
-                SmallCache.sharedInstance.cacheOpertaions["finishRoute"] = ["title":"Notification finish route","body":"The route with id: \(route!.id) just finished at \(str))","id":route!.id,"time":str]
+                SmallCache.sharedInstance.cacheOperations["finishRoute"] = ["title":"Notification finish route","body":"The route with id: \(route!.id) just finished at \(str))","id":route!.id,"time":str]
             }
             is3D = false
             locationManager!.stopUpdatingLocation()
