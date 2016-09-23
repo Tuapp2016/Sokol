@@ -13,13 +13,14 @@ import FBSDKCoreKit
 import Fabric
 import TwitterKit
 import CoreLocation
-
+import ReachabilitySwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocationManagerDelegate {
     
     var window: UIWindow?
-    let locationMannager = CLLocationManager()
+    var reachability: Reachability?
+    let locationManager = CLLocationManager()
     
     
     override init() {
@@ -36,8 +37,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
         let followRoutes = ref.child("followRoutesByUser")
         followRoutes.keepSynced(true)
     }
+    
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        do{
+            reachability = try Reachability.reachabilityForInternetConnection()
+        }catch {
+            print("Unable to create Reachibility")
+        }
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "reachabilityChanged:", name: ReachabilityChangedNotification, object: reachability)
+        do{
+            try reachability?.startNotifier()
+        }catch{
+            print("Could not start reachability notifier")
+        }
         UINavigationBar.appearance().barTintColor = UIColor(red: 22.0/255.0, green: 109.0/255.0, blue: 186.0/255.0, alpha: 1.0)
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
         if let barFont = UIFont(name: "Avenir-Light", size: 24){
@@ -53,12 +66,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
         GIDSignIn.sharedInstance().delegate = self
         Twitter.sharedInstance().startWithConsumerKey(Constants.TWITTER_KEY, consumerSecret: Constants.TWITTER_SECRET_KEY)
         Fabric.with([Twitter.self])
-        locationMannager.delegate = self
-        locationMannager.requestAlwaysAuthorization()
+        locationManager.delegate = self
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.requestAlwaysAuthorization()
+            locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+            locationManager.distanceFilter = kCLDistanceFilterNone
+            locationManager.activityType = .AutomotiveNavigation
+        }
         let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge,.Sound], categories: nil)
         UIApplication.sharedApplication().registerUserNotificationSettings(settings)
         UIApplication.sharedApplication().cancelAllLocalNotifications()
+        UIApplication.sharedApplication().registerForRemoteNotifications()
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.tokenRefreshNotification),
+                                                         name: kFIRInstanceIDTokenRefreshNotification, object: nil)
         
         return FBSDKApplicationDelegate.sharedInstance().application(application,didFinishLaunchingWithOptions: launchOptions)
     }
@@ -78,6 +99,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
             sourceApplication: sourceApplication,
             annotation: annotation) ||  GIDSignIn.sharedInstance().handleURL(url,sourceApplication: options[UIApplicationOpenURLOptionsSourceApplicationKey] as? String,annotation: options[UIApplicationOpenURLOptionsAnnotationKey])
     }
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+        let information = userInfo["aps"] as! NSDictionary
+        
+        let alert = information["alert"] as! NSDictionary
+        showAlert( alert["title"] as! String, message: alert["body"] as! String)
+        print(userInfo)
+        
+    }
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        FIRInstanceID.instanceID().setAPNSToken(deviceToken, type: FIRInstanceIDAPNSTokenType.Sandbox)
+    }
     
 
     func applicationWillResignActive(application: UIApplication) {
@@ -86,8 +118,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        FIRMessaging.messaging().disconnect()
+        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(SmallCache.sharedInstance, toFile: cacheURL().path!)
+        if !isSuccessfulSave {
+            print("Failed to save meals...")
+        }
+        
+        
+    
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
@@ -96,6 +134,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
 
     func applicationDidBecomeActive(application: UIApplication) {
         FBSDKAppEvents.activateApp()
+        connectToFCM()
+        if let cache = NSKeyedUnarchiver.unarchiveObjectWithFile(cacheURL().path!) as? SmallCache{
+            SmallCache.sharedInstance.cacheOperations = cache.cacheOperations
+        }
     }
    
     
@@ -108,8 +150,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
     func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!,
                 withError error: NSError!) {
         if let error = error {
-        self.window?.rootViewController?.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
-            return
+            self.showAlert("Error", message: "There was an error")
         }
         
         let authentication = user.authentication
@@ -120,16 +161,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
             FIRAuth.auth()?.signInWithCredential(credential, completion:{(user,error) in
             //Here we need to save the data about the user
                 if error != nil {
-                    self.window?.rootViewController?.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
+                    self.showAlert("Error", message: "There was an error when we tried to make the log in")
+                    
                 }else{
                     let ref = FIRDatabase.database().reference()
-                //ref.removeAllObservers()
-                    
+                    //ref.removeAllObservers()
                     Utilities.user = user
                 
                     Utilities.provider = "google.com"
 
-                    //let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
+                    
 
                     let userRef = ref.child("users")
                     let userIdRef = userRef.child((user?.uid)!)
@@ -139,15 +180,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
                         }
                         
                     })
-                    //userIdRef.removeAllObservers()
-                    //self.window?.rootViewController?.presentViewController(viewController, animated: true, completion: nil)
+                    
                 }
             })
         }else{
             
             FIRAuth.auth()?.currentUser?.linkWithCredential(credential, completion: {(user, error) in
                 if error != nil {
-                   self.window?.rootViewController?.presentViewController(Utilities.alertMessage("error", message:"There was an error"), animated: false, completion: nil)
+                    self.showAlert("Error", message: "There was an error when we tried to link your account")
+                   
                 }else{
                     Utilities.user = user
                     Utilities.button!.hidden = true
@@ -158,27 +199,111 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
     }
     func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
         if let r =  region as? CLCircularRegion{
-            let geofence = r as! Geofence
-            let notification = UILocalNotification()
-            notification.alertTitle = "You are coressed for the checkpoint"
-            let text = geofence.sokolAnnotation.title! == "Without description" ? "without title":"with the title: \(geofence.sokolAnnotation.title!)"
-            let time = NSDate()
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd hh:mm"
-            notification.alertBody = "\(geofence.sokolAnnotation.subtitle), \(text)\n\(dateFormatter.stringFromDate(time))"
-            notification.soundName = "Default"
-            UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+            let dateFormater = NSDateFormatter()
+            dateFormater.dateFormat = "yyyy-MM-dd, HH:mm:ss"
+            dateFormater.timeZone = NSTimeZone(name: "COT")
+            let str = dateFormater.stringFromDate(NSDate())
+            //let geofence = r as! Geofence
+            let ids = r.identifier.componentsSeparatedByString("SOKOL")
+            if reachability?.currentReachabilityStatus == .ReachableViaWiFi || reachability?.currentReachabilityStatus == .ReachableViaWWAN {
+                let strategy:SendTopic = SendTopic()
+                let sendMessageClient:SendMessageClient = SendMessageClient(strategy: strategy)
+                sendMessageClient.sendMessage("the route with id: \(ids[1]) just crossed for a checkpoint with id: \(ids[0]) at \(str)", title: "Notification checkpoint", id: ids[1], page: nil)
+            }else{
+                SmallCache.sharedInstance.cacheOperations[NSUUID().UUIDString] = ["title":"Notification checkpoint","body":"The route  with id: \(ids[1]) just crossed for a checkpoint with id: \(ids[0]) at \(str)","id":ids[1],"time":str]
+            }
+            if UIApplication.sharedApplication().applicationState == .Active{
+                showAlert("Checkpoint", message: "You have just coressed for a checkpoint")
+                
+            }else{
+                
+                let notification = UILocalNotification()
+                notification.alertTitle = "Checkpoint"
+                
+                let dateFormater = NSDateFormatter()
+                dateFormater.dateFormat = "yyyy-MM-dd, HH:mm:ss"
+                dateFormater.timeZone = NSTimeZone(name: "COT")
+                let str = dateFormater.stringFromDate(NSDate())
+                notification.alertBody = "You have just crossed for the checkpoint with id: \(ids[0]) in the route \(ids[1]) at \(str)"
+                notification.soundName = "Default"
+                UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+            }
+        }else{
+            showAlert("Checkpoint", message: "There was an error with the chekcpoint")
         }
         
         
     
     }
+    func reachabilityChanged(note:NSNotification){
+        let reachability = note.object as! Reachability
+        if reachability.isReachable() {
+            let strategy:SendTopic = SendTopic()
+            let strategyRegister:RegisterToken = RegisterToken()
+            let sendMessageClient:SendMessageClient = SendMessageClient(strategy: strategy)
+            for (key,value) in SmallCache.sharedInstance.cacheOperations{
+                let myValue = value as? [String:String]
+                switch key as! String {
+                case "token":
+                    sendMessageClient.strategy = strategyRegister
+                    sendMessageClient.sendMessage(myValue!["token"]!, title:"Register token" , id: nil, page:nil )
+                default:
+                    sendMessageClient.strategy = strategy
+                    sendMessageClient.sendMessage(myValue!["body"]!, title: myValue!["title"]!, id: myValue!["id"], page: nil)
+                }
+                
+            }
+            SmallCache.sharedInstance.cacheOperations = [:]
+            
+
+        }else{
+            print("Network not reachable")
+        }
+    }
     func locationManager(manager: CLLocationManager, didExitRegion region: CLRegion) {
         
     }
+    func tokenRefreshNotification(notification: NSNotification){
+        if let refresedToken = FIRInstanceID.instanceID().token() {
+            print("Instance ID \(refresedToken)")
+        }
+        connectToFCM()
+    }
+    func connectToFCM(){
+        FIRMessaging.messaging().connectWithCompletion{ (error) in
+            if (error != nil) {
+                print("Unable to connect with FCM. \(error)" )
+            }else{
+                print("Connected to FCM.")
+            }
+            
+        }
+    }
+    func cacheURL() -> NSURL{
+        let documentDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+        return documentDirectory.URLByAppendingPathComponent("sokol")
+    }
     
 
-
-
 }
+extension AppDelegate{
+    func showAlert(title:String,message:String){
+        dispatch_async(dispatch_get_main_queue(), {
+                       var topWindow: UIWindow = UIWindow(frame: UIScreen.mainScreen().bounds)
+            topWindow.rootViewController = UIViewController()
+            topWindow.windowLevel = UIWindowLevelAlert + 1
+            let alertController =  UIAlertController(title: title, message: message, preferredStyle: .Alert)
+            let okAcion = UIAlertAction(title: "OK", style: .Cancel, handler: {(action) -> Void in
+                topWindow.hidden = true
+            })
+            alertController.addAction(okAcion)
+            topWindow.makeKeyAndVisible()
+            topWindow.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
+            
+        })
+
+    }
+}
+
+
 

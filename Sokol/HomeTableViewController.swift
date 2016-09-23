@@ -12,6 +12,8 @@ import TwitterKit
 import FBSDKCoreKit
 import FBSDKLoginKit
 import MapKit
+import ReachabilitySwift
+
 
 class HomeTableViewController: UITableViewController,UIViewControllerPreviewingDelegate,UISearchResultsUpdating {
     var routesBySection:[String:[Route]] = [:]
@@ -21,6 +23,8 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
     var routesId = [String]()
     let ref = FIRDatabase.database().reference()
     var searchController:UISearchController!
+    var reachability:Reachability?
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,15 +38,42 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
         if traitCollection.forceTouchCapability == .Available {
             registerForPreviewingWithDelegate(self, sourceView: view)
         }
-        tableView.separatorStyle = .None
-        self.tableView.rowHeight = 150
-        self.tableView.setContentOffset(CGPointMake(0, 44.0), animated: false)
+        self.tableView.estimatedRowHeight = 150
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.separatorStyle = .SingleLine
+        tableView.tableFooterView = UIView()
+
+        //self.tableView.setContentOffset(CGPointMake(0, 100.0), animated: false)
         
         NSNotificationCenter.defaultCenter().addObserver(self,selector: "switchTabRoutes", name: "switchTabRoutes", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "switchTabProfile", name: "switchTabProfile", object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "switchTabFollow", name: "switchTabFollow", object: nil)
         // Do any additional setup after loading the view.
+    }
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        //UIApplication.sharedApplication().keyWindow!.rootViewController = self
+        //UIApplication.sharedApplication().keyWindow!.makeKeyAndVisible()
+        do{
+            reachability = try Reachability.reachabilityForInternetConnection()
+            if (reachability!.isReachableViaWiFi() || reachability!.isReachableViaWWAN())  {
+                if let firebaseToken = FIRInstanceID.instanceID().token(){
+                    let strategy: RegisterToken =  RegisterToken()
+                    SmallCache.sharedInstance.cacheOperations["token"] = nil
+                    let sendeMessageClient:SendMessageClient = SendMessageClient(strategy: strategy)
+                    sendeMessageClient.sendMessage(firebaseToken, title: "Register token", id: nil, page: nil)
+                }
+            }else{
+                if let firebaseToken = FIRInstanceID.instanceID().token(){
+                    SmallCache.sharedInstance.cacheOperations["token"] = ["token": firebaseToken]
+                }
+            }
+        }catch{
+            print("Error")
+        }
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -165,17 +196,7 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
         cell.descriptionText.text =  route.descriptionRoute
         let checks = getChecks(route.annotations)
         cell.informationText.text = "This route has " + String(checks) + " checkpoints"
-        cell.cardView.layer.masksToBounds = false
-        cell.cardView.layer.cornerRadius = 10
-        cell.cardView.layer.shadowOffset = CGSizeMake(-0.2, -0.2)
-        if searchController.active{
-            cell.cardView.tag = indexPath.row
-        }else{
-            cell.cardView.tag = ((indexPath.section * 10000)+30000) + (indexPath.row*10)
-        }
-        //let path:UIBezierPath = UIBezierPath(rect: cell.cardView.bounds)
-        //cell.cardView.layer.shadowPath = path.CGPath
-        cell.cardView.layer.shadowOpacity = 0.2
+        
         return cell
         
     }
@@ -190,6 +211,7 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
     }
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let headerView = view as! UITableViewHeaderFooterView
+        headerView.backgroundColor = UIColor.grayColor()
         headerView.textLabel?.font = UIFont(name: "Avenir", size: 25.0)
     }
 
@@ -310,35 +332,60 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
         }
         return -1
     }
+    func deleteRoute(id:String){
+        var i = 0
+        var existID = false
+        for r in routes{
+            if r.id == id {
+                existID = true
+                break
+            }
+            i += 1
+        }
+        if existID{
+            routes.removeAtIndex(i)
+        }
+    }
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let shareActionButton = UITableViewRowAction(style: .Default, title: "Share", handler: {(action,indexPath) in
-            let route = self.routes[indexPath.row]
-            let text = "This is the code of my route\n Please subscribe to it.\n The route id is " + route.id
-            let activityController = UIActivityViewController(activityItems: [text], applicationActivities: nil)
-            self.presentViewController(activityController, animated: true, completion: nil)
-        })
-        let deleteActionButton = UITableViewRowAction(style: .Default, title: "  Delete          ", handler: {(action,indexPath) in
-            let route = self.routes.removeAtIndex(indexPath.row)
-            //self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Left)
-            self.createDictionary()
-            let routes = self.ref.child("routes")
-            let routeId = routes.child(route.id)
-            routeId.removeAllObservers()
-            routeId.removeValue()
-            let userByRoute = self.ref.child("userByRoutes")
-            if let user = FIRAuth.auth()?.currentUser {
-                let userByRouteId = userByRoute.child(user.uid)
-                if self.routes.count == 0 {
-                    
-                    userByRouteId.removeValue()
-                }else{
-                    var ids = [String]()
-                    for a in self.routes {
-                        ids.append(a.id)
-                    }
-                    userByRouteId.setValue(["routes":ids])
-                }
+            let key = self.routesSectionTitles[indexPath.section]
+            if let r = self.routesBySection[key]{
+                let route = r[indexPath.row]
+                let text = "This is the code of my route\n Please subscribe to it.\n The route id is " + route.id
+                let activityController = UIActivityViewController(activityItems: [text], applicationActivities: nil)
+                self.presentViewController(activityController, animated: true, completion: nil)
+
             }
+        
+        })
+        let deleteActionButton = UITableViewRowAction(style: .Default, title: "Delete", handler: {(action,xindexPath) in
+            let key = self.routesSectionTitles[indexPath.section]
+            if let r = self.routesBySection[key]{
+                let route = r[indexPath.row]
+                self.deleteRoute(route.id)
+                //self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Left)
+                self.createDictionary()
+                let routes = self.ref.child("routes")
+                let routeId = routes.child(route.id)
+                routeId.removeAllObservers()
+                routeId.removeValue()
+                let userByRoute = self.ref.child("userByRoutes")
+                if let user = FIRAuth.auth()?.currentUser {
+                    let userByRouteId = userByRoute.child(user.uid)
+                    if self.routes.count == 0 {
+                        
+                        userByRouteId.removeValue()
+                    }else{
+                        var ids = [String]()
+                        for a in self.routes {
+                            ids.append(a.id)
+                        }
+                        userByRouteId.setValue(["routes":ids])
+                    }
+                }
+                
+            }
+            
             //We need to unsubscribe this route this route from all the users who have subscribed this
             
         })
@@ -348,20 +395,6 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
         return [deleteActionButton,shareActionButton]
     }
     
-    @IBAction func openDetail(sender: AnyObject) {
-        let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("informationRoute") as! DetailRouteTableViewController
-        if searchController.active{
-            viewController.route = routesSearch[sender.tag]
-        }else{
-            let row = ((sender.tag - 30000) % 10000)/10
-            let section = ((sender.tag - (row*10))-30000)/10000
-            if let r =  routesBySection[routesSectionTitles[section]]{
-                viewController.route = r[row]
-
-            }
-        }
-        self.navigationController?.pushViewController(viewController, animated: true)
-    }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
@@ -425,5 +458,6 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
         })
         
     }
+    
 
 }

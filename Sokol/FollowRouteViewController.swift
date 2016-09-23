@@ -11,14 +11,18 @@ import MapKit
 import Firebase
 import Polyline
 import CoreLocation
+import ReachabilitySwift
+
 
 class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelegate,UIPopoverPresentationControllerDelegate {
     var route:Route?
+    var peekAndPop = false
     var is3D = false
     var location:CLLocation?
     var checkCount = 0
     @IBOutlet weak var mapView: MKMapView!
     var directions:[String] = []
+    var reachability:Reachability?
     
     @IBOutlet weak var cancel: UIButton!
     var locationManager:CLLocationManager? = CLLocationManager()
@@ -43,8 +47,15 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
 
         // Do any additional setup after loading the view.
     }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
+        navigationController?.setNavigationBarHidden(true, animated: true)
+        do{
+            reachability = try Reachability.reachabilityForInternetConnection()
+        }catch{
+            print("Error")
+        }
         if let user = FIRAuth.auth()?.currentUser {
             // User is signed in.
         } else {
@@ -56,6 +67,8 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
     }
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
+        //UIApplication.sharedApplication().keyWindow!.rootViewController = self
+        //UIApplication.sharedApplication().keyWindow!.makeKeyAndVisible()
         checkCount = getCheckPoints()
         
         mapView.showAnnotations(route!.annotations,animated: true)
@@ -173,7 +186,7 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
         }
     }
     func regionWithAnnotation(annotation:SokolAnnotation) -> CLCircularRegion{
-        let region = Geofence(center: annotation.coordinate, radius: 200.0, identifier: annotation.id!,sokolAnnotation: annotation)
+        let region = CLCircularRegion(center: annotation.coordinate, radius: 250.0, identifier: annotation.id! + String("SOKOL") + route!.id)
         region.notifyOnEntry = true
         region.notifyOnExit = false
         return region
@@ -207,12 +220,12 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
     func addOverlays(){
         for region in locationManager!.monitoredRegions{
             if let circularRegion = region as? CLCircularRegion{
-                mapView.addOverlay(MKCircle(centerCoordinate: circularRegion.center, radius: 50.0))
+                mapView.addOverlay(MKCircle(centerCoordinate: circularRegion.center, radius: 250.0))
             }
         }
     }
     func addRadiusOverlayForAnnotation(annotation:SokolAnnotation){
-        mapView.addOverlay(MKCircle(centerCoordinate: annotation.coordinate, radius: 50.0))
+        mapView.addOverlay(MKCircle(centerCoordinate: annotation.coordinate, radius: 250.0))
     }
 
     func removeOverlayForAnnotations(){
@@ -317,7 +330,7 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
         }
     }
     func locationManager(manager: CLLocationManager, monitoringDidFailForRegion region: CLRegion?, withError error: NSError) {
-        self.presentViewController(Utilities.alertMessage("Error", message: "Monitoring failed for region "), animated: true, completion: nil)
+        self.presentViewController(Utilities.alertMessage("Error", message: "Monitoring failed for region with identifier: \(region!.identifier) "), animated: true, completion: nil)
     }
     
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
@@ -328,8 +341,20 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
     @IBAction func startRoute(sender: AnyObject) {
         //start.removeFromSuperview()
         if start.currentTitle != "Show directions" {
+            let dateFormater = NSDateFormatter()
+            dateFormater.dateFormat = "yyyy-MM-dd, HH:mm:ss"
+            dateFormater.timeZone = NSTimeZone(name: "COT")
+            let str = dateFormater.stringFromDate(NSDate())
+            if reachability?.currentReachabilityStatus == .ReachableViaWiFi || reachability?.currentReachabilityStatus == .ReachableViaWWAN {
+                let strategy:SendTopic = SendTopic()
+                let sendMessageClient:SendMessageClient = SendMessageClient(strategy: strategy)
+                
+                sendMessageClient.sendMessage("The route with id: \(route!.id) just started at \(str)", title: "Notification start route", id: route?.id, page: nil)
+            }else{
+                SmallCache.sharedInstance.cacheOperations["startRoute"] = ["title":"Notification start route","body":"The route with id: \(route!.id) just started at \(str)","id":route!.id,"time":str]
+            }
             cancel.setTitle("Finish route", forState: .Normal)
-            self.presentViewController(Utilities.alertMessage("Message", message: "We are going to track your position and inform to the responsible of the route"), animated: true, completion: nil)
+            
             is3D = true
             if location != nil {
                 let altitude:CLLocationDistance = 400.0
@@ -362,11 +387,44 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
         
     }
     @IBAction func cancelRoute(sender: AnyObject) {
-        is3D = false
-        locationManager!.stopUpdatingLocation()
-        stopMonitoringAnnotations()
-        mapView.showsUserLocation = false
+        if cancel.currentTitle == "Finish route"{
+            let dateFormater = NSDateFormatter()
+            dateFormater.dateFormat = "yyyy-MM-dd, HH:mm:ss"
+            dateFormater.timeZone = NSTimeZone(name: "COT")
+            let str = dateFormater.stringFromDate(NSDate())
+            if reachability?.currentReachabilityStatus == .ReachableViaWiFi || reachability?.currentReachabilityStatus == .ReachableViaWWAN {
+                let strategy:SendTopic = SendTopic()
+                let sendMessageClient:SendMessageClient = SendMessageClient(strategy: strategy)
+                sendMessageClient.sendMessage("The route with id: \(route!.id) just finished at \(str)", title: "Notification finish route", id: route?.id, page: nil)
+            }else{
+                SmallCache.sharedInstance.cacheOperations["finishRoute"] = ["title":"Notification finish route","body":"The route with id: \(route!.id) just finished at \(str))","id":route!.id,"time":str]
+            }
+            is3D = false
+            locationManager!.stopUpdatingLocation()
+            stopMonitoringAnnotations()
+            mapView.showsUserLocation = false
+            if peekAndPop {
+                navigationController?.popViewControllerAnimated(true)
+            }else{
+                var timer = NSTimer.scheduledTimerWithTimeInterval(8, target: self, selector: "closeTimer", userInfo: nil, repeats: false)
+            }
+    
+
+        }else{
+            is3D = false
+            locationManager!.stopUpdatingLocation()
+            stopMonitoringAnnotations()
+            mapView.showsUserLocation = false
+            if peekAndPop{
+                navigationController?.popViewControllerAnimated(true)
+            }else{
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
+        }
+    }
+    func closeTimer(){
         self.dismissViewControllerAnimated(true, completion: nil)
+
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -385,7 +443,7 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
         }
         
     }
-
+    
 }
 extension Double{
     var degreesToRadians:Double {return Double(self) * M_PI / 180}

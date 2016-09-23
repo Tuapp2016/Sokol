@@ -20,6 +20,7 @@ class FacebookCellViewController: UIViewController {
         profileImage.image = image
         // Do any additional setup after loading the view.
     }
+  
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

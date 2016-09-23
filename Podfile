@@ -7,11 +7,15 @@ target 'Sokol' do
   pod 'Firebase' 
   pod 'Firebase/Auth'
   pod 'Firebase/Database'
+  pod 'Firebase/Core'
+  pod 'Firebase/Messaging'
   pod 'GoogleSignIn'
   pod 'Fabric'
   pod 'TwitterKit'
   pod 'TwitterCore'
   pod 'Polyline', '~> 3.0'
+  pod 'ReachabilitySwift'
+
 
   # Pods for Sokol
 
@@ -26,6 +30,7 @@ target 'Sokol' do
   pod 'TwitterKit'
   pod 'TwitterCore'
   pod 'Polyline', '~> 3.0'
+  
   end
 
 end

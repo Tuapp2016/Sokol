@@ -18,6 +18,7 @@ class ContainerViewController: UIViewController,UIScrollViewDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "closeMenuViaNotification", name: "closeMenuViaNotification", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotated", name: UIDeviceOrientationDidChangeNotification, object: nil)
     }
+    
     override func viewWillAppear(animated: Bool) {
         dispatch_async(dispatch_get_main_queue()) { [unowned self] in
             self.closeMenu(false)

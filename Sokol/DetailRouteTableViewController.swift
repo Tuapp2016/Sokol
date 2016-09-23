@@ -20,6 +20,7 @@ class DetailRouteTableViewController: UITableViewController {
         let longPress = UILongPressGestureRecognizer(target: self, action: "movePoint:")
         tableView.addGestureRecognizer(longPress)
     }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.hidden = false

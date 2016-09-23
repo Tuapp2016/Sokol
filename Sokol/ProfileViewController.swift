@@ -160,6 +160,7 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
         
         // Do any additional setup after loading the view.
     }
+   
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         if let _ = FIRAuth.auth()?.currentUser {

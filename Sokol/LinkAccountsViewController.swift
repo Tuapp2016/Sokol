@@ -24,6 +24,7 @@ class LinkAccountsViewController: UIViewController,GIDSignInUIDelegate {
         Utilities.buttonSokol = signInSokol
         // Do any additional setup after loading the view.
     }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         if let user = FIRAuth.auth()?.currentUser {

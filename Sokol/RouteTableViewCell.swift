@@ -13,7 +13,6 @@ class RouteTableViewCell: UITableViewCell {
     @IBOutlet weak var informationText: UILabel!
     @IBOutlet weak var descriptionText: UILabel!
     @IBOutlet weak var nameText: UILabel!
-    @IBOutlet weak var cardView: UIView!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
