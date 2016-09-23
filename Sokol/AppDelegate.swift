@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
     
     var window: UIWindow?
     var reachability: Reachability?
-    let locationMannager = CLLocationManager()
+    let locationManager = CLLocationManager()
     
     
     override init() {
@@ -66,8 +66,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
         GIDSignIn.sharedInstance().delegate = self
         Twitter.sharedInstance().startWithConsumerKey(Constants.TWITTER_KEY, consumerSecret: Constants.TWITTER_SECRET_KEY)
         Fabric.with([Twitter.self])
-        locationMannager.delegate = self
-        locationMannager.requestAlwaysAuthorization()
+        locationManager.delegate = self
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.requestAlwaysAuthorization()
+            locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+            locationManager.distanceFilter = kCLDistanceFilterNone
+            locationManager.activityType = .AutomotiveNavigation
+        }
         let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge,.Sound], categories: nil)
         UIApplication.sharedApplication().registerUserNotificationSettings(settings)
         UIApplication.sharedApplication().cancelAllLocalNotifications()
@@ -98,11 +103,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
         let information = userInfo["aps"] as! NSDictionary
         
         let alert = information["alert"] as! NSDictionary
-        dispatch_async(dispatch_get_main_queue(), {
-            UIApplication.sharedApplication().keyWindow?.rootViewController!.presentViewController(Utilities.alertMessage(alert["title"] as! String, message: alert["body"] as! String ), animated: true, completion: nil)
-            return
-            
-        })
+        showAlert( alert["title"] as! String, message: alert["body"] as! String)
         print(userInfo)
         
     }
@@ -149,12 +150,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
     func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!,
                 withError error: NSError!) {
         if let error = error {
-            dispatch_async(dispatch_get_main_queue(), {
-                UIApplication.sharedApplication().keyWindow?.rootViewController!.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
-                return
-            })
-
-        
+            self.showAlert("Error", message: "There was an error")
         }
         
         let authentication = user.authentication
@@ -165,7 +161,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
             FIRAuth.auth()?.signInWithCredential(credential, completion:{(user,error) in
             //Here we need to save the data about the user
                 if error != nil {
-                    self.window?.rootViewController?.presentViewController(Utilities.alertMessage("Error", message: "There was an error"), animated: true, completion: nil)
+                    self.showAlert("Error", message: "There was an error when we tried to make the log in")
+                    
                 }else{
                     let ref = FIRDatabase.database().reference()
                     //ref.removeAllObservers()
@@ -173,7 +170,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
                 
                     Utilities.provider = "google.com"
 
-                    //let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("Home")
+                    
 
                     let userRef = ref.child("users")
                     let userIdRef = userRef.child((user?.uid)!)
@@ -183,15 +180,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
                         }
                         
                     })
-                    //userIdRef.removeAllObservers()
-                    //self.window?.rootViewController?.presentViewController(viewController, animated: true, completion: nil)
+                    
                 }
             })
         }else{
             
             FIRAuth.auth()?.currentUser?.linkWithCredential(credential, completion: {(user, error) in
                 if error != nil {
-                   self.window?.rootViewController?.presentViewController(Utilities.alertMessage("error", message:"There was an error"), animated: false, completion: nil)
+                    self.showAlert("Error", message: "There was an error when we tried to link your account")
+                   
                 }else{
                     Utilities.user = user
                     Utilities.button!.hidden = true
@@ -206,35 +203,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
             dateFormater.dateFormat = "yyyy-MM-dd, HH:mm:ss"
             dateFormater.timeZone = NSTimeZone(name: "COT")
             let str = dateFormater.stringFromDate(NSDate())
-            let geofence = r as! Geofence
-
+            //let geofence = r as! Geofence
+            let ids = r.identifier.componentsSeparatedByString("SOKOL")
             if reachability?.currentReachabilityStatus == .ReachableViaWiFi || reachability?.currentReachabilityStatus == .ReachableViaWWAN {
-                //Here we must connect with our endpoint and send the notification
                 let strategy:SendTopic = SendTopic()
                 let sendMessageClient:SendMessageClient = SendMessageClient(strategy: strategy)
-                sendMessageClient.sendMessage("the route with id: \(geofence.identifier) just crossed for a checkpoint at \(str)", title: "Notification checkpoint", id: geofence.identifier, page: nil)
+                sendMessageClient.sendMessage("the route with id: \(ids[1]) just crossed for a checkpoint with id: \(ids[0]) at \(str)", title: "Notification checkpoint", id: ids[1], page: nil)
             }else{
-                SmallCache.sharedInstance.cacheOperations[NSUUID().UUIDString] = ["title":"Notification checkpoint","body":"The route with id: \(geofence.identifier) just crossed for a checkpoint at \(str)","id":geofence.identifier,"time":str]
+                SmallCache.sharedInstance.cacheOperations[NSUUID().UUIDString] = ["title":"Notification checkpoint","body":"The route  with id: \(ids[1]) just crossed for a checkpoint with id: \(ids[0]) at \(str)","id":ids[1],"time":str]
             }
             if UIApplication.sharedApplication().applicationState == .Active{
-                dispatch_async(dispatch_get_main_queue(), {
-                    UIApplication.sharedApplication().keyWindow?.rootViewController!.presentViewController(Utilities.alertMessage("Checkpoint", message: "You have just crossed for a checkpoint"), animated: true, completion: nil)
-                    
-                })
+                showAlert("Checkpoint", message: "You have just coressed for a checkpoint")
                 
             }else{
-                let geofence = r as! Geofence
+                
                 let notification = UILocalNotification()
-                notification.alertTitle = "You are coressed for the checkpoint"
-                let text = geofence.sokolAnnotation.title! == "Without description" ? "without title":"with the title: \(geofence.sokolAnnotation.title!)"
+                notification.alertTitle = "Checkpoint"
+                
                 let dateFormater = NSDateFormatter()
                 dateFormater.dateFormat = "yyyy-MM-dd, HH:mm:ss"
                 dateFormater.timeZone = NSTimeZone(name: "COT")
                 let str = dateFormater.stringFromDate(NSDate())
-                notification.alertBody = "\(geofence.sokolAnnotation.subtitle), \(text)\n\(str)"
+                notification.alertBody = "You have just crossed for the checkpoint with id: \(ids[0]) in the route \(ids[1]) at \(str)"
                 notification.soundName = "Default"
                 UIApplication.sharedApplication().presentLocalNotificationNow(notification)
             }
+        }else{
+            showAlert("Checkpoint", message: "There was an error with the chekcpoint")
         }
         
         
@@ -291,4 +286,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
     
 
 }
+extension AppDelegate{
+    func showAlert(title:String,message:String){
+        dispatch_async(dispatch_get_main_queue(), {
+                       var topWindow: UIWindow = UIWindow(frame: UIScreen.mainScreen().bounds)
+            topWindow.rootViewController = UIViewController()
+            topWindow.windowLevel = UIWindowLevelAlert + 1
+            let alertController =  UIAlertController(title: title, message: message, preferredStyle: .Alert)
+            let okAcion = UIAlertAction(title: "OK", style: .Cancel, handler: {(action) -> Void in
+                topWindow.hidden = true
+            })
+            alertController.addAction(okAcion)
+            topWindow.makeKeyAndVisible()
+            topWindow.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
+            
+        })
+
+    }
+}
+
+
 

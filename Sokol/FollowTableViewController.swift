@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import MapKit
 
-class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
+class FollowTableViewController: UITableViewController,UISearchResultsUpdating,UIViewControllerPreviewingDelegate {
     var routesBySection:[String:[Route]] = [:]
     var routesSectionTitles = [String]()
     var routes = [Route]()
@@ -29,15 +29,21 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
         tableView.tableHeaderView = searchController.searchBar
         searchController.dimsBackgroundDuringPresentation = false
         searchController.searchResultsUpdater = self
-        tableView.rowHeight = 150
-        tableView.separatorStyle = .None
-        self.tableView.setContentOffset(CGPointMake(0, 44.0), animated: false)
+        tableView.estimatedRowHeight = 150
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.separatorStyle = .SingleLine
+        tableView.tableFooterView = UIView()
+        if traitCollection.forceTouchCapability == .Available{
+            registerForPreviewingWithDelegate(self, sourceView: view)
+        }
+        //self.tableView.setContentOffset(CGPointMake(0, 50.0), animated: false)
 
         
     }
   
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
+        navigationController?.setNavigationBarHidden(false, animated: true)
         if let _ = FIRAuth.auth()?.currentUser {
             // User is signed in.
         } else {
@@ -126,15 +132,7 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
             cell.descriptionText.text = route.descriptionRoute
             let checks = getChecks(route.annotations)
             cell.informationText.text = "This route has " + String(checks) + " checkpoints"
-            cell.cardView.layer.masksToBounds = false
-            cell.cardView.layer.cornerRadius = 10
-            cell.cardView.layer.shadowOffset = CGSizeMake(-0.2, -0.2)
-            if searchController.active{
-                cell.cardView.tag = indexPath.row
-            }else{
-                cell.cardView.tag = ((indexPath.section * 10000)+30000) + (indexPath.row * 10)
-            }
-            cell.cardView.layer.shadowOpacity = 0.2
+            
         }
         
         return cell
@@ -203,46 +201,50 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
     func addNewRoute(sender:UIButton) {
         addAlertController!.dismissViewControllerAnimated(true, completion: nil)
         let id = routeIdText!.text
-        if checkId (id!) {
-            let routeRef = ref.child("routes")
-            let routeIdRef = routeRef.child(id!)
-            routeIdRef.observeSingleEventOfType(.Value, withBlock: {(snapshot)
-                in
-                if snapshot.value is NSNull{
-                    self.presentViewController(Utilities.alertMessage("Error", message: "This id doesn't exist.\n Please enter the id again"), animated: true, completion: nil)
-                }else {
-                    let values = snapshot.value as! NSDictionary
-                    let name =  values["name"] as! String
-                    let description =  values["description"] as! String
-                    let lats = values["latitudes"] as! [String]
-                    let lngs = values["longitudes"] as! [String]
-                    let check = values["checkPoints"] as! [Bool]
-                    let names = values["pointNames"] as! [String]
-                    var annotations = [SokolAnnotation]()
-                    for (index,element) in lats.enumerate(){
-                        let coord = CLLocationCoordinate2D(latitude: Double(element)! , longitude: Double(lngs[index])!)
-                        let id = NSUUID().UUIDString
-                        let a = SokolAnnotation(coordinate: coord, title: names[index], subtitle: "This point is the number " + String(index + 1), checkPoint: check[index],id: id)
-                        annotations.append(a)
-                    }
+        if id!.characters.count > 0{
+            if checkId (id!) {
+                let routeRef = ref.child("routes")
+                let routeIdRef = routeRef.child(id!)
+                routeIdRef.observeSingleEventOfType(.Value, withBlock: {(snapshot)
+                    in
+                    if snapshot.value is NSNull{
+                        self.presentViewController(Utilities.alertMessage("Error", message: "This id doesn't exist.\n Please enter the id again"), animated: true, completion: nil)
+                    }else {
+                        let values = snapshot.value as! NSDictionary
+                        let name =  values["name"] as! String
+                        let description =  values["description"] as! String
+                        let lats = values["latitudes"] as! [String]
+                        let lngs = values["longitudes"] as! [String]
+                        let check = values["checkPoints"] as! [Bool]
+                        let names = values["pointNames"] as! [String]
+                        var annotations = [SokolAnnotation]()
+                        for (index,element) in lats.enumerate(){
+                            let coord = CLLocationCoordinate2D(latitude: Double(element)! , longitude: Double(lngs[index])!)
+                            let id = NSUUID().UUIDString
+                            let a = SokolAnnotation(coordinate: coord, title: names[index], subtitle: "This point is the number " + String(index + 1), checkPoint: check[index],id: id)
+                            annotations.append(a)
+                        }
                     
-                    let followRouteRef = self.ref.child("followRoutesByUser")
-                    if let user = FIRAuth.auth()?.currentUser{
-                        let followRouteUserRef = followRouteRef.child(user.uid)
-                        self.routeIds.append(id!)
-                        followRouteUserRef.updateChildValues(["routes":self.routeIds])
+                        let followRouteRef = self.ref.child("followRoutesByUser")
+                        if let user = FIRAuth.auth()?.currentUser{
+                            let followRouteUserRef = followRouteRef.child(user.uid)
+                            self.routeIds.append(id!)
+                            followRouteUserRef.updateChildValues(["routes":self.routeIds])
+                        }
+                        let route = Route(id: id!, name: name , description: description, annotations: annotations)
+                        NSOperationQueue.mainQueue().addOperationWithBlock({() in
+                            self.routes.append(route)
+                            self.createDictionary()
+                            FIRMessaging.messaging().subscribeToTopic("/topics/"+id!)
+                        })
                     }
-                    let route = Route(id: id!, name: name , description: description, annotations: annotations)
-                    NSOperationQueue.mainQueue().addOperationWithBlock({() in
-                        self.routes.append(route)
-                        self.createDictionary()
-                        FIRMessaging.messaging().subscribeToTopic("/topics/"+id!)
-                    })
-                }
-            })
+                })
             
+            }else{
+                self.presentViewController(Utilities.alertMessage("Error", message: "You have aleready registerd this id"), animated: true, completion: nil)
+            }
         }else{
-            self.presentViewController(Utilities.alertMessage("Error", message: "You have aleready registerd this id"), animated: true, completion: nil)
+            self.presentViewController(Utilities.alertMessage("Error", message: "The text can't be empty"), animated: true, completion: nil)
         }
     }
     func checkId(id:String) -> Bool {
@@ -338,47 +340,54 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
             })
         }
     }
+    func deleteRoute(id:String){
+        var existID = false
+        var i = 0
+        for r in routes{
+            if r.id == id {
+                existID = true
+                break
+            }
+            i += 1
+        }
+        if existID{
+            routes.removeAtIndex(i)
+        }
+    }
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let unfollowActionButton = UITableViewRowAction(style: .Default, title: "  Unfollow  ", handler: {(action,indexPath) in
-            let route = self.routes.removeAtIndex(indexPath.row)
-            NSOperationQueue.mainQueue().addOperationWithBlock({() in
-                FIRMessaging.messaging().unsubscribeFromTopic("/topics/"+route.id)
-            })
-            //self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Left)
-            self.createDictionary()
-            let followRoutes = self.ref.child("followRoutesByUser")
-            if let user = FIRAuth.auth()?.currentUser {
-                let followRoutesId = followRoutes.child(user.uid)
-                if self.routes.count == 0{
-                    //followRoutesId.removeAllObservers()
-                    followRoutesId.removeValue()
-                }else{
-                    var ids = [String]()
-                    for a in self.routes {
-                        ids.append(a.id)
+            let key = self.routesSectionTitles[indexPath.section]
+            if let r = self.routesBySection[key]{
+                let route = r[indexPath.row]
+                self.deleteRoute(route.id)
+                NSOperationQueue.mainQueue().addOperationWithBlock({() in
+                    FIRMessaging.messaging().unsubscribeFromTopic("/topics/"+route.id)
+                })
+                //self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Left)
+                self.createDictionary()
+                let followRoutes = self.ref.child("followRoutesByUser")
+                if let user = FIRAuth.auth()?.currentUser {
+                    let followRoutesId = followRoutes.child(user.uid)
+                    if self.routes.count == 0{
+                        //followRoutesId.removeAllObservers()
+                        followRoutesId.removeValue()
+                    }else{
+                        var ids = [String]()
+                        for a in self.routes {
+                            ids.append(a.id)
+                        }
+                        followRoutesId.updateChildValues(["routes":ids])
                     }
-                    followRoutesId.updateChildValues(["routes":ids])
                 }
+
             }
+            
         })
         unfollowActionButton.backgroundColor = UIColor.redColor()
         return [unfollowActionButton]
     }
     
-    @IBAction func openFollowRoute(sender: AnyObject) {
-        let viewController = UIStoryboard(name: "Follow", bundle: nil).instantiateViewControllerWithIdentifier("followRoute") as! FollowRouteViewController
-        if searchController.active{
-            viewController.route = routesSearch[sender.tag]
-        }else{
-            let row = ((sender.tag - 30000) % 10000)/10
-            let section = ((sender.tag - (row*10))-30000)/10000
-            if let r =  routesBySection[routesSectionTitles[section]]{
-                viewController.route = r[row]
-                
-            }
-        }
-        self.presentViewController(viewController, animated: true, completion: nil)
-    }
+    
     @IBAction func toggleMenu(sender:AnyObject){
         NSNotificationCenter.defaultCenter().postNotificationName("toggleMenu",object:nil)
     }
@@ -434,5 +443,28 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating {
             return nameMatch != nil
         })
     }
+    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = tableView.indexPathForRowAtPoint(location) else{
+            return nil
+        }
+        guard let cell = tableView.cellForRowAtIndexPath(indexPath) else{
+            return nil
+        }
+        let viewController = UIStoryboard(name: "Follow", bundle: nil).instantiateViewControllerWithIdentifier("followRoute") as! FollowRouteViewController
+        let key = routesSectionTitles[indexPath.section]
+        if let r = routesBySection[key]{
+            viewController.route = r[indexPath.row]
+            viewController.peekAndPop = true
+        }else{
+            return nil
+        }
+        viewController.preferredContentSize = CGSize(width: 0.0, height: 450.0)
+        return viewController
+        
+    }
+    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+        showViewController(viewControllerToCommit, sender: self)
+    }
+    
     
 }

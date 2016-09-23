@@ -58,7 +58,6 @@
 		B5EA15A31D21E854004CC7E8 /* LinkAccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EA15A21D21E854004CC7E8 /* LinkAccountsViewController.swift */; };
 		B5EF2C971D5CD5520027D8E1 /* DirectionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF2C961D5CD5520027D8E1 /* DirectionsTableViewController.swift */; };
 		B5EF2C991D5CFA900027D8E1 /* DirectionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF2C981D5CFA900027D8E1 /* DirectionsTableViewCell.swift */; };
-		B5EF2C9D1D5D39010027D8E1 /* Geofence.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EF2C9C1D5D39010027D8E1 /* Geofence.swift */; };
 		F2D11BDFF37F527B40E51A3C /* Pods_SokolTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A84B916E6F8FD527142610 /* Pods_SokolTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -129,7 +128,6 @@
 		B5EA15A21D21E854004CC7E8 /* LinkAccountsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkAccountsViewController.swift; sourceTree = "<group>"; };
 		B5EF2C961D5CD5520027D8E1 /* DirectionsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectionsTableViewController.swift; sourceTree = "<group>"; };
 		B5EF2C981D5CFA900027D8E1 /* DirectionsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectionsTableViewCell.swift; sourceTree = "<group>"; };
-		B5EF2C9C1D5D39010027D8E1 /* Geofence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Geofence.swift; sourceTree = "<group>"; };
 		C4A84B916E6F8FD527142610 /* Pods_SokolTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SokolTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6F091C12DA211C4C70E4657 /* Pods-Sokol.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sokol.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Sokol/Pods-Sokol.debug.xcconfig"; sourceTree = "<group>"; };
 		D9816A472096093A3FD45336 /* Pods-SokolTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SokolTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SokolTests/Pods-SokolTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -236,7 +234,6 @@
 				B5E36C541D41BA9900C70C29 /* FollowRouteViewController.swift */,
 				B5EF2C961D5CD5520027D8E1 /* DirectionsTableViewController.swift */,
 				B5EF2C981D5CFA900027D8E1 /* DirectionsTableViewCell.swift */,
-				B5EF2C9C1D5D39010027D8E1 /* Geofence.swift */,
 				B5BEF0291D60DFD600D110DC /* HomeTableViewController.swift */,
 				B5A0B3B11D8745CB0090381B /* SmallCache.swift */,
 			);
@@ -540,7 +537,6 @@
 				B5A0B3BC1D889E2B0090381B /* SendPage.swift in Sources */,
 				B5A3C6F01D297E90009DBF2E /* RouteCreatorViewController.swift in Sources */,
 				B5A0B3BE1D889E620090381B /* SendMessageClient.swift in Sources */,
-				B5EF2C9D1D5D39010027D8E1 /* Geofence.swift in Sources */,
 				B58E4E3E1D13799800D5527A /* LeftMenuTableViewController.swift in Sources */,
 				B5E36C551D41BA9900C70C29 /* FollowRouteViewController.swift in Sources */,
 			);
@@ -697,7 +693,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Sokol/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = co.edu.unal.aguiterrezt.Sokol;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -718,7 +714,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Sokol/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = co.edu.unal.aguiterrezt.Sokol;
 				PRODUCT_NAME = "$(TARGET_NAME)";

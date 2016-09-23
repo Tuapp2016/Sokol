@@ -58,7 +58,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fJb-0P-3cY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3676" y="-880"/>
+            <point key="canvasLocation" x="3626" y="-1096"/>
         </scene>
         <!--Directions-->
         <scene sceneID="HNW-bB-t1f">
@@ -122,59 +122,48 @@
                                     <rect key="frame" x="0.0" y="0.0" width="324" height="149.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jxU-mP-rat" customClass="UIControl">
-                                            <rect key="frame" x="8" y="11" width="285" height="128"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aOf-zi-U7r">
-                                                    <rect key="frame" x="8" y="82" width="42" height="21"/>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zUl-m9-jwP">
-                                                    <rect key="frame" x="8" y="8" width="42" height="21"/>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
-                                                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dcb-XC-5xC">
-                                                    <rect key="frame" x="8" y="45" width="42" height="21"/>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <constraints>
-                                                <constraint firstItem="dcb-XC-5xC" firstAttribute="top" secondItem="zUl-m9-jwP" secondAttribute="bottom" constant="10" id="9X2-B6-FyY"/>
-                                                <constraint firstItem="zUl-m9-jwP" firstAttribute="top" secondItem="jxU-mP-rat" secondAttribute="top" constant="15" id="BAZ-cT-bFD"/>
-                                                <constraint firstItem="aOf-zi-U7r" firstAttribute="leading" secondItem="jxU-mP-rat" secondAttribute="leading" constant="15" id="Hba-Bs-0f1"/>
-                                                <constraint firstAttribute="trailing" secondItem="aOf-zi-U7r" secondAttribute="trailing" constant="15" id="Q0G-vW-tvk"/>
-                                                <constraint firstItem="zUl-m9-jwP" firstAttribute="leading" secondItem="jxU-mP-rat" secondAttribute="leading" constant="15" id="VLH-JC-8Xz"/>
-                                                <constraint firstItem="aOf-zi-U7r" firstAttribute="top" secondItem="dcb-XC-5xC" secondAttribute="bottom" constant="10" id="avN-VB-UUZ"/>
-                                                <constraint firstItem="dcb-XC-5xC" firstAttribute="leading" secondItem="jxU-mP-rat" secondAttribute="leading" constant="15" id="d8l-T1-I76"/>
-                                                <constraint firstAttribute="trailing" secondItem="zUl-m9-jwP" secondAttribute="trailing" constant="15" id="gW7-QM-5ND"/>
-                                                <constraint firstAttribute="trailing" secondItem="dcb-XC-5xC" secondAttribute="trailing" constant="15" id="yEp-j6-31Y"/>
-                                            </constraints>
-                                            <connections>
-                                                <action selector="openFollowRoute:" destination="see-KR-EeI" eventType="touchUpInside" id="dCd-n6-SJY"/>
-                                            </connections>
-                                        </view>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zUl-m9-jwP">
+                                            <rect key="frame" x="8" y="8" width="42" height="23"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
+                                            <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aOf-zi-U7r">
+                                            <rect key="frame" x="8" y="101" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dcb-XC-5xC">
+                                            <rect key="frame" x="8" y="51" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstItem="jxU-mP-rat" firstAttribute="leading" secondItem="ucx-Dr-3s8" secondAttribute="leadingMargin" constant="20" id="Jo9-7F-4CY"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="jxU-mP-rat" secondAttribute="bottom" constant="10" id="ORF-K3-r1l"/>
-                                        <constraint firstItem="jxU-mP-rat" firstAttribute="trailing" secondItem="ucx-Dr-3s8" secondAttribute="trailingMargin" constant="-25" id="Yuh-81-JyI"/>
-                                        <constraint firstItem="jxU-mP-rat" firstAttribute="top" secondItem="ucx-Dr-3s8" secondAttribute="topMargin" constant="10" id="cff-m0-dGs"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="zUl-m9-jwP" secondAttribute="trailing" constant="10" id="06v-bM-c39"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="aOf-zi-U7r" secondAttribute="bottom" constant="10" id="3l3-86-iCe"/>
+                                        <constraint firstItem="dcb-XC-5xC" firstAttribute="leading" secondItem="ucx-Dr-3s8" secondAttribute="leadingMargin" constant="10" id="AL6-xx-gG7"/>
+                                        <constraint firstItem="dcb-XC-5xC" firstAttribute="top" secondItem="zUl-m9-jwP" secondAttribute="bottom" constant="10" id="JMc-A2-zk7"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="dcb-XC-5xC" secondAttribute="trailing" constant="10" id="MEA-yf-Frc"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="aOf-zi-U7r" secondAttribute="trailing" constant="10" id="RX8-ga-FFR"/>
+                                        <constraint firstItem="zUl-m9-jwP" firstAttribute="leading" secondItem="ucx-Dr-3s8" secondAttribute="leadingMargin" constant="10" id="Zle-1l-b5f"/>
+                                        <constraint firstItem="zUl-m9-jwP" firstAttribute="top" secondItem="ucx-Dr-3s8" secondAttribute="topMargin" constant="10" id="c61-Pp-ASw"/>
+                                        <constraint firstItem="aOf-zi-U7r" firstAttribute="leading" secondItem="ucx-Dr-3s8" secondAttribute="leadingMargin" constant="10" id="fUi-3O-I8Z"/>
+                                        <constraint firstItem="dcb-XC-5xC" firstAttribute="top" secondItem="zUl-m9-jwP" secondAttribute="bottom" constant="10" id="h13-BX-XGx"/>
+                                        <constraint firstItem="aOf-zi-U7r" firstAttribute="top" secondItem="dcb-XC-5xC" secondAttribute="bottom" constant="10" id="iGK-ez-CkM"/>
+                                        <constraint firstItem="aOf-zi-U7r" firstAttribute="top" secondItem="dcb-XC-5xC" secondAttribute="bottom" constant="10" id="iPb-my-Gdi"/>
+                                        <constraint firstItem="aOf-zi-U7r" firstAttribute="top" secondItem="dcb-XC-5xC" secondAttribute="bottom" constant="10" id="miz-QZ-Nnf"/>
+                                        <constraint firstItem="dcb-XC-5xC" firstAttribute="top" secondItem="zUl-m9-jwP" secondAttribute="bottom" constant="10" id="oJ7-Wx-LFr"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="cardView" destination="jxU-mP-rat" id="rUT-Mp-ljH"/>
                                     <outlet property="descriptionText" destination="dcb-XC-5xC" id="Ky0-20-4dS"/>
                                     <outlet property="informationText" destination="aOf-zi-U7r" id="nvZ-2V-UAp"/>
                                     <outlet property="nameText" destination="zUl-m9-jwP" id="Lcq-Uf-MKL"/>
-                                    <segue destination="M8U-HI-8Bc" kind="showDetail" identifier="openFollowRoute" id="lCP-cO-MXd"/>
+                                    <segue destination="M8U-HI-8Bc" kind="presentation" identifier="openFollowRoute" id="3pY-o6-TXO"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
