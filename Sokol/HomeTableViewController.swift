@@ -45,10 +45,10 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
 
         //self.tableView.setContentOffset(CGPointMake(0, 100.0), animated: false)
         
-        NSNotificationCenter.defaultCenter().addObserver(self,selector: "switchTabRoutes", name: "switchTabRoutes", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "switchTabProfile", name: "switchTabProfile", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,selector: #selector(HomeTableViewController.switchTabRoutes), name: "switchTabRoutes", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeTableViewController.switchTabProfile), name: "switchTabProfile", object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "switchTabFollow", name: "switchTabFollow", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeTableViewController.switchTabFollow), name: "switchTabFollow", object: nil)
         // Do any additional setup after loading the view.
     }
     override func viewDidAppear(animated: Bool) {

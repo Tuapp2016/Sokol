@@ -406,7 +406,7 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
             if peekAndPop {
                 navigationController?.popViewControllerAnimated(true)
             }else{
-                var timer = NSTimer.scheduledTimerWithTimeInterval(8, target: self, selector: "closeTimer", userInfo: nil, repeats: false)
+                var timer = NSTimer.scheduledTimerWithTimeInterval(8, target: self, selector: #selector(FollowRouteViewController.closeTimer), userInfo: nil, repeats: false)
             }
     
 

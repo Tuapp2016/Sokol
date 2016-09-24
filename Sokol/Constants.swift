@@ -12,5 +12,7 @@ struct Constants {
     static let TWITTER_KEY = "EuJFAIRjYsoX46n8UY4LAGfbN"
     static let TWITTER_SECRET_KEY = "LASlk8viEbWe0UzgeoJCDcponXgnd3A7CbO2DzpDCTfTEyByqL"
     static let DIRECTION_KEY = "AIzaSyBV2nQR6L2kxYc2XAoY3zII1y6fMcJc-Ss"
+    static let SOKOL_NOTIFICATION_REMINDER = "co.edu.unal.aguiterrezt.Sokol.Reminder"
+    static let SOKOL_NOTIFICATION_CHECKPOINT = "co.edu.unal.agutierrezt.Sokol.Notification"
     
 }

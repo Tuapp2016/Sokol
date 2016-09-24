@@ -21,7 +21,7 @@ class TwitterThoughtsTableViewController: UITableViewController,TWTRTweetViewDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.refreshControl?.addTarget(self, action: "handleRefresh", forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl?.addTarget(self, action: #selector(TwitterThoughtsTableViewController.handleRefresh), forControlEvents: UIControlEvents.ValueChanged)
         
         tableView.registerClass(TWTRTweetTableViewCell.self, forCellReuseIdentifier: tweetTableReuseIdentifier)
         tableView.estimatedRowHeight = 150

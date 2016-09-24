@@ -14,6 +14,7 @@ import Fabric
 import TwitterKit
 import CoreLocation
 import ReachabilitySwift
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocationManagerDelegate {
@@ -25,6 +26,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
     
     override init() {
         // Firebase Init
+        super.init()
+        if #available(iOS 10, *){
+            let authOptions : UNAuthorizationOptions = [.Alert, .Badge, .Sound]
+            UNUserNotificationCenter.currentNotificationCenter().requestAuthorizationWithOptions(
+                authOptions,
+                completionHandler: {_,_ in })
+            UNUserNotificationCenter.currentNotificationCenter().delegate = self
+            FIRMessaging.messaging().remoteMessageDelegate = self
+        }else{
+            let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge,.Sound], categories: nil)
+            UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+            
+            
+        }
+
+        UIApplication.sharedApplication().registerForRemoteNotifications()
         FIRApp.configure()
         FIRDatabase.database().persistenceEnabled = true
         let ref = FIRDatabase.database().reference()
@@ -40,12 +57,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
     
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        
         do{
             reachability = try Reachability.reachabilityForInternetConnection()
         }catch {
             print("Unable to create Reachibility")
         }
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "reachabilityChanged:", name: ReachabilityChangedNotification, object: reachability)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AppDelegate.reachabilityChanged(_:)), name: ReachabilityChangedNotification, object: reachability)
         do{
             try reachability?.startNotifier()
         }catch{
@@ -73,10 +91,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
             locationManager.distanceFilter = kCLDistanceFilterNone
             locationManager.activityType = .AutomotiveNavigation
         }
-        let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge,.Sound], categories: nil)
-        UIApplication.sharedApplication().registerUserNotificationSettings(settings)
-        UIApplication.sharedApplication().cancelAllLocalNotifications()
-        UIApplication.sharedApplication().registerForRemoteNotifications()
+        
+
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.tokenRefreshNotification),
                                                          name: kFIRInstanceIDTokenRefreshNotification, object: nil)
@@ -100,6 +116,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
             annotation: annotation) ||  GIDSignIn.sharedInstance().handleURL(url,sourceApplication: options[UIApplicationOpenURLOptionsSourceApplicationKey] as? String,annotation: options[UIApplicationOpenURLOptionsAnnotationKey])
     }
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+        FIRMessaging.messaging().appDidReceiveMessage(userInfo)
         let information = userInfo["aps"] as! NSDictionary
         
         let alert = information["alert"] as! NSDictionary
@@ -123,6 +140,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
         if !isSuccessfulSave {
             print("Failed to save meals...")
         }
+        if #available(iOS 10, *){
+            let content = UNMutableNotificationContent()
+            content.title = "Reminder"
+            content.subtitle = "We miss you"
+            content.body = "You can check the state of your routes or create, update and absolutely register in new ones. \n If you are interested in knowing where your loved ones are, please come and visit our app."
+            content.sound = UNNotificationSound.defaultSound()
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 24*60*60*5, repeats: true)
+            let request = UNNotificationRequest(identifier: Constants.SOKOL_NOTIFICATION_REMINDER, content: content, trigger: trigger)
+            UNUserNotificationCenter.currentNotificationCenter().addNotificationRequest(request, withCompletionHandler: nil)
+            
+        }
         
         
     
@@ -137,6 +165,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
         connectToFCM()
         if let cache = NSKeyedUnarchiver.unarchiveObjectWithFile(cacheURL().path!) as? SmallCache{
             SmallCache.sharedInstance.cacheOperations = cache.cacheOperations
+        }
+        if #available(iOS 10, *){
+            UNUserNotificationCenter.currentNotificationCenter().removePendingNotificationRequestsWithIdentifiers([Constants.SOKOL_NOTIFICATION_REMINDER])
         }
     }
    
@@ -216,17 +247,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
                 showAlert("Checkpoint", message: "You have just coressed for a checkpoint")
                 
             }else{
+                if #available(iOS 10.0, *) {
+                    let content = UNMutableNotificationContent()
+                    content.title = "Checkpoint"
+                    content.subtitle = "Route: \(ids[1])"
+                    content.body = "You have just crossed for the checkpoint with id: \(ids[0])"
+                    content.sound = UNNotificationSound.defaultSound()
+                    let request = UNNotificationRequest(identifier: Constants.SOKOL_NOTIFICATION_CHECKPOINT, content: content, trigger: nil)
+                    UNUserNotificationCenter.currentNotificationCenter().addNotificationRequest(request, withCompletionHandler: nil)
+                } else {
+                    let notification = UILocalNotification()
+                    notification.alertTitle = "Checkpoint"
+                    
+                    let dateFormater = NSDateFormatter()
+                    dateFormater.dateFormat = "yyyy-MM-dd, HH:mm:ss"
+                    dateFormater.timeZone = NSTimeZone(name: "COT")
+                    let str = dateFormater.stringFromDate(NSDate())
+                    notification.alertBody = "You have just crossed for the checkpoint with id: \(ids[0]) in the route \(ids[1]) at \(str)"
+                    notification.soundName = "Default"
+                    UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+                }
                 
-                let notification = UILocalNotification()
-                notification.alertTitle = "Checkpoint"
-                
-                let dateFormater = NSDateFormatter()
-                dateFormater.dateFormat = "yyyy-MM-dd, HH:mm:ss"
-                dateFormater.timeZone = NSTimeZone(name: "COT")
-                let str = dateFormater.stringFromDate(NSDate())
-                notification.alertBody = "You have just crossed for the checkpoint with id: \(ids[0]) in the route \(ids[1]) at \(str)"
-                notification.soundName = "Default"
-                UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+               
             }
         }else{
             showAlert("Checkpoint", message: "There was an error with the chekcpoint")
@@ -281,7 +323,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
     }
     func cacheURL() -> NSURL{
         let documentDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
-        return documentDirectory.URLByAppendingPathComponent("sokol")
+        return documentDirectory.URLByAppendingPathComponent("sokol")!
     }
     
 
@@ -289,7 +331,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
 extension AppDelegate{
     func showAlert(title:String,message:String){
         dispatch_async(dispatch_get_main_queue(), {
-                       var topWindow: UIWindow = UIWindow(frame: UIScreen.mainScreen().bounds)
+                       let topWindow: UIWindow = UIWindow(frame: UIScreen.mainScreen().bounds)
             topWindow.rootViewController = UIViewController()
             topWindow.windowLevel = UIWindowLevelAlert + 1
             let alertController =  UIAlertController(title: title, message: message, preferredStyle: .Alert)
@@ -304,6 +346,24 @@ extension AppDelegate{
 
     }
 }
-
-
+@available(iOS 10, *)
+extension AppDelegate: UNUserNotificationCenterDelegate{
+    func userNotificationCenter(center: UNUserNotificationCenter, willPresentNotification notification: UNNotification, withCompletionHandler completionHandler: (UNNotificationPresentationOptions) -> Void) {
+        let userInfo = notification.request.content.userInfo
+        // Print message ID.
+        print("Message ID: \(userInfo["gcm.message_id"]!)")
+        
+        // Print full message.
+        print("%@", userInfo)
+    }
+    
+}
+extension AppDelegate: FIRMessagingDelegate{
+    func applicationReceivedRemoteMessage(remoteMessage: FIRMessagingRemoteMessage) {
+        let userInfo = remoteMessage.appData
+        let information = userInfo["notification"] as! NSDictionary
+        showAlert( information["title"] as! String, message: information["body"] as! String)
+        print(userInfo)
+    }
+}
 

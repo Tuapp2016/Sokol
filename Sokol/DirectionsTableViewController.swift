@@ -13,7 +13,7 @@ class DirectionsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelDirections:")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(DirectionsTableViewController.cancelDirections(_:)))
         let bounds  = UIScreen.mainScreen().bounds
         if bounds.width > 400 {
             navigationController?.setNavigationBarHidden(true, animated: false)

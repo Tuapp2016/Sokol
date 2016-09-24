@@ -33,7 +33,7 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
         mapView.showsCompass =  false
         mapView.mapType = .Standard
         
-        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "addAnnotation:")
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(RouteCreatorViewController.addAnnotation(_:)))
         longPressGestureRecognizer.minimumPressDuration = 0.5
         mapView.addGestureRecognizer(longPressGestureRecognizer)
         
@@ -82,13 +82,13 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
         let cancelButton = UIButton(frame: cancelButtonFrame)
         cancelButton.setTitle("Cancel", forState: .Normal)
         cancelButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
-        cancelButton.addTarget(self, action: "cancelPin", forControlEvents: .TouchUpInside)
+        cancelButton.addTarget(self, action: #selector(RouteCreatorViewController.cancelPin), forControlEvents: .TouchUpInside)
         
         let addButtonFrame =  CGRectMake(170.0, 210.0, 50.0, 40.0)
         let addButton = UIButton(frame: addButtonFrame)
         addButton.setTitle("Add", forState: .Normal)
         addButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
-        addButton.addTarget(self, action: "addNewPin", forControlEvents: .TouchUpInside)
+        addButton.addTarget(self, action: #selector(RouteCreatorViewController.addNewPin), forControlEvents: .TouchUpInside)
         
         addPin?.view.addSubview(nameText!)
         addPin?.view.addSubview(checkPointLabel)
@@ -186,12 +186,12 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
         
         view.addSubview(checkPoint!)
         checkPoint?.tag = getPositionAnnotation(annotation)
-        checkPoint?.addTarget(self, action: "changePin:", forControlEvents: .ValueChanged)
+        checkPoint?.addTarget(self, action: #selector(RouteCreatorViewController.changePin(_:)), forControlEvents: .ValueChanged)
         annotationView?.leftCalloutAccessoryView = view
         let button = UIButton(type: .Custom) as UIButton
         button.frame = CGRectMake(0, 0, 53, 53)
         button.setImage(UIImage(named: "remove"), forState: .Normal)
-        button.addTarget(self, action: "removePin:", forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(RouteCreatorViewController.removePin(_:)), forControlEvents: .TouchUpInside)
         button.tag = getPositionAnnotation(annotation)
         
         annotationView?.rightCalloutAccessoryView = button
@@ -348,13 +348,13 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
             let cancelButton = UIButton(frame: cancelButtonFrame)
             cancelButton.setTitle("Cancel", forState: .Normal)
             cancelButton.setTitleColor(UIColor.blueColor(),forState: .Normal)
-            cancelButton.addTarget(self, action: "cancelSaveRoute:", forControlEvents: .TouchUpInside)
+            cancelButton.addTarget(self, action: #selector(RouteCreatorViewController.cancelSaveRoute(_:)), forControlEvents: .TouchUpInside)
             
             let saveButtonFrame = CGRectMake(145.0, 160.0, 100.0, 40.0)
             let saveButton =  UIButton(frame: saveButtonFrame)
             saveButton.setTitle("Save", forState: .Normal)
             saveButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
-            saveButton.addTarget(self, action: "saveRouteFirebase:", forControlEvents: .TouchUpInside)
+            saveButton.addTarget(self, action: #selector(RouteCreatorViewController.saveRouteFirebase(_:)), forControlEvents: .TouchUpInside)
             
             saveRouteAlert?.view.addSubview(nameRouteText!)
             saveRouteAlert?.view.addSubview(descriptionRouteText!)

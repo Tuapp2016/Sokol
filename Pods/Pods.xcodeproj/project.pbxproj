@@ -8,21 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		2FBB70EB40D7E60F7935E2000504AE7B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8300F47EEB39E49255907D5DFC5B2A48 /* Foundation.framework */; };
-		3F524F417F78C4EBC84349E42580A518 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B06BED101372762269229878EED9DB /* Reachability.swift */; };
-		41D591799D68926DC9C711714980ACB0 /* ReachabilitySwift-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = D293893816AF46681F61E1DA01D27186 /* ReachabilitySwift-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3F524F417F78C4EBC84349E42580A518 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F07686762F839DAB103A2CB2CAD79B /* Reachability.swift */; };
+		41D591799D68926DC9C711714980ACB0 /* ReachabilitySwift-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E9A52AAD4FDFE5F387D8CFA640846F1 /* ReachabilitySwift-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		432629197A92416C50C1859055F04667 /* Pods-SokolTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C4E5271ACFBA90C0A00B6CDB3D25A2A9 /* Pods-SokolTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		47FCAE0E9064AC0AD6685CCEF0A16444 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8300F47EEB39E49255907D5DFC5B2A48 /* Foundation.framework */; };
 		50F1F21DC2CFB759E9FA052D8F3A407E /* Pods-Sokol-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A384BF59E2402F82ACEE40652BFCE72F /* Pods-Sokol-dummy.m */; };
 		5826881A16360ABCBA3990099B11F289 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D7219921F39E1CD4FF9E45687961DA8 /* SystemConfiguration.framework */; };
-		587FC8CCA4A67767B5EA9D9851AD43C9 /* Polyline.h in Headers */ = {isa = PBXBuildFile; fileRef = 430384E759DDCEE5A44031FA58E7DF88 /* Polyline.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		587FC8CCA4A67767B5EA9D9851AD43C9 /* Polyline.h in Headers */ = {isa = PBXBuildFile; fileRef = D10BAE622F02F47A53FF7131C9A53F01 /* Polyline.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		676942D0EC02A59A862FDA7557C3E343 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8300F47EEB39E49255907D5DFC5B2A48 /* Foundation.framework */; };
 		725D1E151A2D65DBD2D5316EE201EA73 /* Pods-SokolTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F1F20BBF5B5BCF57A148371F879B0A8 /* Pods-SokolTests-dummy.m */; };
 		8228264FF6B21C26C5749DD01EDA2482 /* Pods-Sokol-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 524FA9764AE4E3D8C067F94689E3F173 /* Pods-Sokol-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		85276143FA4C50B3DEFEFA85285F6BB5 /* Polyline-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F6973A1BD68410336FD16FEF425D193 /* Polyline-dummy.m */; };
-		A2AE534AB797A1AEC1A669E15BB46375 /* ReachabilitySwift-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B0EDA4671E74AC47FBB854BC60A07DC2 /* ReachabilitySwift-dummy.m */; };
+		85276143FA4C50B3DEFEFA85285F6BB5 /* Polyline-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F1AFA3D262348275DCC0AE544882E5B5 /* Polyline-dummy.m */; };
+		A2AE534AB797A1AEC1A669E15BB46375 /* ReachabilitySwift-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E7837327557714E5AF12C602BA699B6 /* ReachabilitySwift-dummy.m */; };
 		A9DC01078F95B59B5AA5E3AABC35968B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8300F47EEB39E49255907D5DFC5B2A48 /* Foundation.framework */; };
-		B7AEBBC5AA00767EB179BB1E9D1ED79B /* Polyline-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 0095A006AF9D0F71B4698C966E1D174E /* Polyline-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D8BF9268B2AAAAEC53BC8C9DA5A3BCD4 /* Polyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7743ACB4D845B9F7DC8889391A2B31E /* Polyline.swift */; };
+		B7AEBBC5AA00767EB179BB1E9D1ED79B /* Polyline-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 97AA2729E524A45307918A4B29FE56F7 /* Polyline-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D8BF9268B2AAAAEC53BC8C9DA5A3BCD4 /* Polyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1D17599E5CFA68D18C5CFA8F2F29A6 /* Polyline.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,69 +50,71 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0095A006AF9D0F71B4698C966E1D174E /* Polyline-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Polyline-umbrella.h"; sourceTree = "<group>"; };
-		0374BA7509044219B6958151EDC3FD81 /* GoogleAuthUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleAuthUtilities.framework; path = Frameworks/GoogleAuthUtilities.framework; sourceTree = "<group>"; };
-		03BA526F55E7DBCD8CA089576452A5A6 /* GoogleSymbolUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleSymbolUtilities.framework; path = Frameworks/GoogleSymbolUtilities.framework; sourceTree = "<group>"; };
-		06B06BED101372762269229878EED9DB /* Reachability.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Reachability.swift; path = Reachability/Reachability.swift; sourceTree = "<group>"; };
-		09F52EDCD7860A9DD1B566B5B0947415 /* Polyline.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Polyline.xcconfig; sourceTree = "<group>"; };
+		01C185B8E38D6F4E287B4F110D66F04A /* Polyline-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Polyline-prefix.pch"; sourceTree = "<group>"; };
+		0A1D17599E5CFA68D18C5CFA8F2F29A6 /* Polyline.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Polyline.swift; path = Polyline/Polyline.swift; sourceTree = "<group>"; };
+		0AC409BCECFE05EA6E554835B9B646C2 /* Polyline.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Polyline.xcconfig; sourceTree = "<group>"; };
+		0C283CAAEBC12B247732CAC0683C0AE3 /* FirebaseDatabase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseDatabase.framework; path = Frameworks/FirebaseDatabase.framework; sourceTree = "<group>"; };
 		0D7219921F39E1CD4FF9E45687961DA8 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
-		0FB77EA9BA1BAFD3ACC21BADDE95D26A /* FIRInstanceID.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRInstanceID.h; path = Headers/Public/FIRInstanceID.h; sourceTree = "<group>"; };
+		0F30890F46BB85CA36DC19DB62DD7339 /* FIRInstanceID.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRInstanceID.h; path = Sources/FIRInstanceID.h; sourceTree = "<group>"; };
 		11355C99BE53FBE7B7C2412FBA087B79 /* Pods-SokolTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SokolTests.release.xcconfig"; sourceTree = "<group>"; };
+		12F1B383C686EF2F1FA53DED1F25C77F /* GoogleSignIn.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = GoogleSignIn.bundle; path = Resources/GoogleSignIn.bundle; sourceTree = "<group>"; };
 		17780625999C7216772FE301B279079A /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		19B614F9E644C718FD9CE006B2772E05 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseInstanceID.framework; path = Frameworks/frameworks/FirebaseInstanceID.framework; sourceTree = "<group>"; };
+		1A322C3AA02126532E6FC9A2D0AA1904 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1E7837327557714E5AF12C602BA699B6 /* ReachabilitySwift-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "ReachabilitySwift-dummy.m"; sourceTree = "<group>"; };
+		1EF356C4A98CA5C8DFDDC2D697C2ADD1 /* GoogleInterchangeUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleInterchangeUtilities.framework; path = Frameworks/GoogleInterchangeUtilities.framework; sourceTree = "<group>"; };
 		2031A2306A8085C20F9ED2B9765206EE /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		282A429A89225928220A81CD1DC364BB /* GoogleAppUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleAppUtilities.framework; path = Frameworks/GoogleAppUtilities.framework; sourceTree = "<group>"; };
-		2F6973A1BD68410336FD16FEF425D193 /* Polyline-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Polyline-dummy.m"; sourceTree = "<group>"; };
+		2335D8CEE6EECCB1BC8773E2C3E53AC5 /* GoogleIPhoneUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleIPhoneUtilities.framework; path = Frameworks/GoogleIPhoneUtilities.framework; sourceTree = "<group>"; };
+		265A81B34DB20232419EAE3381B77410 /* GoogleSymbolUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleSymbolUtilities.framework; path = Frameworks/GoogleSymbolUtilities.framework; sourceTree = "<group>"; };
+		26EFF47CED774002E9837E13A3CF5358 /* FirebaseAuth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseAuth.framework; path = Frameworks/frameworks/FirebaseAuth.framework; sourceTree = "<group>"; };
+		2BC98990FE579EFC60FF4B540A6191F7 /* TwitterCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TwitterCore.framework; path = iOS/TwitterCore.framework; sourceTree = "<group>"; };
+		2DDCC7BDD93DF2DD917AC4EEFF4887E2 /* FABAttributes.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FABAttributes.h; path = iOS/Fabric.framework/Headers/FABAttributes.h; sourceTree = "<group>"; };
 		2FE9CE634A5684BB632D47E6074571F0 /* Pods-SokolTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SokolTests.debug.xcconfig"; sourceTree = "<group>"; };
-		344820F26F461C9A08D47CF3FA8917C9 /* GoogleIPhoneUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleIPhoneUtilities.framework; path = Frameworks/GoogleIPhoneUtilities.framework; sourceTree = "<group>"; };
 		3B9B5812A5A3F9F7D0AF37017E6C834C /* Pods-SokolTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-SokolTests.modulemap"; sourceTree = "<group>"; };
+		3C2AE35591879816E1DDE7AC0BC7CF29 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseMessaging.framework; path = Frameworks/frameworks/FirebaseMessaging.framework; sourceTree = "<group>"; };
 		3CE457463C06694D6096D4F4E892568B /* Pods-Sokol-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Sokol-resources.sh"; sourceTree = "<group>"; };
+		3E9A52AAD4FDFE5F387D8CFA640846F1 /* ReachabilitySwift-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ReachabilitySwift-umbrella.h"; sourceTree = "<group>"; };
 		3F1F20BBF5B5BCF57A148371F879B0A8 /* Pods-SokolTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SokolTests-dummy.m"; sourceTree = "<group>"; };
-		430384E759DDCEE5A44031FA58E7DF88 /* Polyline.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Polyline.h; path = Polyline/Polyline.h; sourceTree = "<group>"; };
-		44C5BA2E30CE3083CCC26497CD6F2942 /* ReachabilitySwift.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ReachabilitySwift.xcconfig; sourceTree = "<group>"; };
-		45F2ABB16BA1C79B12F152FCE3862431 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseInstanceID.framework; path = Frameworks/FirebaseInstanceID.framework; sourceTree = "<group>"; };
+		4637A0FC9FF79277A73520D1739C1B07 /* GoogleAuthUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleAuthUtilities.framework; path = Frameworks/GoogleAuthUtilities.framework; sourceTree = "<group>"; };
+		511B49DCA79D195F289FACCA5A6CB7F1 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = iOS/Fabric.framework; sourceTree = "<group>"; };
 		524FA9764AE4E3D8C067F94689E3F173 /* Pods-Sokol-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Sokol-umbrella.h"; sourceTree = "<group>"; };
-		551709201F02A4B4E59244C36FC6B18F /* FIRMessaging.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRMessaging.h; path = Headers/Public/FIRMessaging.h; sourceTree = "<group>"; };
 		55A5CA1F1865628E3550CAE5ED507C34 /* Polyline.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Polyline.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A2C3EFB85798FA34CED2B1AF94A361B /* Pods-Sokol-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Sokol-frameworks.sh"; sourceTree = "<group>"; };
-		5DAB731ACB6CE25DB8C672101EF3DB7F /* FirebaseMessaging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseMessaging.framework; path = Frameworks/FirebaseMessaging.framework; sourceTree = "<group>"; };
+		61F07686762F839DAB103A2CB2CAD79B /* Reachability.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Reachability.swift; path = Reachability/Reachability.swift; sourceTree = "<group>"; };
 		64987D7A44F1DA84B4C57A8619A54539 /* Pods_SokolTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SokolTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		65A960ADFFE27100DB699D50E373ED76 /* GoogleAppUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleAppUtilities.framework; path = Frameworks/GoogleAppUtilities.framework; sourceTree = "<group>"; };
 		675E03E28D1608D4D07CBBF0DFEEE221 /* Pods-Sokol.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Sokol.debug.xcconfig"; sourceTree = "<group>"; };
+		68B5F6E57CF17B38E7ABE45871BF83F8 /* GoogleNetworkingUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleNetworkingUtilities.framework; path = Frameworks/GoogleNetworkingUtilities.framework; sourceTree = "<group>"; };
+		6A7DC6E5ADF1564E1C8564693EE0BFB8 /* GoogleUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleUtilities.framework; path = Frameworks/GoogleUtilities.framework; sourceTree = "<group>"; };
 		75BF260950539D1EBDC382303CE18A3F /* Pods-Sokol.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-Sokol.modulemap"; sourceTree = "<group>"; };
-		81987202CF4C9368E72C6F1E7203A15F /* ReachabilitySwift-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ReachabilitySwift-prefix.pch"; sourceTree = "<group>"; };
+		7AFC75575279BFA9A5701F12F1F35860 /* FirebaseAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseAnalytics.framework; path = Frameworks/frameworks/FirebaseAnalytics.framework; sourceTree = "<group>"; };
 		8300F47EEB39E49255907D5DFC5B2A48 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		8787F3B7F4700E2714EC583F83D7AEB4 /* Pods-Sokol-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Sokol-acknowledgements.plist"; sourceTree = "<group>"; };
-		8D1937B3EE6271717F778436D0F0E519 /* GoogleInterchangeUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleInterchangeUtilities.framework; path = Frameworks/GoogleInterchangeUtilities.framework; sourceTree = "<group>"; };
-		8D6B0096EE3EA0CB05B97213D2F74DEF /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = iOS/Fabric.framework; sourceTree = "<group>"; };
 		8EF176538BCBE950B8CE6E2725939C14 /* Pods-SokolTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SokolTests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		8F0D5C521B276101DB4519F3DF74B965 /* Pods_Sokol.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Sokol.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		909841F14AC2C2F6F620A5FC5AB499F3 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		93E8824D54778485A08042AE6AFD1B65 /* Pods-Sokol.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Sokol.release.xcconfig"; sourceTree = "<group>"; };
-		941560D128603FC882EC49C3705BC795 /* ReachabilitySwift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = ReachabilitySwift.modulemap; sourceTree = "<group>"; };
-		97839AA45C1A7DEEE9EE6724D3B2C8E2 /* GoogleNetworkingUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleNetworkingUtilities.framework; path = Frameworks/GoogleNetworkingUtilities.framework; sourceTree = "<group>"; };
+		97AA2729E524A45307918A4B29FE56F7 /* Polyline-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Polyline-umbrella.h"; sourceTree = "<group>"; };
 		A0C43E2FFBDA24FE134CEBA39D4774DC /* Pods-SokolTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SokolTests-acknowledgements.plist"; sourceTree = "<group>"; };
-		A35054E94686D4C68AE9BD2A367CF936 /* GoogleSignIn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleSignIn.framework; path = Frameworks/GoogleSignIn.framework; sourceTree = "<group>"; };
 		A384BF59E2402F82ACEE40652BFCE72F /* Pods-Sokol-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Sokol-dummy.m"; sourceTree = "<group>"; };
-		AB76067161D576DAF23C00A5C83A35B2 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B0EDA4671E74AC47FBB854BC60A07DC2 /* ReachabilitySwift-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "ReachabilitySwift-dummy.m"; sourceTree = "<group>"; };
-		B4E7AEFCFAB75F02BF1D5AACBD760EF4 /* FirebaseAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseAnalytics.framework; path = Frameworks/FirebaseAnalytics.framework; sourceTree = "<group>"; };
-		B7743ACB4D845B9F7DC8889391A2B31E /* Polyline.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Polyline.swift; path = Polyline/Polyline.swift; sourceTree = "<group>"; };
-		BD7103387863AE9AD40D756BF3E5D159 /* Polyline.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Polyline.modulemap; sourceTree = "<group>"; };
-		C360451BBCC7B0618EF7C8B892596B2F /* GoogleUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleUtilities.framework; path = Frameworks/GoogleUtilities.framework; sourceTree = "<group>"; };
+		B2527A338D3B5215073640D0DF63BCCD /* Fabric.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Fabric.h; path = iOS/Fabric.framework/Headers/Fabric.h; sourceTree = "<group>"; };
+		B3BDAA49A24EB7CBDE04249006349959 /* ReachabilitySwift.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ReachabilitySwift.xcconfig; sourceTree = "<group>"; };
+		BB809CC68F424207710D606364B00F0C /* FIRMessaging.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRMessaging.h; path = Sources/FIRMessaging.h; sourceTree = "<group>"; };
+		BBF002816AB5A8BA1C7F3674A4FF979E /* Firebase.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Firebase.h; path = Analytics/Sources/Firebase.h; sourceTree = "<group>"; };
+		BD9A5F32109C36C56EC56DBDA0697CAC /* TwitterKitResources.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = TwitterKitResources.bundle; path = iOS/TwitterKit.framework/Versions/A/Resources/TwitterKitResources.bundle; sourceTree = "<group>"; };
+		BEA042AC18BE25FB4A131773CDDD9B31 /* ReachabilitySwift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = ReachabilitySwift.modulemap; sourceTree = "<group>"; };
+		C22C07D1BA7CACBB749FF50F1DB06A48 /* TwitterKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TwitterKit.framework; path = iOS/TwitterKit.framework; sourceTree = "<group>"; };
 		C4E5271ACFBA90C0A00B6CDB3D25A2A9 /* Pods-SokolTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SokolTests-umbrella.h"; sourceTree = "<group>"; };
-		C530B7096B979B376C3488084CFFBD78 /* TwitterCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TwitterCore.framework; path = iOS/TwitterCore.framework; sourceTree = "<group>"; };
-		C9C85FCA22560F0565D4237DD024A238 /* GoogleSignIn.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = GoogleSignIn.bundle; path = Resources/GoogleSignIn.bundle; sourceTree = "<group>"; };
-		CC9A601CB2213064442EE29157CFD3A2 /* TwitterKitResources.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = TwitterKitResources.bundle; path = TwitterKit.framework/Versions/A/Resources/TwitterKitResources.bundle; sourceTree = "<group>"; };
-		D293893816AF46681F61E1DA01D27186 /* ReachabilitySwift-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ReachabilitySwift-umbrella.h"; sourceTree = "<group>"; };
+		CD54CB77C669A364F73268A109F0E27A /* ReachabilitySwift-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ReachabilitySwift-prefix.pch"; sourceTree = "<group>"; };
+		D10BAE622F02F47A53FF7131C9A53F01 /* Polyline.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Polyline.h; path = Polyline/Polyline.h; sourceTree = "<group>"; };
 		D61DB1916A27C43A9897332847C320CE /* Pods-SokolTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SokolTests-frameworks.sh"; sourceTree = "<group>"; };
+		DABA768BE164D25717B54E8FE2030892 /* Polyline.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = Polyline.modulemap; sourceTree = "<group>"; };
 		DC62D2F83A5613CA3C6039243044C852 /* Pods-Sokol-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Sokol-acknowledgements.markdown"; sourceTree = "<group>"; };
-		DE1622FFC694CBC814A6BBD9B7547769 /* TwitterKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TwitterKit.framework; sourceTree = "<group>"; };
-		E5C092A085B4E28BAB3395AB5873B7AE /* Firebase.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Firebase.h; path = Headers/Firebase.h; sourceTree = "<group>"; };
-		E6E0A884D19F728914C9B74E6E97E833 /* FirebaseDatabase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseDatabase.framework; path = Frameworks/FirebaseDatabase.framework; sourceTree = "<group>"; };
 		EE03F85984090B56CE867624CD67C306 /* ReachabilitySwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReachabilitySwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EE44F4AB8907D982F690B210EDDD2B54 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F01A8E7E24FE8DF8B642961AC94C878A /* FirebaseAuth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseAuth.framework; path = Frameworks/FirebaseAuth.framework; sourceTree = "<group>"; };
+		EED3FE021BD306A1555E989949D5E79C /* GoogleSignIn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleSignIn.framework; path = Frameworks/GoogleSignIn.framework; sourceTree = "<group>"; };
+		F1AFA3D262348275DCC0AE544882E5B5 /* Polyline-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Polyline-dummy.m"; sourceTree = "<group>"; };
 		F3AF447B2C1685D0A813D5D4F05C3051 /* Pods-SokolTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SokolTests-resources.sh"; sourceTree = "<group>"; };
-		FF3B6B7FD0ABBBA8F9D755CF4D8F9E3B /* Polyline-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Polyline-prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,10 +154,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		012E4DEFF2B0B57EEAFDDF608450DF76 /* Frameworks */ = {
+		00AEE32FA2D18A9A5785F5DA308F49C9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E6E0A884D19F728914C9B74E6E97E833 /* FirebaseDatabase.framework */,
+				1EF356C4A98CA5C8DFDDC2D697C2ADD1 /* GoogleInterchangeUtilities.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -169,18 +171,12 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		060C049F46D5124FB2BB1515E7A1632A /* Support Files */ = {
+		073D9A38F6BDA18CCECFAA0459C15084 /* GoogleIPhoneUtilities */ = {
 			isa = PBXGroup;
 			children = (
-				EE44F4AB8907D982F690B210EDDD2B54 /* Info.plist */,
-				941560D128603FC882EC49C3705BC795 /* ReachabilitySwift.modulemap */,
-				44C5BA2E30CE3083CCC26497CD6F2942 /* ReachabilitySwift.xcconfig */,
-				B0EDA4671E74AC47FBB854BC60A07DC2 /* ReachabilitySwift-dummy.m */,
-				81987202CF4C9368E72C6F1E7203A15F /* ReachabilitySwift-prefix.pch */,
-				D293893816AF46681F61E1DA01D27186 /* ReachabilitySwift-umbrella.h */,
+				127616855D500ECD6D39F9DD991CFD9B /* Frameworks */,
 			);
-			name = "Support Files";
-			path = "../Target Support Files/ReachabilitySwift";
+			path = GoogleIPhoneUtilities;
 			sourceTree = "<group>";
 		};
 		075EF1C3041AB0D1112CD4254F3236C2 /* Pods-Sokol */ = {
@@ -201,31 +197,6 @@
 			path = "Target Support Files/Pods-Sokol";
 			sourceTree = "<group>";
 		};
-		0C3666F69128AD30A89CF21867428B9F /* FirebaseInstanceID */ = {
-			isa = PBXGroup;
-			children = (
-				0FB77EA9BA1BAFD3ACC21BADDE95D26A /* FIRInstanceID.h */,
-				1B9598CCDBCC06C3A93DC54A517B5AD3 /* Frameworks */,
-			);
-			path = FirebaseInstanceID;
-			sourceTree = "<group>";
-		};
-		0D959FBBA111BFCA8CED2485DAA8D75C /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				03BA526F55E7DBCD8CA089576452A5A6 /* GoogleSymbolUtilities.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		0EB06B7A77FBAEBE6556A4A413E729C8 /* FirebaseAnalytics */ = {
-			isa = PBXGroup;
-			children = (
-				B7D29565FC5D2288A9F28DA5D4A3D98F /* Frameworks */,
-			);
-			path = FirebaseAnalytics;
-			sourceTree = "<group>";
-		};
 		0EF30D0716B7D425F81576683CDC4266 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -237,12 +208,37 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		1B9598CCDBCC06C3A93DC54A517B5AD3 /* Frameworks */ = {
+		0F62AB8A44963536CB002EAA96035A29 /* FirebaseAnalytics */ = {
 			isa = PBXGroup;
 			children = (
-				45F2ABB16BA1C79B12F152FCE3862431 /* FirebaseInstanceID.framework */,
+				93D00F37E401DE5D70821C93F19252E4 /* Frameworks */,
+			);
+			path = FirebaseAnalytics;
+			sourceTree = "<group>";
+		};
+		127616855D500ECD6D39F9DD991CFD9B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2335D8CEE6EECCB1BC8773E2C3E53AC5 /* GoogleIPhoneUtilities.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		12C875DD317DE2DF61585F7C8E5F1CF5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6A7DC6E5ADF1564E1C8564693EE0BFB8 /* GoogleUtilities.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		16308E4394EFBC5ACF4F2565CE0A0DD7 /* GoogleSignIn */ = {
+			isa = PBXGroup;
+			children = (
+				6C8427F772251613A1D20F0A2DD2F8B1 /* Frameworks */,
+				6A51E03F8C6A1D0C8923F92740068317 /* Resources */,
+			);
+			path = GoogleSignIn;
 			sourceTree = "<group>";
 		};
 		21BA98C3E9FD31456E70DA7074DD7CF8 /* Pods-SokolTests */ = {
@@ -263,70 +259,26 @@
 			path = "Target Support Files/Pods-SokolTests";
 			sourceTree = "<group>";
 		};
-		21DFF570FF57D387756FD747263CDA5E /* Frameworks */ = {
+		2DC42761E104CB5E7165142945109E91 /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
-				C530B7096B979B376C3488084CFFBD78 /* TwitterCore.framework */,
+				BBF002816AB5A8BA1C7F3674A4FF979E /* Firebase.h */,
+			);
+			name = Analytics;
+			sourceTree = "<group>";
+		};
+		347F2C8EA7AAF8DEC697D5B575630CC8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2BC98990FE579EFC60FF4B540A6191F7 /* TwitterCore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		233C2CBB3C0E41D752919CD3E6E5922E /* Frameworks */ = {
+		385BC291D3D5BB596BDAC98DA3E4E6B7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				344820F26F461C9A08D47CF3FA8917C9 /* GoogleIPhoneUtilities.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		27E2BD7055904FC989B4E5E10F279EAB /* FirebaseDatabase */ = {
-			isa = PBXGroup;
-			children = (
-				012E4DEFF2B0B57EEAFDDF608450DF76 /* Frameworks */,
-			);
-			path = FirebaseDatabase;
-			sourceTree = "<group>";
-		};
-		2C5498F9FB8356746ED8A7E7524827F7 /* Polyline */ = {
-			isa = PBXGroup;
-			children = (
-				430384E759DDCEE5A44031FA58E7DF88 /* Polyline.h */,
-				B7743ACB4D845B9F7DC8889391A2B31E /* Polyline.swift */,
-				B3EC3648C95208FCD7D5014010A14A95 /* Support Files */,
-			);
-			path = Polyline;
-			sourceTree = "<group>";
-		};
-		3A8DBFA798B0A5161E5E36E65761231E /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				9B455C0FBB3E83D78EE100F4B2D9C73E /* Fabric */,
-				584947655CB1B9A2B8CD60B024A67E22 /* Firebase */,
-				0EB06B7A77FBAEBE6556A4A413E729C8 /* FirebaseAnalytics */,
-				E0189EA6E2228309E11FC0F61D6041EC /* FirebaseAuth */,
-				27E2BD7055904FC989B4E5E10F279EAB /* FirebaseDatabase */,
-				0C3666F69128AD30A89CF21867428B9F /* FirebaseInstanceID */,
-				C7F8B32C2EF90AA51FADF8789F0C6B6E /* FirebaseMessaging */,
-				EFC54B89626C044264A4FAEDC6D815C6 /* GoogleAppUtilities */,
-				C7B71A2262683F80680D173AACD5E1DA /* GoogleAuthUtilities */,
-				4D3BA0E0E24A6FDD2560F4076A3E4473 /* GoogleInterchangeUtilities */,
-				A1D15346B9194D0EB01ABF56ABA4D1CA /* GoogleIPhoneUtilities */,
-				A38AC439126CB2422C6B9C8A2487E75F /* GoogleNetworkingUtilities */,
-				AE62333317B3EB0D65010C882387EF54 /* GoogleSignIn */,
-				49FAE9DF767CA9E4325C1B3B58765115 /* GoogleSymbolUtilities */,
-				4E6CB824D1F1A44CC37EC177FB446AD0 /* GoogleUtilities */,
-				2C5498F9FB8356746ED8A7E7524827F7 /* Polyline */,
-				695187E0B17DA84FCF9C81804FC9960C /* ReachabilitySwift */,
-				59510B46596C2E1E56E18DD9F3E7C874 /* TwitterCore */,
-				851F5198C0CABFF0B701E449524DC9FF /* TwitterKit */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		417E572948A4146F673CFF8671E69643 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				8D1937B3EE6271717F778436D0F0E519 /* GoogleInterchangeUtilities.framework */,
+				4637A0FC9FF79277A73520D1739C1B07 /* GoogleAuthUtilities.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -339,77 +291,105 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		49FAE9DF767CA9E4325C1B3B58765115 /* GoogleSymbolUtilities */ = {
+		4C97B88754F251DF09F18305B10B9035 /* Fabric */ = {
 			isa = PBXGroup;
 			children = (
-				0D959FBBA111BFCA8CED2485DAA8D75C /* Frameworks */,
+				2DDCC7BDD93DF2DD917AC4EEFF4887E2 /* FABAttributes.h */,
+				B2527A338D3B5215073640D0DF63BCCD /* Fabric.h */,
+				E5F2B6891D162AD68643A59CF0271BE9 /* Frameworks */,
 			);
-			path = GoogleSymbolUtilities;
+			path = Fabric;
 			sourceTree = "<group>";
 		};
-		4D3BA0E0E24A6FDD2560F4076A3E4473 /* GoogleInterchangeUtilities */ = {
+		4E4FC91CEF0F000DD0424315394DA07D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				417E572948A4146F673CFF8671E69643 /* Frameworks */,
+				65A960ADFFE27100DB699D50E373ED76 /* GoogleAppUtilities.framework */,
 			);
-			path = GoogleInterchangeUtilities;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		4E6CB824D1F1A44CC37EC177FB446AD0 /* GoogleUtilities */ = {
+		51B1ABAF23A731124FCC1198F377D208 /* GoogleNetworkingUtilities */ = {
 			isa = PBXGroup;
 			children = (
-				C67B2F4D83888F73C6F3E0C657995572 /* Frameworks */,
+				84FDB0C28358D8A3E12ED9FC38D5EE22 /* Frameworks */,
+			);
+			path = GoogleNetworkingUtilities;
+			sourceTree = "<group>";
+		};
+		5C1FAC5F813655C6EFCECE464A592A0D /* GoogleUtilities */ = {
+			isa = PBXGroup;
+			children = (
+				12C875DD317DE2DF61585F7C8E5F1CF5 /* Frameworks */,
 			);
 			path = GoogleUtilities;
 			sourceTree = "<group>";
 		};
-		584947655CB1B9A2B8CD60B024A67E22 /* Firebase */ = {
+		684D2349FE2B5A64C55C91655FAFDAB4 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A3346043F0E0FF239BF0E2C378752E4B /* Analytics */,
+				4C97B88754F251DF09F18305B10B9035 /* Fabric */,
+				9F94503DFC50C53D757C28AF3FD8E70D /* Firebase */,
+				0F62AB8A44963536CB002EAA96035A29 /* FirebaseAnalytics */,
+				93059130A2F091C878D063279C7C279F /* FirebaseAuth */,
+				BFAC8CC9C2D89795FE0BBF03E6E9FAC6 /* FirebaseDatabase */,
+				73ED37F2121BF91C28ED54D9004F0CEB /* FirebaseInstanceID */,
+				81C29DB730027A2FBDA52A12FF08D191 /* FirebaseMessaging */,
+				D3129805CB39F10986EE0E5903D070F6 /* GoogleAppUtilities */,
+				949AA385668204BAEA3C089AC2529DE3 /* GoogleAuthUtilities */,
+				70D51C2D5420EF28110AA30B097AA224 /* GoogleInterchangeUtilities */,
+				073D9A38F6BDA18CCECFAA0459C15084 /* GoogleIPhoneUtilities */,
+				51B1ABAF23A731124FCC1198F377D208 /* GoogleNetworkingUtilities */,
+				16308E4394EFBC5ACF4F2565CE0A0DD7 /* GoogleSignIn */,
+				BEE0D111B83A10BA34256F9D5EBF9898 /* GoogleSymbolUtilities */,
+				5C1FAC5F813655C6EFCECE464A592A0D /* GoogleUtilities */,
+				A60ABEC6C0D8AA5A5E9BDA132565A16A /* Polyline */,
+				8CAB2560873C78FE29ECBA952A466A19 /* ReachabilitySwift */,
+				B7C6BDAB005BB322969114B99A2180C2 /* TwitterCore */,
+				D1CD9DC08AC88D5C546A5F8996AEE40F /* TwitterKit */,
 			);
-			path = Firebase;
+			name = Pods;
 			sourceTree = "<group>";
 		};
-		59510B46596C2E1E56E18DD9F3E7C874 /* TwitterCore */ = {
+		6912C1AD9B163C7A5093FB258EE209C8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				21DFF570FF57D387756FD747263CDA5E /* Frameworks */,
+				19B614F9E644C718FD9CE006B2772E05 /* FirebaseInstanceID.framework */,
 			);
-			path = TwitterCore;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		5D7E11FB6960007E2BA17B7FF010C51A /* Resources */ = {
+		6A51E03F8C6A1D0C8923F92740068317 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				CC9A601CB2213064442EE29157CFD3A2 /* TwitterKitResources.bundle */,
+				12F1B383C686EF2F1FA53DED1F25C77F /* GoogleSignIn.bundle */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		5F2C300F23278D124218E11F25150142 /* Frameworks */ = {
+		6C8427F772251613A1D20F0A2DD2F8B1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5DAB731ACB6CE25DB8C672101EF3DB7F /* FirebaseMessaging.framework */,
+				EED3FE021BD306A1555E989949D5E79C /* GoogleSignIn.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		60597758E70059F4202531972AD93A93 /* Frameworks */ = {
+		70D51C2D5420EF28110AA30B097AA224 /* GoogleInterchangeUtilities */ = {
 			isa = PBXGroup;
 			children = (
-				F01A8E7E24FE8DF8B642961AC94C878A /* FirebaseAuth.framework */,
+				00AEE32FA2D18A9A5785F5DA308F49C9 /* Frameworks */,
 			);
-			name = Frameworks;
+			path = GoogleInterchangeUtilities;
 			sourceTree = "<group>";
 		};
-		695187E0B17DA84FCF9C81804FC9960C /* ReachabilitySwift */ = {
+		73ED37F2121BF91C28ED54D9004F0CEB /* FirebaseInstanceID */ = {
 			isa = PBXGroup;
 			children = (
-				06B06BED101372762269229878EED9DB /* Reachability.swift */,
-				060C049F46D5124FB2BB1515E7A1632A /* Support Files */,
+				0F30890F46BB85CA36DC19DB62DD7339 /* FIRInstanceID.h */,
+				6912C1AD9B163C7A5093FB258EE209C8 /* Frameworks */,
 			);
-			path = ReachabilitySwift;
+			path = FirebaseInstanceID;
 			sourceTree = "<group>";
 		};
 		7DB346D0F39D3F0E887471402A8071AB = {
@@ -417,92 +397,100 @@
 			children = (
 				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
 				433CD3331B6C3787F473C941B61FC68F /* Frameworks */,
-				3A8DBFA798B0A5161E5E36E65761231E /* Pods */,
+				684D2349FE2B5A64C55C91655FAFDAB4 /* Pods */,
 				0EF30D0716B7D425F81576683CDC4266 /* Products */,
 				04802D100C091049338AFB09691C9504 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
-		7DCED46BFCC7C027568688DBD4F5AAE9 /* Frameworks */ = {
+		81C29DB730027A2FBDA52A12FF08D191 /* FirebaseMessaging */ = {
 			isa = PBXGroup;
 			children = (
-				0374BA7509044219B6958151EDC3FD81 /* GoogleAuthUtilities.framework */,
+				BB809CC68F424207710D606364B00F0C /* FIRMessaging.h */,
+				DDA6267E8436928CDCFFD53FD8E1924B /* Frameworks */,
+			);
+			path = FirebaseMessaging;
+			sourceTree = "<group>";
+		};
+		84FDB0C28358D8A3E12ED9FC38D5EE22 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				68B5F6E57CF17B38E7ABE45871BF83F8 /* GoogleNetworkingUtilities.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		851F5198C0CABFF0B701E449524DC9FF /* TwitterKit */ = {
+		8CAB2560873C78FE29ECBA952A466A19 /* ReachabilitySwift */ = {
 			isa = PBXGroup;
 			children = (
-				AA813239D19108B5CE1C543B40B4C32F /* Frameworks */,
-				5D7E11FB6960007E2BA17B7FF010C51A /* Resources */,
+				61F07686762F839DAB103A2CB2CAD79B /* Reachability.swift */,
+				B6E301E980C9D743A0621D845E4E6D7B /* Support Files */,
 			);
-			path = TwitterKit;
+			path = ReachabilitySwift;
 			sourceTree = "<group>";
 		};
-		8774D843B6BFE69243885085D00B9F4D /* Frameworks */ = {
+		93059130A2F091C878D063279C7C279F /* FirebaseAuth */ = {
 			isa = PBXGroup;
 			children = (
-				A35054E94686D4C68AE9BD2A367CF936 /* GoogleSignIn.framework */,
+				B3FC35EFE0F7D15830B52FB415F459A7 /* Frameworks */,
+			);
+			path = FirebaseAuth;
+			sourceTree = "<group>";
+		};
+		93D00F37E401DE5D70821C93F19252E4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7AFC75575279BFA9A5701F12F1F35860 /* FirebaseAnalytics.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		965C218EC231147E7A6C4E2CF0DB81F0 /* Frameworks */ = {
+		949AA385668204BAEA3C089AC2529DE3 /* GoogleAuthUtilities */ = {
 			isa = PBXGroup;
 			children = (
-				282A429A89225928220A81CD1DC364BB /* GoogleAppUtilities.framework */,
+				385BC291D3D5BB596BDAC98DA3E4E6B7 /* Frameworks */,
+			);
+			path = GoogleAuthUtilities;
+			sourceTree = "<group>";
+		};
+		998FB3FCE3D3FB97D785C878A19A5AF3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0C283CAAEBC12B247732CAC0683C0AE3 /* FirebaseDatabase.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		9B455C0FBB3E83D78EE100F4B2D9C73E /* Fabric */ = {
+		9F94503DFC50C53D757C28AF3FD8E70D /* Firebase */ = {
 			isa = PBXGroup;
 			children = (
-				E0E175A0442065ECB622A60CC08D0DEF /* Frameworks */,
+				2DC42761E104CB5E7165142945109E91 /* Analytics */,
 			);
-			path = Fabric;
+			path = Firebase;
 			sourceTree = "<group>";
 		};
-		A1D15346B9194D0EB01ABF56ABA4D1CA /* GoogleIPhoneUtilities */ = {
+		A37AE170454FC0B32B2E573CA6C6EF75 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				233C2CBB3C0E41D752919CD3E6E5922E /* Frameworks */,
+				1A322C3AA02126532E6FC9A2D0AA1904 /* Info.plist */,
+				DABA768BE164D25717B54E8FE2030892 /* Polyline.modulemap */,
+				0AC409BCECFE05EA6E554835B9B646C2 /* Polyline.xcconfig */,
+				F1AFA3D262348275DCC0AE544882E5B5 /* Polyline-dummy.m */,
+				01C185B8E38D6F4E287B4F110D66F04A /* Polyline-prefix.pch */,
+				97AA2729E524A45307918A4B29FE56F7 /* Polyline-umbrella.h */,
 			);
-			path = GoogleIPhoneUtilities;
+			name = "Support Files";
+			path = "../Target Support Files/Polyline";
 			sourceTree = "<group>";
 		};
-		A3346043F0E0FF239BF0E2C378752E4B /* Analytics */ = {
+		A60ABEC6C0D8AA5A5E9BDA132565A16A /* Polyline */ = {
 			isa = PBXGroup;
 			children = (
-				E5C092A085B4E28BAB3395AB5873B7AE /* Firebase.h */,
+				D10BAE622F02F47A53FF7131C9A53F01 /* Polyline.h */,
+				0A1D17599E5CFA68D18C5CFA8F2F29A6 /* Polyline.swift */,
+				A37AE170454FC0B32B2E573CA6C6EF75 /* Support Files */,
 			);
-			name = Analytics;
-			sourceTree = "<group>";
-		};
-		A38AC439126CB2422C6B9C8A2487E75F /* GoogleNetworkingUtilities */ = {
-			isa = PBXGroup;
-			children = (
-				F5FD6D07119271FABD8F8E4041F07195 /* Frameworks */,
-			);
-			path = GoogleNetworkingUtilities;
-			sourceTree = "<group>";
-		};
-		AA813239D19108B5CE1C543B40B4C32F /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				DE1622FFC694CBC814A6BBD9B7547769 /* TwitterKit.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		AE62333317B3EB0D65010C882387EF54 /* GoogleSignIn */ = {
-			isa = PBXGroup;
-			children = (
-				8774D843B6BFE69243885085D00B9F4D /* Frameworks */,
-				E260D72DADF402CA32E43DA48070F0A3 /* Resources */,
-			);
-			path = GoogleSignIn;
+			path = Polyline;
 			sourceTree = "<group>";
 		};
 		B1D77D531BDDEEE979D1705B7870C1FA /* iOS */ = {
@@ -514,89 +502,105 @@
 			name = iOS;
 			sourceTree = "<group>";
 		};
-		B3EC3648C95208FCD7D5014010A14A95 /* Support Files */ = {
+		B3FC35EFE0F7D15830B52FB415F459A7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AB76067161D576DAF23C00A5C83A35B2 /* Info.plist */,
-				BD7103387863AE9AD40D756BF3E5D159 /* Polyline.modulemap */,
-				09F52EDCD7860A9DD1B566B5B0947415 /* Polyline.xcconfig */,
-				2F6973A1BD68410336FD16FEF425D193 /* Polyline-dummy.m */,
-				FF3B6B7FD0ABBBA8F9D755CF4D8F9E3B /* Polyline-prefix.pch */,
-				0095A006AF9D0F71B4698C966E1D174E /* Polyline-umbrella.h */,
+				26EFF47CED774002E9837E13A3CF5358 /* FirebaseAuth.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B6E301E980C9D743A0621D845E4E6D7B /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				909841F14AC2C2F6F620A5FC5AB499F3 /* Info.plist */,
+				BEA042AC18BE25FB4A131773CDDD9B31 /* ReachabilitySwift.modulemap */,
+				B3BDAA49A24EB7CBDE04249006349959 /* ReachabilitySwift.xcconfig */,
+				1E7837327557714E5AF12C602BA699B6 /* ReachabilitySwift-dummy.m */,
+				CD54CB77C669A364F73268A109F0E27A /* ReachabilitySwift-prefix.pch */,
+				3E9A52AAD4FDFE5F387D8CFA640846F1 /* ReachabilitySwift-umbrella.h */,
 			);
 			name = "Support Files";
-			path = "../Target Support Files/Polyline";
+			path = "../Target Support Files/ReachabilitySwift";
 			sourceTree = "<group>";
 		};
-		B7D29565FC5D2288A9F28DA5D4A3D98F /* Frameworks */ = {
+		B7C6BDAB005BB322969114B99A2180C2 /* TwitterCore */ = {
 			isa = PBXGroup;
 			children = (
-				B4E7AEFCFAB75F02BF1D5AACBD760EF4 /* FirebaseAnalytics.framework */,
+				347F2C8EA7AAF8DEC697D5B575630CC8 /* Frameworks */,
+			);
+			path = TwitterCore;
+			sourceTree = "<group>";
+		};
+		BEE0D111B83A10BA34256F9D5EBF9898 /* GoogleSymbolUtilities */ = {
+			isa = PBXGroup;
+			children = (
+				E6C26BB53337433CAA50D62919F6BFC6 /* Frameworks */,
+			);
+			path = GoogleSymbolUtilities;
+			sourceTree = "<group>";
+		};
+		BFAC8CC9C2D89795FE0BBF03E6E9FAC6 /* FirebaseDatabase */ = {
+			isa = PBXGroup;
+			children = (
+				998FB3FCE3D3FB97D785C878A19A5AF3 /* Frameworks */,
+			);
+			path = FirebaseDatabase;
+			sourceTree = "<group>";
+		};
+		C4043598522C62765DB1EBE247BB49DC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C22C07D1BA7CACBB749FF50F1DB06A48 /* TwitterKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C67B2F4D83888F73C6F3E0C657995572 /* Frameworks */ = {
+		D1CD9DC08AC88D5C546A5F8996AEE40F /* TwitterKit */ = {
 			isa = PBXGroup;
 			children = (
-				C360451BBCC7B0618EF7C8B892596B2F /* GoogleUtilities.framework */,
+				C4043598522C62765DB1EBE247BB49DC /* Frameworks */,
+				D44A94C86092A3768A0CAE46E4AF5FE2 /* Resources */,
 			);
-			name = Frameworks;
+			path = TwitterKit;
 			sourceTree = "<group>";
 		};
-		C7B71A2262683F80680D173AACD5E1DA /* GoogleAuthUtilities */ = {
+		D3129805CB39F10986EE0E5903D070F6 /* GoogleAppUtilities */ = {
 			isa = PBXGroup;
 			children = (
-				7DCED46BFCC7C027568688DBD4F5AAE9 /* Frameworks */,
-			);
-			path = GoogleAuthUtilities;
-			sourceTree = "<group>";
-		};
-		C7F8B32C2EF90AA51FADF8789F0C6B6E /* FirebaseMessaging */ = {
-			isa = PBXGroup;
-			children = (
-				551709201F02A4B4E59244C36FC6B18F /* FIRMessaging.h */,
-				5F2C300F23278D124218E11F25150142 /* Frameworks */,
-			);
-			path = FirebaseMessaging;
-			sourceTree = "<group>";
-		};
-		E0189EA6E2228309E11FC0F61D6041EC /* FirebaseAuth */ = {
-			isa = PBXGroup;
-			children = (
-				60597758E70059F4202531972AD93A93 /* Frameworks */,
-			);
-			path = FirebaseAuth;
-			sourceTree = "<group>";
-		};
-		E0E175A0442065ECB622A60CC08D0DEF /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				8D6B0096EE3EA0CB05B97213D2F74DEF /* Fabric.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		E260D72DADF402CA32E43DA48070F0A3 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				C9C85FCA22560F0565D4237DD024A238 /* GoogleSignIn.bundle */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-		};
-		EFC54B89626C044264A4FAEDC6D815C6 /* GoogleAppUtilities */ = {
-			isa = PBXGroup;
-			children = (
-				965C218EC231147E7A6C4E2CF0DB81F0 /* Frameworks */,
+				4E4FC91CEF0F000DD0424315394DA07D /* Frameworks */,
 			);
 			path = GoogleAppUtilities;
 			sourceTree = "<group>";
 		};
-		F5FD6D07119271FABD8F8E4041F07195 /* Frameworks */ = {
+		D44A94C86092A3768A0CAE46E4AF5FE2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				97839AA45C1A7DEEE9EE6724D3B2C8E2 /* GoogleNetworkingUtilities.framework */,
+				BD9A5F32109C36C56EC56DBDA0697CAC /* TwitterKitResources.bundle */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		DDA6267E8436928CDCFFD53FD8E1924B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3C2AE35591879816E1DDE7AC0BC7CF29 /* FirebaseMessaging.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E5F2B6891D162AD68643A59CF0271BE9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				511B49DCA79D195F289FACCA5A6CB7F1 /* Fabric.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E6C26BB53337433CAA50D62919F6BFC6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				265A81B34DB20232419EAE3381B77410 /* GoogleSymbolUtilities.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -799,196 +803,7 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		03BABC000DA1819E8DBBCD9571BA9641 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 93E8824D54778485A08042AE6AFD1B65 /* Pods-Sokol.release.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-Sokol/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-Sokol/Pods-Sokol.modulemap";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_Sokol;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		0449762CE3DED20A2E291D1D233EE81E /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 09F52EDCD7860A9DD1B566B5B0947415 /* Polyline.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Polyline/Polyline-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/Polyline/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/Polyline/Polyline.modulemap";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = Polyline;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		513AF75E8C0DEFA40088440E66D15016 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 44C5BA2E30CE3083CCC26497CD6F2942 /* ReachabilitySwift.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/ReachabilitySwift/ReachabilitySwift-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/ReachabilitySwift/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/ReachabilitySwift/ReachabilitySwift.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_NAME = ReachabilitySwift;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		5A85463681F80B621B0D25857D0CC0F0 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 675E03E28D1608D4D07CBBF0DFEEE221 /* Pods-Sokol.debug.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-Sokol/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-Sokol/Pods-Sokol.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_Sokol;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		76CC37E00CC0CFA72234A0858464DFEE /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 44C5BA2E30CE3083CCC26497CD6F2942 /* ReachabilitySwift.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/ReachabilitySwift/ReachabilitySwift-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/ReachabilitySwift/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/ReachabilitySwift/ReachabilitySwift.modulemap";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = ReachabilitySwift;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		77EB20FF5F3D078463EBDB4FCFFECFB7 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2FE9CE634A5684BB632D47E6074571F0 /* Pods-SokolTests.debug.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-SokolTests/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-SokolTests/Pods-SokolTests.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_SokolTests;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		84FD87D359382A37B07149A12641B965 /* Debug */ = {
+		13E96A645A77DAD1FD4F541F18F5DDBF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1006,6 +821,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1023,18 +839,21 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SYMROOT = "${SRCROOT}/../build";
 			};
 			name = Debug;
 		};
-		CD1A9C9E76A4EEF3BE9C92BEF6FEACBC /* Release */ = {
+		3F197100E4F1EBA1FF7FBCE16679DCD0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 11355C99BE53FBE7B7C2412FBA087B79 /* Pods-SokolTests.release.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
@@ -1045,7 +864,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "Target Support Files/Pods-SokolTests/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-SokolTests/Pods-SokolTests.modulemap";
@@ -1057,17 +876,166 @@
 				PRODUCT_NAME = Pods_SokolTests;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
-		DCE3E6AF6967756BEF93F56F7547FFD4 /* Debug */ = {
+		60E29A88079E27F0BED73BA4C907F8C8 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 09F52EDCD7860A9DD1B566B5B0947415 /* Polyline.xcconfig */;
+			baseConfigurationReference = 2FE9CE634A5684BB632D47E6074571F0 /* Pods-SokolTests.debug.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-SokolTests/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-SokolTests/Pods-SokolTests.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_SokolTests;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		6D5D366F41CBD8DA95C2C63316B2CA02 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 93E8824D54778485A08042AE6AFD1B65 /* Pods-Sokol.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-Sokol/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-Sokol/Pods-Sokol.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_Sokol;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 2.3;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		79D3E9D7A0C19549EBAAC29737693D63 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B3BDAA49A24EB7CBDE04249006349959 /* ReachabilitySwift.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/ReachabilitySwift/ReachabilitySwift-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/ReachabilitySwift/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/ReachabilitySwift/ReachabilitySwift.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = ReachabilitySwift;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		862AF3139CD84E18D34FAF2F43CD0DA6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B3898CD41707DADD0761D9AC4CD9CCE6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0AC409BCECFE05EA6E554835B9B646C2 /* Polyline.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
@@ -1087,47 +1055,111 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
 		};
-		F594C655D48020EC34B00AA63E001773 /* Release */ = {
+		E0E068FACC1336DC15BA0645F98ACD5B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 675E03E28D1608D4D07CBBF0DFEEE221 /* Pods-Sokol.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = YES;
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"POD_CONFIGURATION_RELEASE=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
-				STRIP_INSTALLED_PRODUCT = NO;
-				SYMROOT = "${SRCROOT}/../build";
-				VALIDATE_PRODUCT = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-Sokol/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-Sokol/Pods-Sokol.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_Sokol;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		E33D1F61DE3AED190E33697FEF228DD8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B3BDAA49A24EB7CBDE04249006349959 /* ReachabilitySwift.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/ReachabilitySwift/ReachabilitySwift-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/ReachabilitySwift/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/ReachabilitySwift/ReachabilitySwift.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = ReachabilitySwift;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 2.3;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		E36EE980A6C4C7E6D4F9848FBEC16B94 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0AC409BCECFE05EA6E554835B9B646C2 /* Polyline.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Polyline/Polyline-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Polyline/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/Polyline/Polyline.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = Polyline;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 2.3;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -1137,8 +1169,8 @@
 		040F0C30020D3DDFE1AB0CE719017154 /* Build configuration list for PBXNativeTarget "ReachabilitySwift" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				513AF75E8C0DEFA40088440E66D15016 /* Debug */,
-				76CC37E00CC0CFA72234A0858464DFEE /* Release */,
+				79D3E9D7A0C19549EBAAC29737693D63 /* Debug */,
+				E33D1F61DE3AED190E33697FEF228DD8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1146,8 +1178,8 @@
 		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				84FD87D359382A37B07149A12641B965 /* Debug */,
-				F594C655D48020EC34B00AA63E001773 /* Release */,
+				13E96A645A77DAD1FD4F541F18F5DDBF /* Debug */,
+				862AF3139CD84E18D34FAF2F43CD0DA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1155,8 +1187,8 @@
 		975DCD0476D0C92B4E1A564CFDFE98C2 /* Build configuration list for PBXNativeTarget "Pods-Sokol" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				5A85463681F80B621B0D25857D0CC0F0 /* Debug */,
-				03BABC000DA1819E8DBBCD9571BA9641 /* Release */,
+				E0E068FACC1336DC15BA0645F98ACD5B /* Debug */,
+				6D5D366F41CBD8DA95C2C63316B2CA02 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1164,8 +1196,8 @@
 		9DF676BB8344498A9C1BAE77CB8CE8B0 /* Build configuration list for PBXNativeTarget "Pods-SokolTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				77EB20FF5F3D078463EBDB4FCFFECFB7 /* Debug */,
-				CD1A9C9E76A4EEF3BE9C92BEF6FEACBC /* Release */,
+				60E29A88079E27F0BED73BA4C907F8C8 /* Debug */,
+				3F197100E4F1EBA1FF7FBCE16679DCD0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1173,8 +1205,8 @@
 		DCD3D60DBCDEEC31A2AE9F438B87FA96 /* Build configuration list for PBXNativeTarget "Polyline" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				DCE3E6AF6967756BEF93F56F7547FFD4 /* Debug */,
-				0449762CE3DED20A2E291D1D233EE81E /* Release */,
+				B3898CD41707DADD0761D9AC4CD9CCE6 /* Debug */,
+				E36EE980A6C4C7E6D4F9848FBEC16B94 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

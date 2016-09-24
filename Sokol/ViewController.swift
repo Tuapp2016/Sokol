@@ -133,7 +133,7 @@ class ViewController: UIViewController,GIDSignInUIDelegate{
             let forgetPassword = UIButton(frame: forgetPasswordFrame)
             forgetPassword.setTitle("Forget your password?", forState: .Normal)
             forgetPassword.setTitleColor(UIColor.blueColor(), forState: .Normal)
-            forgetPassword.addTarget(self, action: "passwordForgotten", forControlEvents: .TouchUpInside)
+            forgetPassword.addTarget(self, action: #selector(ViewController.passwordForgotten), forControlEvents: .TouchUpInside)
             
             let buttonsFrame:CGRect = CGRectMake(5.0, 180.0, 250.0, 60.0)
             let buttonsView:UIView = UIView(frame: buttonsFrame)
@@ -142,13 +142,13 @@ class ViewController: UIViewController,GIDSignInUIDelegate{
             let cancelButton:UIButton = UIButton(frame: cancelFrame)
             cancelButton.setTitle("Cancel", forState: .Normal)
             cancelButton.setTitleColor(UIColor.blueColor(),forState: .Normal)
-            cancelButton.addTarget(self, action: "cancelLogin", forControlEvents: .TouchUpInside)
+            cancelButton.addTarget(self, action: #selector(ViewController.cancelLogin), forControlEvents: .TouchUpInside)
             
             let loginFrame:CGRect = CGRectMake(170.0, 10.0, 100.0, 40.0)
             let loginButton:UIButton =  UIButton(frame: loginFrame)
             loginButton.setTitle("Log in", forState: .Normal)
             loginButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
-            loginButton.addTarget(self, action: "loginSokol", forControlEvents: .TouchUpInside)
+            loginButton.addTarget(self, action: #selector(ViewController.loginSokol), forControlEvents: .TouchUpInside)
             
             
             buttonsView.addSubview(cancelButton)
@@ -224,7 +224,7 @@ class ViewController: UIViewController,GIDSignInUIDelegate{
         sendButton.setTitle("Recover", forState: .Normal)
         sendButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
         sendButton.titleLabel?.textAlignment = .Center
-        sendButton.addTarget(self, action: "sendPassword", forControlEvents: .TouchUpInside)
+        sendButton.addTarget(self, action: #selector(ViewController.sendPassword), forControlEvents: .TouchUpInside)
         passwordRecovery!.view.addSubview(emailText!)
         passwordRecovery!.view.addSubview(sendButton)
         presentViewController(passwordRecovery!, animated: true, completion: nil)

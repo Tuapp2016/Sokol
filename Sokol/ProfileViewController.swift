@@ -575,7 +575,7 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
             let changeEmailButton = UIButton(frame: changeEmailButtonFrame)
             changeEmailButton.setTitle("Change Email", forState: .Normal)
             changeEmailButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
-            changeEmailButton.addTarget(self, action: "changeEmail", forControlEvents: .TouchUpInside)
+            changeEmailButton.addTarget(self, action: #selector(ProfileViewController.changeEmail), forControlEvents: .TouchUpInside)
             
             changeEmaillAlert!.view.addSubview(emailText!)
             changeEmaillAlert!.view.addSubview(oldPassword!)
@@ -617,7 +617,7 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
             let changePasswordButton = UIButton(frame: changePasswordButtonFrame)
             changePasswordButton.setTitle("Change Password", forState: .Normal)
             changePasswordButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
-            changePasswordButton.addTarget(self, action: "changePassword", forControlEvents: .TouchUpInside)
+            changePasswordButton.addTarget(self, action: #selector(ProfileViewController.changePassword), forControlEvents: .TouchUpInside)
             
             changePasswordAlert?.view.addSubview(emailText!)
             changePasswordAlert?.view.addSubview(oldPassword!)
