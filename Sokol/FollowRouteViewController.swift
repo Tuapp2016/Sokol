@@ -25,6 +25,8 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
     var reachability:Reachability?
     
     @IBOutlet weak var cancel: UIButton!
+    
+    @IBOutlet weak var screenshot: UIButton!
     var locationManager:CLLocationManager? = CLLocationManager()
     
     @IBOutlet weak var start: UIButton!
@@ -34,7 +36,12 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
         mapView.showsScale = true
         mapView.showsCompass = false
         mapView.mapType = .Standard
+        mapView.pitchEnabled = true
         mapView.showsBuildings = true
+        mapView.zoomEnabled = true
+        mapView.scrollEnabled = true
+        
+        screenshot.hidden = true
         
         if CLLocationManager.locationServicesEnabled() {
             locationManager!.delegate =  self
@@ -51,6 +58,12 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         navigationController?.setNavigationBarHidden(true, animated: true)
+        tabBarController?.tabBar.hidden = true
+        if peekAndPop{
+            let leadingConstraint = NSLayoutConstraint(item: view, attribute: .Leading, relatedBy: .Equal, toItem: mapView, attribute: .Leading, multiplier: 1.0, constant: 0.0)
+            let trailingConstraint = NSLayoutConstraint(item: view, attribute: .Trailing, relatedBy: .Equal, toItem: mapView, attribute: .Trailing, multiplier: 1.0, constant: 0.0)
+            view.addConstraints([leadingConstraint,trailingConstraint])
+        }
         do{
             reachability = try Reachability.reachabilityForInternetConnection()
         }catch{
@@ -287,8 +300,8 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
             let center = CLLocationCoordinate2D(latitude: location!.coordinate.latitude, longitude: location!.coordinate.longitude)
             let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
             self.mapView.setRegion(region, animated: true)
-            let altitude:CLLocationDistance = 400.0
-            let heading:CLLocationDirection = 0.0
+            let altitude:CLLocationDistance = 100.0
+            let heading:CLLocationDirection = 45.0
             let camera = MKMapCamera(lookingAtCenterCoordinate: center, fromDistance: altitude, pitch: 80.0, heading: heading)
             mapView.setCamera(camera, animated: true)
         }
@@ -338,9 +351,105 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
        
     }
     
+   
+    @IBAction func takeScreenshot(sender: AnyObject) {
+        is3D = false
+        let center = CLLocationCoordinate2D(latitude: location!.coordinate.latitude, longitude: location!.coordinate.longitude)
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 150.0, longitudeDelta: 150.0))
+        self.mapView.setRegion(region, animated: false)
+        let altitude:CLLocationDistance = 1000
+        let heading:CLLocationDirection = 45.0
+        let camera = MKMapCamera(lookingAtCenterCoordinate: center, fromDistance: altitude, pitch: 80.0, heading: heading)
+        mapView.setCamera(camera, animated: false)
+        screenshot.hidden = true
+        let timer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: #selector(FollowRouteViewController.takeScreenshotTimer), userInfo: nil, repeats: false)
+        UIGraphicsBeginImageContextWithOptions(view.frame.size, false, 0.0)
+        view.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        let imageData = UIImagePNGRepresentation(image!)
+        
+        if imageData != nil {
+            if reachability?.currentReachabilityStatus == .ReachableViaWiFi || reachability?.currentReachabilityStatus == .ReachableViaWWAN{
+                sendRequest(imageData)
+            }else{
+                self.presentViewController(Utilities.alertMessage("Error", message: "We need an active connection to take the screenshot"), animated: true, completion: nil)
+            }
+        }
+        
+        
+    }
+    func takeScreenshotTimer(){
+        UIGraphicsBeginImageContextWithOptions(view.frame.size, false, 0.0)
+        view.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        let imageData = UIImagePNGRepresentation(image!)
+        
+        if imageData != nil {
+            if reachability?.currentReachabilityStatus == .ReachableViaWiFi || reachability?.currentReachabilityStatus == .ReachableViaWWAN{
+                sendRequest(imageData)
+            }else{
+                self.presentViewController(Utilities.alertMessage("Error", message: "We need an active connection to take the screenshot"), animated: true, completion: nil)
+            }
+        }
+
+        
+    }
+    func sendRequest(image:NSData?){
+        let URL = NSURL(string:"https://fcmsokol.herokuapp.com/images/createAndSend")
+        let request = NSMutableURLRequest(URL: URL!,cachePolicy: .UseProtocolCachePolicy,timeoutInterval: 30.0)
+        request.HTTPMethod = "POST"
+        let boundary = "Boundary-\(NSUUID().UUIDString)"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        let body = NSMutableData()
+        let values = ["token_id":FIRInstanceID.instanceID().token()!,"route":route!.id]
+        for (key,value) in values{
+            body.appendData("--\(boundary)\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+            body.appendData("Content-Disposition:form-data; name=\"\(key)\"\r\n\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+            body.appendData("\(value)\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+        }
+        
+        let fname = "screenshot.png"
+        let mimetype = "image/png"
+
+        
+        body.appendData("--\(boundary)\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+        body.appendData("Content-Disposition:form-data; name=\"file\"; filename=\"\(fname)\"\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+        body.appendData("Content-Type: \(mimetype)\r\n\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+        body.appendData(image!)
+        body.appendData("\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+        
+        body.appendData("--\(boundary)--\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
+        request.HTTPBody = body
+        let session = NSURLSession.sharedSession()
+        let task = session.dataTaskWithRequest(request) {
+            (data,response,error) in
+            if let httpResponse = response as? NSHTTPURLResponse{
+                
+                //let json = try! NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSDictionary
+                if httpResponse.statusCode == 200 {
+                    NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
+                        self.is3D = true
+                        self.screenshot.hidden = false
+
+                        self.presentViewController(Utilities.alertMessage("Success", message: "We have sent the screenshot"), animated: true, completion: nil)
+                    })
+                }else{
+                    NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
+                        self.is3D = true
+                        self.screenshot.hidden = false
+                        self.presentViewController(Utilities.alertMessage("Error", message: "We can't send the screenshot"), animated: true, completion: nil)
+                    })
+                }
+            }
+
+        }
+        task.resume()
+    }
+    
     @IBAction func startRoute(sender: AnyObject) {
         //start.removeFromSuperview()
         if start.currentTitle != "Show directions" {
+            screenshot.hidden = false
             let dateFormater = NSDateFormatter()
             dateFormater.dateFormat = "yyyy-MM-dd, HH:mm:ss"
             dateFormater.timeZone = NSTimeZone(name: "COT")
@@ -406,7 +515,7 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
             if peekAndPop {
                 navigationController?.popViewControllerAnimated(true)
             }else{
-                var timer = NSTimer.scheduledTimerWithTimeInterval(8, target: self, selector: #selector(FollowRouteViewController.closeTimer), userInfo: nil, repeats: false)
+                let timer = NSTimer.scheduledTimerWithTimeInterval(8, target: self, selector: #selector(FollowRouteViewController.closeTimer), userInfo: nil, repeats: false)
             }
     
 

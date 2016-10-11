@@ -15,6 +15,8 @@ import TwitterKit
 import CoreLocation
 import ReachabilitySwift
 import UserNotifications
+import SafariServices
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocationManagerDelegate {
@@ -40,7 +42,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
             
             
         }
-
         UIApplication.sharedApplication().registerForRemoteNotifications()
         FIRApp.configure()
         FIRDatabase.database().persistenceEnabled = true
@@ -57,7 +58,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
     
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        
+        if #available(iOS 10.0, *){
+            let newCategory = UNNotificationCategory(identifier: Constants.SOKOL_CATEGORY, actions: [], intentIdentifiers: [], options: [])
+            let center = UNUserNotificationCenter.currentNotificationCenter()
+            center.setNotificationCategories([newCategory])
+        }
         do{
             reachability = try Reachability.reachabilityForInternetConnection()
         }catch {
@@ -119,9 +124,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
         FIRMessaging.messaging().appDidReceiveMessage(userInfo)
         let information = userInfo["aps"] as! NSDictionary
         
-        let alert = information["alert"] as! NSDictionary
-        showAlert( alert["title"] as! String, message: alert["body"] as! String)
-        print(userInfo)
+        if #available(iOS 10.0, *) {
+            
+        }else{
+            let alert = information["alert"] as! NSDictionary
+            if let subtitle = userInfo["gcm.notification.subtitle"]{
+                if let image = userInfo["image_url"]{
+                    showAlert( alert["title"] as! String, message: (subtitle as! String) + "\n" + (alert["body"] as! String) +  "\n The image can find in " + (image as! String),url: image as? String)
+                }else{
+                    showAlert( alert["title"] as! String, message: (subtitle as! String) + "\n" + (alert["body"] as! String))
+                }
+            }else{
+                showAlert( alert["title"] as! String, message: alert["body"] as! String)
+            }
+        }
         
     }
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
@@ -149,11 +165,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 24*60*60*5, repeats: true)
             let request = UNNotificationRequest(identifier: Constants.SOKOL_NOTIFICATION_REMINDER, content: content, trigger: trigger)
             UNUserNotificationCenter.currentNotificationCenter().addNotificationRequest(request, withCompletionHandler: nil)
-            
         }
-        
-        
-    
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
@@ -182,51 +194,53 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
                 withError error: NSError!) {
         if let error = error {
             self.showAlert("Error", message: "There was an error")
+        }else{
+            let authentication = user.authentication
+            let credential = FIRGoogleAuthProvider.credentialWithIDToken(authentication.idToken,
+                                                                         accessToken: authentication.accessToken)
+            if Utilities.linking == false {
+                
+                FIRAuth.auth()?.signInWithCredential(credential, completion:{(user,error) in
+                    //Here we need to save the data about the user
+                    if error != nil {
+                        self.showAlert("Error", message: "There was an error when we tried to make the log in")
+                        
+                    }else{
+                        let ref = FIRDatabase.database().reference()
+                        //ref.removeAllObservers()
+                        Utilities.user = user
+                        
+                        Utilities.provider = "google.com"
+                        
+                        
+                        
+                        let userRef = ref.child("users")
+                        let userIdRef = userRef.child((user?.uid)!)
+                        userIdRef.observeEventType(.Value, withBlock: {snapshot in
+                            if snapshot.value is NSNull{
+                                userIdRef.setValue(["login":"google.com"])
+                            }
+                            
+                        })
+                        
+                    }
+                })
+            }else{
+                
+                FIRAuth.auth()?.currentUser?.linkWithCredential(credential, completion: {(user, error) in
+                    if error != nil {
+                        self.showAlert("Error", message: "There was an error when we tried to link your account")
+                        
+                    }else{
+                        Utilities.user = user
+                        Utilities.button!.hidden = true
+                    }
+                    
+                })
+            }  
         }
         
-        let authentication = user.authentication
-        let credential = FIRGoogleAuthProvider.credentialWithIDToken(authentication.idToken,
-                                                                     accessToken: authentication.accessToken)
-        if Utilities.linking == false {
-            
-            FIRAuth.auth()?.signInWithCredential(credential, completion:{(user,error) in
-            //Here we need to save the data about the user
-                if error != nil {
-                    self.showAlert("Error", message: "There was an error when we tried to make the log in")
-                    
-                }else{
-                    let ref = FIRDatabase.database().reference()
-                    //ref.removeAllObservers()
-                    Utilities.user = user
-                
-                    Utilities.provider = "google.com"
-
-                    
-
-                    let userRef = ref.child("users")
-                    let userIdRef = userRef.child((user?.uid)!)
-                    userIdRef.observeEventType(.Value, withBlock: {snapshot in
-                        if snapshot.value is NSNull{
-                            userIdRef.setValue(["login":"google.com"])
-                        }
-                        
-                    })
-                    
-                }
-            })
-        }else{
-            
-            FIRAuth.auth()?.currentUser?.linkWithCredential(credential, completion: {(user, error) in
-                if error != nil {
-                    self.showAlert("Error", message: "There was an error when we tried to link your account")
-                   
-                }else{
-                    Utilities.user = user
-                    Utilities.button!.hidden = true
-                }
-                
-            })
-        }
+        
     }
     func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
         if let r =  region as? CLCircularRegion{
@@ -329,16 +343,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
 
 }
 extension AppDelegate{
-    func showAlert(title:String,message:String){
+    func showAlert(title:String,message:String,url:String? = nil){
         dispatch_async(dispatch_get_main_queue(), {
-                       let topWindow: UIWindow = UIWindow(frame: UIScreen.mainScreen().bounds)
+            let topWindow: UIWindow = UIWindow(frame: UIScreen.mainScreen().bounds)
             topWindow.rootViewController = UIViewController()
             topWindow.windowLevel = UIWindowLevelAlert + 1
             let alertController =  UIAlertController(title: title, message: message, preferredStyle: .Alert)
-            let okAcion = UIAlertAction(title: "OK", style: .Cancel, handler: {(action) -> Void in
-                topWindow.hidden = true
-            })
-            alertController.addAction(okAcion)
+            if let url = url {
+                let okAcion = UIAlertAction(title: "OK", style: .Cancel, handler: {(action) ->  Void in
+                    let URL = NSURL(string: url)
+                    let safariController = SFSafariViewController(URL: URL!)
+                    topWindow.rootViewController!.presentViewController(safariController, animated: true, completion: nil)
+                    //topWindow.hidden = true
+                })
+                alertController.addAction(okAcion)
+            }else{
+                let okAcion = UIAlertAction(title: "OK", style: .Cancel, handler: {(action) ->  Void in
+                    topWindow.hidden = true
+                })
+                alertController.addAction(okAcion)
+
+            }
             topWindow.makeKeyAndVisible()
             topWindow.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
             
@@ -349,20 +374,36 @@ extension AppDelegate{
 @available(iOS 10, *)
 extension AppDelegate: UNUserNotificationCenterDelegate{
     func userNotificationCenter(center: UNUserNotificationCenter, willPresentNotification notification: UNNotification, withCompletionHandler completionHandler: (UNNotificationPresentationOptions) -> Void) {
+
         let userInfo = notification.request.content.userInfo
-        // Print message ID.
-        print("Message ID: \(userInfo["gcm.message_id"]!)")
+
+        if let information = userInfo["aps"] as? NSDictionary{
         
-        // Print full message.
-        print("%@", userInfo)
+        let alert = information["alert"] as! NSDictionary
+        if let subtitle = userInfo["gcm.notification.subtitle"]{
+            
+            if let image = userInfo["image_url"]{
+                showAlert( alert["title"] as! String, message: (subtitle as! String) + "\n" + (alert["body"] as! String) +  "\n" + (image as! String),url: image as? String)
+                
+               
+            }else{
+                showAlert( alert["title"] as! String, message: (subtitle as! String) + "\n" + (alert["body"] as! String))
+            }
+        }else{
+            showAlert( alert["title"] as! String, message: alert["body"] as! String)
+        }
+        print(userInfo)
+    }
+    
+
     }
     
 }
 extension AppDelegate: FIRMessagingDelegate{
     func applicationReceivedRemoteMessage(remoteMessage: FIRMessagingRemoteMessage) {
         let userInfo = remoteMessage.appData
-        let information = userInfo["notification"] as! NSDictionary
-        showAlert( information["title"] as! String, message: information["body"] as! String)
+        //let information = userInfo["notification"] as! NSDictionary
+        //showAlert( information["title"] as! String, message: information["body"] as! String)
         print(userInfo)
     }
 }

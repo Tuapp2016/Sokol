@@ -44,6 +44,7 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating,U
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         navigationController?.setNavigationBarHidden(false, animated: true)
+        tabBarController?.tabBar.hidden = false
         if let _ = FIRAuth.auth()?.currentUser {
             // User is signed in.
         } else {
@@ -458,7 +459,7 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating,U
         }else{
             return nil
         }
-        viewController.preferredContentSize = CGSize(width: 0.0, height: 450.0)
+        viewController.preferredContentSize = CGSize(width: 0.0, height: 450)
         return viewController
         
     }

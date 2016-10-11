@@ -14,5 +14,6 @@ struct Constants {
     static let DIRECTION_KEY = "AIzaSyBV2nQR6L2kxYc2XAoY3zII1y6fMcJc-Ss"
     static let SOKOL_NOTIFICATION_REMINDER = "co.edu.unal.aguiterrezt.Sokol.Reminder"
     static let SOKOL_NOTIFICATION_CHECKPOINT = "co.edu.unal.agutierrezt.Sokol.Notification"
+    static let SOKOL_CATEGORY = "sokolscrrenshot"
     
 }

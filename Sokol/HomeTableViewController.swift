@@ -11,6 +11,7 @@ import Firebase
 import TwitterKit
 import FBSDKCoreKit
 import FBSDKLoginKit
+import FBSDKShareKit
 import MapKit
 import ReachabilitySwift
 
@@ -347,12 +348,33 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
         }
     }
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let shareToFacebookButton = UITableViewRowAction(style: .Default, title: "Share to\n Facebook", handler: {(action,indexPath) in
+            
+            let key = self.routesSectionTitles[indexPath.section]
+            if let r = self.routesBySection[key]{
+                let route = r[indexPath.row]
+                let text = "This is the code of my route\n Please subscribe to it.\n The route id is " + route.id
+                
+                let content = FBSDKShareLinkContent()
+                content.contentURL = NSURL(string: "https://fcmsokol.herokuapp.com")
+                content.quote = text
+                let dialog = FBSDKShareDialog()
+                dialog.fromViewController = self
+                dialog.shareContent = content
+                dialog.show()
+                
+                
+                
+            }
+            
+        })
         let shareActionButton = UITableViewRowAction(style: .Default, title: "Share", handler: {(action,indexPath) in
             let key = self.routesSectionTitles[indexPath.section]
             if let r = self.routesBySection[key]{
                 let route = r[indexPath.row]
                 let text = "This is the code of my route\n Please subscribe to it.\n The route id is " + route.id
                 let activityController = UIActivityViewController(activityItems: [text], applicationActivities: nil)
+                activityController.excludedActivityTypes = [UIActivityTypePostToFacebook]
                 self.presentViewController(activityController, animated: true, completion: nil)
 
             }
@@ -389,10 +411,10 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
             //We need to unsubscribe this route this route from all the users who have subscribed this
             
         })
-        
+        shareToFacebookButton.backgroundColor = UIColor(red: 100.0/255.0, green: 20.0/255.0, blue: 155.0/255.0, alpha: 1.0)
         shareActionButton.backgroundColor = UIColor(red: 28.0/255.0, green: 165.0/255.0, blue: 253.0/255.0, alpha: 1.0)
         deleteActionButton.backgroundColor = UIColor.redColor()
-        return [deleteActionButton,shareActionButton]
+        return [deleteActionButton,shareActionButton,shareToFacebookButton]
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

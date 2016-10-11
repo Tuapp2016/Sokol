@@ -31,11 +31,13 @@ class ViewController: UIViewController,GIDSignInUIDelegate{
     let ref = FIRDatabase.database().reference()
     override func viewDidLoad() {
         super.viewDidLoad()
+        signInButtonFacebook.backgroundColor =  UIColor(red: 59.0/255.0, green: 89.0/255.0, blue: 152.0/255.0, alpha: 1.0)
         // Do any additional setup after loading the view, typically from a nib.
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
         Utilities.linking =  false
         FIRAuth.auth()?.addAuthStateDidChangeListener{ auth, user in
             let appDelegate  = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -94,9 +96,19 @@ class ViewController: UIViewController,GIDSignInUIDelegate{
             
         })
         
-        loginButton.frame = CGRect(x: signInButtonTwitter.frame.origin.x, y: signInButtonTwitter.frame.origin.y-55, width: signInButtonTwitter.frame.width, height: signInButtonTwitter.frame.height)
+        loginButton.frame = CGRect(x: signInButtonTwitter.frame.origin.x, y: signInButtonTwitter.frame.origin.y, width: 300, height: 50)
+        loginButton.tag = 100
+        var isViewAdded = false
+        for subview in signInButtonTwitter.subviews{
+            if subview.tag == 100{
+                isViewAdded = true
+            }
+        }
+        if !isViewAdded{
+            signInButtonTwitter.addSubview(loginButton)
+
+        }
        
-        signInButtonTwitter.addSubview(loginButton)
     }
 
     override func didReceiveMemoryWarning() {

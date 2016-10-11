@@ -22,12 +22,13 @@ class LinkAccountsViewController: UIViewController,GIDSignInUIDelegate {
         Utilities.linking = true
         Utilities.button = signInGoogle
         Utilities.buttonSokol = signInSokol
+        signInFacebook.backgroundColor =  UIColor(red: 59.0/255.0, green: 89.0/255.0, blue: 152.0/255.0, alpha: 1.0)
         // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        if let user = FIRAuth.auth()?.currentUser {
+        if let _ = FIRAuth.auth()?.currentUser {
             // User is signed in.
         } else {
             let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogIn")
@@ -57,11 +58,17 @@ class LinkAccountsViewController: UIViewController,GIDSignInUIDelegate {
             }
             
         })
-        //logInButton.center = self.view.center
-        logInButton.frame.size.width = signInTwitter.frame.width
-        logInButton.frame.size.height = signInTwitter.frame.height
-        //logInButton.frame = CGRect(x: signInTwitter.frame.origin.x, y: signInTwitter.frame.origin.y, width: signInTwitter.frame.width, height: signInTwitter.frame.height)
-        signInTwitter.addSubview(logInButton)
+        logInButton.tag = 100
+        logInButton.frame =  CGRect(x: signInTwitter.frame.origin.x, y: signInTwitter.frame.origin.y, width: 300, height: 50)
+        var isViewAdded = false
+        for subview in signInTwitter.subviews{
+            if subview.tag == 100{
+                isViewAdded = true
+            }
+        }
+        if !isViewAdded{
+            signInTwitter.addSubview(logInButton)
+        }
 
         
         
