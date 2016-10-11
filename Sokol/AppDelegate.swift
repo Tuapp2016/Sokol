@@ -59,7 +59,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         if #available(iOS 10.0, *){
-            let newCategory = UNNotificationCategory(identifier: Constants.SOKOL_CATEGORY, actions: [], intentIdentifiers: [], options: [])
+            let showImageAction = UNNotificationAction(identifier: Constants.SOKOL_SHOW_IMAGE, title: "Show image", options: [.Foreground])
+            let dismissAction = UNNotificationAction(identifier: Constants.SOKOL_DISMISS, title: "Dismiss", options: [])
+            let newCategory = UNNotificationCategory(identifier: Constants.SOKOL_CATEGORY, actions: [showImageAction,dismissAction], intentIdentifiers: [], options: [])
+            
             let center = UNUserNotificationCenter.currentNotificationCenter()
             center.setNotificationCategories([newCategory])
         }
@@ -373,8 +376,25 @@ extension AppDelegate{
 }
 @available(iOS 10, *)
 extension AppDelegate: UNUserNotificationCenterDelegate{
-    func userNotificationCenter(center: UNUserNotificationCenter, willPresentNotification notification: UNNotification, withCompletionHandler completionHandler: (UNNotificationPresentationOptions) -> Void) {
+    func userNotificationCenter(center: UNUserNotificationCenter, didReceiveNotificationResponse response: UNNotificationResponse, withCompletionHandler completionHandler: () -> Void) {
+        if response.actionIdentifier == Constants.SOKOL_SHOW_IMAGE{
 
+            
+            let userInfo = response.notification.request.content.userInfo
+            if let url = userInfo["image_url"]{
+                
+                let URL = NSURL(string: url as! String)
+                if UIApplication.sharedApplication().canOpenURL(URL!){
+                    UIApplication.sharedApplication().openURL(URL!)
+                }
+                
+            }
+            
+        }
+        completionHandler()
+    }
+    func userNotificationCenter(center: UNUserNotificationCenter, willPresentNotification notification: UNNotification, withCompletionHandler completionHandler: (UNNotificationPresentationOptions) -> Void) {
+        
         let userInfo = notification.request.content.userInfo
 
         if let information = userInfo["aps"] as? NSDictionary{

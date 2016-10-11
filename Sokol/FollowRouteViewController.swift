@@ -355,7 +355,7 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
     @IBAction func takeScreenshot(sender: AnyObject) {
         is3D = false
         let center = CLLocationCoordinate2D(latitude: location!.coordinate.latitude, longitude: location!.coordinate.longitude)
-        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 150.0, longitudeDelta: 150.0))
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 250.0, longitudeDelta: 250.0))
         self.mapView.setRegion(region, animated: false)
         let altitude:CLLocationDistance = 1000
         let heading:CLLocationDirection = 45.0
@@ -497,6 +497,7 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
     }
     @IBAction func cancelRoute(sender: AnyObject) {
         if cancel.currentTitle == "Finish route"{
+            cancel.enabled = false
             let dateFormater = NSDateFormatter()
             dateFormater.dateFormat = "yyyy-MM-dd, HH:mm:ss"
             dateFormater.timeZone = NSTimeZone(name: "COT")
@@ -515,7 +516,7 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
             if peekAndPop {
                 navigationController?.popViewControllerAnimated(true)
             }else{
-                let timer = NSTimer.scheduledTimerWithTimeInterval(8, target: self, selector: #selector(FollowRouteViewController.closeTimer), userInfo: nil, repeats: false)
+                let timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(FollowRouteViewController.closeTimer), userInfo: nil, repeats: false)
             }
     
 
