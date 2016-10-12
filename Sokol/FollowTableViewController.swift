@@ -44,6 +44,7 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating,U
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         navigationController?.setNavigationBarHidden(false, animated: true)
+        tabBarController?.tabBar.hidden = false
         if let _ = FIRAuth.auth()?.currentUser {
             // User is signed in.
         } else {
@@ -180,13 +181,13 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating,U
         let cancelButton = UIButton(frame: cancelButtonFrame)
         cancelButton.setTitle("Cancel", forState: .Normal)
         cancelButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
-        cancelButton.addTarget(self, action: "cancelAddRoute:", forControlEvents: .TouchUpInside)
+        cancelButton.addTarget(self, action: #selector(FollowTableViewController.cancelAddRoute(_:)), forControlEvents: .TouchUpInside)
         
         let addButtonFrame = CGRectMake(130.0, 110.0, 100.0, 40.0)
         let addButton = UIButton(frame: addButtonFrame)
         addButton.setTitle("Add", forState: .Normal)
         addButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
-        addButton.addTarget(self, action: "addNewRoute:", forControlEvents: .TouchUpInside)
+        addButton.addTarget(self, action: #selector(FollowTableViewController.addNewRoute(_:)), forControlEvents: .TouchUpInside)
         
         addAlertController!.view.addSubview(routeIdText!)
         addAlertController!.view.addSubview(cancelButton)
@@ -458,7 +459,7 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating,U
         }else{
             return nil
         }
-        viewController.preferredContentSize = CGSize(width: 0.0, height: 450.0)
+        viewController.preferredContentSize = CGSize(width: 0.0, height: 450)
         return viewController
         
     }

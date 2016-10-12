@@ -17,7 +17,7 @@ class DetailRouteTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let longPress = UILongPressGestureRecognizer(target: self, action: "movePoint:")
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(DetailRouteTableViewController.movePoint(_:)))
         tableView.addGestureRecognizer(longPress)
     }
     
@@ -71,7 +71,7 @@ class DetailRouteTableViewController: UITableViewController {
         cell.checkpoint.on = check
         cell.pointNameText.text = route?.annotations[indexPath.row].title
         cell.checkpoint.tag = indexPath.row
-        cell.checkpoint.addTarget(self, action: "changeCheckpoint:", forControlEvents: .ValueChanged)
+        cell.checkpoint.addTarget(self, action: #selector(DetailRouteTableViewController.changeCheckpoint(_:)), forControlEvents: .ValueChanged)
         // Configure the cell...
 
         return cell

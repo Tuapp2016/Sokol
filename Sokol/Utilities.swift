@@ -39,7 +39,7 @@ class Utilities {
         image.drawInRect(CGRectMake(0, 0, newWidth, newHeight))
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return newImage
+        return newImage!
     }
     static func setBirthdayDate(tempDate:String) ->String{
         let dateFormatter = NSDateFormatter()

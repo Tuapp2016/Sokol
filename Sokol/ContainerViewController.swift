@@ -14,9 +14,9 @@ class ContainerViewController: UIViewController,UIScrollViewDelegate {
 
     override func viewDidLoad() {
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "toggleMenu", name: "toggleMenu", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "closeMenuViaNotification", name: "closeMenuViaNotification", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotated", name: UIDeviceOrientationDidChangeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ContainerViewController.toggleMenu), name: "toggleMenu", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ContainerViewController.closeMenuViaNotification), name: "closeMenuViaNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ContainerViewController.rotated), name: UIDeviceOrientationDidChangeNotification, object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {

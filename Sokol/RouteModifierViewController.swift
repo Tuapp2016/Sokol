@@ -32,7 +32,7 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
         mapView.showsCompass = false
         mapView.mapType = .Standard
         
-        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "addAnnotation:")
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(RouteModifierViewController.addAnnotation(_:)))
         longPressGestureRecognizer.minimumPressDuration = 0.5
         mapView.addGestureRecognizer(longPressGestureRecognizer)
 
@@ -77,14 +77,14 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
         let cancelButton = UIButton(frame: cancelButtonFrame)
         cancelButton.setTitle("Cancel", forState: .Normal)
         cancelButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
-        cancelButton.addTarget(self, action: "cancelPin", forControlEvents: .TouchUpInside)
+        cancelButton.addTarget(self, action: #selector(RouteModifierViewController.cancelPin), forControlEvents: .TouchUpInside)
         
         
         let addButtonFrame = CGRectMake(170.0, 210.0, 50.0, 40.0)
         let addButton = UIButton(frame: addButtonFrame)
         addButton.setTitle("Add", forState: .Normal)
         addButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
-        addButton.addTarget(self, action: "addNewPin", forControlEvents: .TouchUpInside)
+        addButton.addTarget(self, action: #selector(RouteModifierViewController.addNewPin), forControlEvents: .TouchUpInside)
         
         addPin!.view.addSubview(nameText!)
         addPin!.view.addSubview(checkPointLabel)
@@ -251,13 +251,13 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
         }
         let view:UIView = UIView(frame: CGRectMake(0.0,0.0,53.0,53.0))
         checkPoint!.tag = getPositionAnnotation(annotation)
-        checkPoint!.addTarget(self, action: "changePin:", forControlEvents: .ValueChanged)
+        checkPoint!.addTarget(self, action: #selector(RouteModifierViewController.changePin(_:)), forControlEvents: .ValueChanged)
         view.addSubview(checkPoint!)
         annotationView!.leftCalloutAccessoryView = view
         let button = UIButton(type: .Custom) as UIButton
         button.frame = CGRectMake(0.0, 0.0, 53.0, 53.0)
         button.setImage(UIImage(named: "remove"), forState: .Normal)
-        button.addTarget(self, action: "removePin:", forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(RouteModifierViewController.removePin(_:)), forControlEvents: .TouchUpInside)
         button.tag = getPositionAnnotation(annotation)
         annotationView!.rightCalloutAccessoryView = button
         annotationView?.draggable =  true

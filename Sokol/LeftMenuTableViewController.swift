@@ -73,7 +73,7 @@ class LeftMenuTableViewController: UITableViewController {
                         name = data.displayName!
                     }
                     if data.photoURL?.absoluteString != nil {
-                        url = data.photoURL!.absoluteString
+                        url = data.photoURL!.absoluteString!
                         self.imageFromURL(url)
                     }else{
                         self.header?.profileImage.image = UIImage(named: "profile")
