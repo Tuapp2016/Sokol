@@ -19,6 +19,8 @@ class DetailRouteTableViewController: UITableViewController {
         super.viewDidLoad()
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(DetailRouteTableViewController.movePoint(_:)))
         tableView.addGestureRecognizer(longPress)
+        tableView.estimatedRowHeight = 215
+        tableView.rowHeight = UITableViewAutomaticDimension
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -72,7 +74,46 @@ class DetailRouteTableViewController: UITableViewController {
         cell.pointNameText.text = route?.annotations[indexPath.row].title
         cell.checkpoint.tag = indexPath.row
         cell.checkpoint.addTarget(self, action: #selector(DetailRouteTableViewController.changeCheckpoint(_:)), forControlEvents: .ValueChanged)
+        cell.addressText.text = "We are looking for the direction of the point, this task can take a while .."
         // Configure the cell...
+
+        let urlString = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+String(lat)+","+String(lng)+"&key="+Constants.DIRECTION_KEY
+        let request = NSURLRequest(URL: NSURL(string: urlString)!)
+        let urlSession = NSURLSession.sharedSession()
+        let task = urlSession.dataTaskWithRequest(request,completionHandler: {(data,response,error)-> Void in
+                if let error = error {
+                    print(error)
+                }
+                if let data = data {
+                do{
+                    let jsonResult = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
+                    let status = jsonResult["status"] as! String
+                    if !(status == "ZERO_RESULTS"){
+                        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                            let results = jsonResult["results"] as! NSArray
+                            let result = results[0] as! NSDictionary
+                            let formatted_address = result["formatted_address"] as! String
+                            cell.addressText.text = "Calculated address: \(formatted_address)"
+                            
+                        })
+                    }else{
+                        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                            cell.addressText.text = "We can't find any directions"
+                        })
+                    
+            
+                    }
+            
+            
+                    }catch {
+                        print (error)
+                    }
+                }
+            })
+
+        
+        
+        task.resume()
 
         return cell
     }
@@ -82,9 +123,9 @@ class DetailRouteTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "Points"
     }
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    /*override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 200.0
-    }
+    }*/
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 105.0
     }

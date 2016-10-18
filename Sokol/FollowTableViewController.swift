@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import MapKit
 
-class FollowTableViewController: UITableViewController,UISearchResultsUpdating,UIViewControllerPreviewingDelegate {
+class FollowTableViewController: UITableViewController,UISearchResultsUpdating,UIViewControllerPreviewingDelegate,UITextFieldDelegate {
     var routesBySection:[String:[Route]] = [:]
     var routesSectionTitles = [String]()
     var routes = [Route]()
@@ -118,23 +118,19 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating,U
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("routeCell", forIndexPath: indexPath) as! RouteTableViewCell
-        if indexPath.row < routes.count{
-            var route = Route(id: "", name: "", description: "", annotations: [])
-            if searchController.active{
-                route = routesSearch[indexPath.row]
-            }else{
-                let key = routesSectionTitles[indexPath.section]
-                if let r = routesBySection[key] {
-                    route =  r[indexPath.row]
-                }
-
+        var route = Route(id: "", name: "", description: "", annotations: [])
+        if searchController.active{
+            route = routesSearch[indexPath.row]
+        }else{
+            let key = routesSectionTitles[indexPath.section]
+            if let r = routesBySection[key] {
+                route =  r[indexPath.row]
             }
-            cell.nameText.text = route.name
-            cell.descriptionText.text = route.descriptionRoute
-            let checks = getChecks(route.annotations)
-            cell.informationText.text = "This route has " + String(checks) + " checkpoints"
-            
         }
+        cell.nameText.text = route.name
+        cell.descriptionText.text = route.descriptionRoute
+        let checks = getChecks(route.annotations)
+        cell.informationText.text = "This route has " + String(checks) + " checkpoints"
         
         return cell
 
@@ -176,6 +172,7 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating,U
         routeIdText = UITextField(frame: routeIdTextFrame)
         routeIdText?.placeholder = "Enter the id of the route"
         routeIdText!.borderStyle = .None
+        routeIdText!.delegate = self
         
         let cancelButtonFrame = CGRectMake(20.0, 110.0, 100.0, 40.0)
         let cancelButton = UIButton(frame: cancelButtonFrame)
@@ -538,6 +535,10 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating,U
     }
     func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
         showViewController(viewControllerToCommit, sender: self)
+    }
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
     
     

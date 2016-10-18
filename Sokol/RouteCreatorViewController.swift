@@ -68,7 +68,7 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
         nameText = UITextField(frame: nameTextFrame)
         nameText?.borderStyle = .None
         nameText?.placeholder = "Enter the name of the location"
-        
+        nameText!.delegate = self
         
         let checkPointLabelFrame =  CGRectMake(5.0, 110.0, 240.0, 40.0)
         let checkPointLabel =  UILabel(frame: checkPointLabelFrame)
@@ -307,7 +307,9 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
                             
                             })
                         }else{
-                            self.presentViewController(Utilities.alertMessage("Error", message: "We can't find any route.\n Please try to move or add more points"), animated: true, completion: nil)
+                            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                                self.presentViewController(Utilities.alertMessage("Error", message: "We can't find any route.\n Please try to move or add more points"), animated: true, completion: nil)
+                            })
                             
                         }
                     
@@ -338,11 +340,13 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
             nameRouteText =  UITextField(frame: nameRouteFrame)
             nameRouteText?.borderStyle = .None
             nameRouteText?.placeholder = "Enter the name of the route"
+            nameRouteText?.delegate = self
             
             let descriptionRouteFrame = CGRectMake(5.0, 100.0, 240.0, 50.0)
             descriptionRouteText = UITextField(frame: descriptionRouteFrame)
             descriptionRouteText?.borderStyle = .None
             descriptionRouteText?.placeholder = "Enter the description of the route"
+            descriptionRouteText?.delegate = self
             
             let cancelButtonFrame = CGRectMake(5.0, 160.0, 100.0, 40.0)
             let cancelButton = UIButton(frame: cancelButtonFrame)
@@ -411,8 +415,30 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
             ]
         
             routeId.setValue(values)
+            
             let userByRoute = ref.child("userByRoutes")
             let userByRouteID = userByRoute.child(FIRAuth.auth()!.currentUser!.uid)
+            let careRoutes = self.ref.child("careRoutesByUser")
+            
+                if let user = FIRAuth.auth()?.currentUser{
+                    let careRoutesUser = careRoutes.child(user.uid)
+                    careRoutesUser.observeSingleEventOfType(.Value, withBlock: {(snapshot) in
+                        if !(snapshot.value is NSNull){
+                            let values = snapshot.value as! NSDictionary
+                            var routesIds = values["routes"] as! [String]
+                            routesIds.append(routeId.key)
+                            NSOperationQueue.mainQueue().addOperationWithBlock({() in
+                                careRoutesUser.updateChildValues(["routes":routesIds])
+                            })
+                        }else{
+                            NSOperationQueue.mainQueue().addOperationWithBlock({() in
+                                careRoutesUser.updateChildValues(["routes":[routeId.key]])
+                            })
+                        }
+                    })
+                }
+                FIRMessaging.messaging().subscribeToTopic("/topics/"+routeId.key)
+            
             
             userByRouteID.observeSingleEventOfType(.Value, withBlock: {snapshot in
                 if snapshot.value is NSNull{
@@ -439,6 +465,10 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
         
         let newLength = text.characters.count + string.characters.count - range.length
         return newLength <= 15
+    }
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         switch status {

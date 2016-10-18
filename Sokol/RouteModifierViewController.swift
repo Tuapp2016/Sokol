@@ -65,6 +65,7 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
         nameText = UITextField(frame: nameTextFrame)
         nameText!.borderStyle = .None
         nameText!.placeholder =  "Enter the name of the point"
+        nameText!.delegate = self
         
         let checkPointLabelFrame = CGRectMake(5.0, 110.0, 240.0, 40.0)
         let checkPointLabel = UILabel(frame: checkPointLabelFrame)
@@ -93,7 +94,6 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
         addPin!.view.addSubview(addButton)
         
         point = sender.locationInView(mapView)
-        nameText?.delegate = self
         
         self.presentViewController(addPin!, animated: true, completion: nil)
         
@@ -341,6 +341,10 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
         }
         let newLength = text.characters.count + string.characters.count - range.length
         return newLength <= 15
+    }
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         switch status {

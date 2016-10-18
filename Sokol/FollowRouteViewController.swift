@@ -16,6 +16,7 @@ import ReachabilitySwift
 
 class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMapViewDelegate,UIPopoverPresentationControllerDelegate {
     var route:Route?
+    let ref = FIRDatabase.database().reference()
     var peekAndPop = false
     var is3D = false
     var location:CLLocation?
@@ -502,6 +503,7 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
             dateFormater.dateFormat = "yyyy-MM-dd, HH:mm:ss"
             dateFormater.timeZone = NSTimeZone(name: "COT")
             let str = dateFormater.stringFromDate(NSDate())
+            
             if reachability?.currentReachabilityStatus == .ReachableViaWiFi || reachability?.currentReachabilityStatus == .ReachableViaWWAN {
                 let strategy:SendTopic = SendTopic()
                 let sendMessageClient:SendMessageClient = SendMessageClient(strategy: strategy)
