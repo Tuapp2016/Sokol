@@ -45,6 +45,9 @@
 		B5B9F8BA1D1E1B110055287C /* FacebookFriendsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B9F8B91D1E1B110055287C /* FacebookFriendsCollectionViewController.swift */; };
 		B5B9F8BC1D1E1B710055287C /* FacebookFriendsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B9F8BB1D1E1B710055287C /* FacebookFriendsCollectionViewCell.swift */; };
 		B5B9F8BE1D1E343F0055287C /* FacebookCellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B9F8BD1D1E343F0055287C /* FacebookCellViewController.swift */; };
+		B5BAA7741DB527E200D84BD2 /* Care.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5BAA7721DB527E200D84BD2 /* Care.storyboard */; };
+		B5BAA7761DB52B2C00D84BD2 /* CareTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BAA7751DB52B2C00D84BD2 /* CareTableViewCell.swift */; };
+		B5BAA7781DB531C500D84BD2 /* CareTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BAA7771DB531C500D84BD2 /* CareTableViewController.swift */; };
 		B5BEF02A1D60DFD600D110DC /* HomeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BEF0291D60DFD600D110DC /* HomeTableViewController.swift */; };
 		B5C06F5D1D19A0FF0090AAE9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B5C06F5C1D19A0FF0090AAE9 /* GoogleService-Info.plist */; };
 		B5C1FBF01D10557500BA9104 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C1FBEF1D10557500BA9104 /* Utilities.swift */; };
@@ -116,6 +119,9 @@
 		B5B9F8B91D1E1B110055287C /* FacebookFriendsCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookFriendsCollectionViewController.swift; sourceTree = "<group>"; };
 		B5B9F8BB1D1E1B710055287C /* FacebookFriendsCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookFriendsCollectionViewCell.swift; sourceTree = "<group>"; };
 		B5B9F8BD1D1E343F0055287C /* FacebookCellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookCellViewController.swift; sourceTree = "<group>"; };
+		B5BAA7731DB527E200D84BD2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Care.storyboard; sourceTree = "<group>"; };
+		B5BAA7751DB52B2C00D84BD2 /* CareTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CareTableViewCell.swift; sourceTree = "<group>"; };
+		B5BAA7771DB531C500D84BD2 /* CareTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CareTableViewController.swift; sourceTree = "<group>"; };
 		B5BEF0291D60DFD600D110DC /* HomeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTableViewController.swift; sourceTree = "<group>"; };
 		B5C06F5C1D19A0FF0090AAE9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B5C1FBEF1D10557500BA9104 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
@@ -203,6 +209,7 @@
 				B57714ED1D0272470020E856 /* ViewController.swift */,
 				B57714EF1D0272470020E856 /* Main.storyboard */,
 				B5C1FBF31D1082F600BA9104 /* Home.storyboard */,
+				B5BAA7721DB527E200D84BD2 /* Care.storyboard */,
 				B5E36C4F1D414B7600C70C29 /* Follow.storyboard */,
 				B57714F21D0272470020E856 /* Assets.xcassets */,
 				B57714F41D0272470020E856 /* LaunchScreen.storyboard */,
@@ -238,6 +245,8 @@
 				B5EF2C981D5CFA900027D8E1 /* DirectionsTableViewCell.swift */,
 				B5BEF0291D60DFD600D110DC /* HomeTableViewController.swift */,
 				B5A0B3B11D8745CB0090381B /* SmallCache.swift */,
+				B5BAA7751DB52B2C00D84BD2 /* CareTableViewCell.swift */,
+				B5BAA7771DB531C500D84BD2 /* CareTableViewController.swift */,
 			);
 			path = Sokol;
 			sourceTree = "<group>";
@@ -381,6 +390,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5BAA7741DB527E200D84BD2 /* Care.storyboard in Resources */,
 				B57714F61D0272470020E856 /* LaunchScreen.storyboard in Resources */,
 				B57714F31D0272470020E856 /* Assets.xcassets in Resources */,
 				B5C06F5D1D19A0FF0090AAE9 /* GoogleService-Info.plist in Resources */,
@@ -532,6 +542,8 @@
 				B5A3C6F61D2ADDA7009DBF2E /* Route.swift in Sources */,
 				B5A0B3B21D8745CB0090381B /* SmallCache.swift in Sources */,
 				B5B9F8BC1D1E1B710055287C /* FacebookFriendsCollectionViewCell.swift in Sources */,
+				B5BAA7781DB531C500D84BD2 /* CareTableViewController.swift in Sources */,
+				B5BAA7761DB52B2C00D84BD2 /* CareTableViewCell.swift in Sources */,
 				B5EF2C991D5CFA900027D8E1 /* DirectionsTableViewCell.swift in Sources */,
 				B5A3C6FA1D2B44B9009DBF2E /* PointTableViewCell.swift in Sources */,
 				B5C1FBF91D108EC300BA9104 /* ProfileViewController.swift in Sources */,
@@ -582,6 +594,14 @@
 				B57714F51D0272470020E856 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		B5BAA7721DB527E200D84BD2 /* Care.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B5BAA7731DB527E200D84BD2 /* Base */,
+			);
+			name = Care.storyboard;
 			sourceTree = "<group>";
 		};
 		B5C1FBF31D1082F600BA9104 /* Home.storyboard */ = {

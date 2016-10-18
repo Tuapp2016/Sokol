@@ -209,7 +209,10 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating,U
                 routeIdRef.observeSingleEventOfType(.Value, withBlock: {(snapshot)
                     in
                     if snapshot.value is NSNull{
-                        self.presentViewController(Utilities.alertMessage("Error", message: "This id doesn't exist.\n Please enter the id again"), animated: true, completion: nil)
+                        NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
+                           self.presentViewController(Utilities.alertMessage("Error", message: "This id doesn't exist.\n Please enter the id again"), animated: true, completion: nil)
+                        })
+                        
                     }else {
                         let values = snapshot.value as! NSDictionary
                         let name =  values["name"] as! String
@@ -218,16 +221,42 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating,U
                         let lngs = values["longitudes"] as! [String]
                         let check = values["checkPoints"] as! [Bool]
                         let names = values["pointNames"] as! [String]
+                        let ids = values["ids"] as! [String]
                         var annotations = [SokolAnnotation]()
                         for (index,element) in lats.enumerate(){
                             let coord = CLLocationCoordinate2D(latitude: Double(element)! , longitude: Double(lngs[index])!)
-                            let id = NSUUID().UUIDString
-                            let a = SokolAnnotation(coordinate: coord, title: names[index], subtitle: "This point is the number " + String(index + 1), checkPoint: check[index],id: id)
+                            //let id = NSUUID().UUIDString
+                            let a = SokolAnnotation(coordinate: coord, title: names[index], subtitle: "This point is the number " + String(index + 1), checkPoint: check[index],id: ids[index])
                             annotations.append(a)
                         }
                     
                         let followRouteRef = self.ref.child("followRoutesByUser")
+                        let userRouteRef =  self.ref.child("usersByFollowRoute")
+                        let userFollowRouteRef = userRouteRef.child(id!)
+                        var userIds:[String] = []
                         if let user = FIRAuth.auth()?.currentUser{
+                            userFollowRouteRef.observeSingleEventOfType(.Value, withBlock: {(snapshot) in
+                                if !(snapshot.value is NSNull){
+                                    let values =  snapshot.value as! NSDictionary
+                                    userIds = values["users"] as! [String]
+                                    NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
+                                        if !self.checkUserId(user.uid, users: userIds){
+                                            userIds.append(user.uid)
+                                        }
+                                        userFollowRouteRef.updateChildValues(["users":userIds])
+
+                                    })
+
+
+                                }else{
+                                    NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
+                                        userIds.append(user.uid)
+                                        userFollowRouteRef.updateChildValues(["users":userIds])
+                                        
+                                    })
+                                }
+                            })
+                            
                             let followRouteUserRef = followRouteRef.child(user.uid)
                             self.routeIds.append(id!)
                             followRouteUserRef.updateChildValues(["routes":self.routeIds])
@@ -236,7 +265,7 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating,U
                         NSOperationQueue.mainQueue().addOperationWithBlock({() in
                             self.routes.append(route)
                             self.createDictionary()
-                            FIRMessaging.messaging().subscribeToTopic("/topics/"+id!)
+                            //FIRMessaging.messaging().subscribeToTopic("/topics/"+id!)
                         })
                     }
                 })
@@ -247,6 +276,14 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating,U
         }else{
             self.presentViewController(Utilities.alertMessage("Error", message: "The text can't be empty"), animated: true, completion: nil)
         }
+    }
+    func checkUserId(userId:String,users:[String]) -> Bool{
+        for r in users{
+            if r == userId{
+                return true
+            }
+        }
+        return false
     }
     func checkId(id:String) -> Bool {
         for a in routes{
@@ -268,10 +305,10 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating,U
         }
         return -1
     }
-    func getRoutes(ids:[String]){
+    func getRoutes(idsRoutes:[String]){
         self.routes = []
         let routeRef = ref.child("routes")
-        for id in routeIds {
+        for id in idsRoutes {
             let routeIdRef = routeRef.child(id)
             routeIdRef.observeEventType(.Value, withBlock: {(snapshot) in
                 if !(snapshot.value is NSNull){
@@ -297,7 +334,7 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating,U
                             self.routes.append(route)
                             self.createDictionary()
                             
-                            FIRMessaging.messaging().subscribeToTopic("/topics/"+route.id)
+                            //FIRMessaging.messaging().subscribeToTopic("/topics/"+route.id)
 
                         })
                         
@@ -362,25 +399,61 @@ class FollowTableViewController: UITableViewController,UISearchResultsUpdating,U
                 let route = r[indexPath.row]
                 self.deleteRoute(route.id)
                 NSOperationQueue.mainQueue().addOperationWithBlock({() in
-                    FIRMessaging.messaging().unsubscribeFromTopic("/topics/"+route.id)
+                    self.createDictionary()
+                    let userRoutes = self.ref.child("usersByFollowRoute")
+                    let userFollowRoute = userRoutes.child(route.id)
+                    userFollowRoute.observeSingleEventOfType(.Value, withBlock: {(snapshot) in
+                        if !(snapshot.value is NSNull){
+                            let values =  snapshot.value as! NSDictionary
+                            var userIds = values["users"] as! [String]
+                            var i = 0
+                            var isPresent = false
+                            if let userTemp = FIRAuth.auth()?.currentUser{
+                                
+                                
+                                NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
+                                    for r in userIds{
+                                        if r == userTemp.uid{
+                                            isPresent = true
+                                        }
+                                        if !isPresent{
+                                            i += 1
+                                        }
+                                    }
+                                    if isPresent{
+                                        userIds.removeAtIndex(i)
+                                    }
+                                    if userIds.count > 0 {
+                                        print("hola \(userIds.count)")
+                                        userFollowRoute.updateChildValues(["users":userIds])
+                                    }else{
+                                        userFollowRoute.removeValue()
+                                    }
+                                })
+                            }
+                            
+                            
+                        }
+                    })
+                    
+                    let followRoutes = self.ref.child("followRoutesByUser")
+                    if let user = FIRAuth.auth()?.currentUser {
+                        let followRoutesId = followRoutes.child(user.uid)
+                        if self.routes.count == 0{
+                            //followRoutesId.removeAllObservers()
+                            followRoutesId.removeValue()
+                        }else{
+                            var ids = [String]()
+                            for a in self.routes {
+                                ids.append(a.id)
+                            }
+                            followRoutesId.updateChildValues(["routes":ids])
+                        }
+                    }
+
                 })
                 //self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Left)
-                self.createDictionary()
-                let followRoutes = self.ref.child("followRoutesByUser")
-                if let user = FIRAuth.auth()?.currentUser {
-                    let followRoutesId = followRoutes.child(user.uid)
-                    if self.routes.count == 0{
-                        //followRoutesId.removeAllObservers()
-                        followRoutesId.removeValue()
-                    }else{
-                        var ids = [String]()
-                        for a in self.routes {
-                            ids.append(a.id)
-                        }
-                        followRoutesId.updateChildValues(["routes":ids])
-                    }
-                }
-
+                
             }
             
         })

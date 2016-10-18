@@ -213,7 +213,7 @@
                         <size key="portraitSize" width="324" height="568"/>
                         <size key="landscapeSize" width="568" height="324"/>
                     </fixedSimulatedSizeMetrics>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="KjT-Gf-7Xx">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="KjT-Gf-7Xx">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -231,7 +231,7 @@
             <objects>
                 <navigationController storyboardIdentifier="directionsRoute" automaticallyAdjustsScrollViewInsets="NO" id="oyX-p9-jJc" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="t2k-Uw-XSp">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="t2k-Uw-XSp">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

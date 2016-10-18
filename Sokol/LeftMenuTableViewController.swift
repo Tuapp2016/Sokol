@@ -11,8 +11,8 @@ import Firebase
 import TwitterKit
 
 class LeftMenuTableViewController: UITableViewController {
-    let values = ["My routes","Profile","Follow","Log out"]
-    let valuesImage = ["route","profile","follow","logout"]
+    let values = ["My routes","Profile","Follow","Care","Log out"]
+    let valuesImage = ["route","profile","follow","care","logout"]
     var profileImage:UIImage? = nil
     var header:LeftMenuTableViewCell? = nil
     let ref = FIRDatabase.database().reference()
@@ -98,7 +98,7 @@ class LeftMenuTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 4
+        return 5
     }
 
     
@@ -160,6 +160,9 @@ class LeftMenuTableViewController: UITableViewController {
             NSNotificationCenter.defaultCenter().postNotificationName("switchTabFollow", object: nil)
             NSNotificationCenter.defaultCenter().postNotificationName("closeMenuViaNotification", object: nil)
         case 3:
+            NSNotificationCenter.defaultCenter().postNotificationName("switchTabCare", object: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName("closeMenuViaNotification", object: nil)
+        case 4:
             let userRef = self.ref.child("user")
             let userIdRef = userRef.child((FIRAuth.auth()?.currentUser?.uid)!)
             userIdRef.removeAllObservers()

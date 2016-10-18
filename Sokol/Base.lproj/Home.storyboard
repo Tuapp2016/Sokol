@@ -92,7 +92,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Ue-RQ-VgA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3249.5" y="-944"/>
+            <point key="canvasLocation" x="4188" y="-944.52773613193415"/>
         </scene>
         <!--Detail Route Table View Controller-->
         <scene sceneID="DHM-hl-uC1">
@@ -220,7 +220,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aRL-Ly-LhO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3893" y="-900"/>
+            <point key="canvasLocation" x="4831.1999999999998" y="-900.44977511244383"/>
         </scene>
         <!--Route Modifier View Controller-->
         <scene sceneID="qFA-4E-Ghz">
@@ -234,7 +234,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="315" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="pih-Sf-M6q">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="pih-Sf-M6q">
                                 <frame key="frameInset" minX="-4" width="332" height="600"/>
                             </mapView>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Lp-lU-u3A">
@@ -274,7 +274,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7g7-Ds-KfV" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Hjg-HY-aYD" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4607" y="-815"/>
+            <point key="canvasLocation" x="5544.8000000000002" y="-815.8920539730135"/>
         </scene>
         <!--Route Creator View Controller-->
         <scene sceneID="uYX-AJ-kGs">
@@ -288,7 +288,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="KQe-a4-ejQ">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="KQe-a4-ejQ">
                                 <frame key="frameInset" width="600" height="600"/>
                             </mapView>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EsS-Hl-q9J">
@@ -693,7 +693,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yaE-MH-5Ye" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3367.5" y="597"/>
+            <point key="canvasLocation" x="3447" y="588"/>
         </scene>
         <!--Link Accounts View Controller-->
         <scene sceneID="rDN-vK-cSF">
@@ -783,7 +783,7 @@
         <scene sceneID="e5A-M7-qlY">
             <objects>
                 <collectionViewController storyboardIdentifier="facebookFriends" id="Q0Y-Nu-ct3" customClass="FacebookFriendsCollectionViewController" customModule="Sokol" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="leL-Lm-Ofv">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="leL-Lm-Ofv">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="15" minimumInteritemSpacing="15" id="zuw-xs-qZm">
@@ -975,6 +975,7 @@
                     <connections>
                         <segue destination="Ktq-J6-13a" kind="relationship" relationship="viewControllers" id="AkL-Sa-TLV"/>
                         <segue destination="4OJ-T7-T1F" kind="relationship" relationship="viewControllers" id="a74-Sy-JHg"/>
+                        <segue destination="m4C-hb-aaS" kind="relationship" relationship="viewControllers" id="465-7v-d6B"/>
                         <segue destination="Ecj-FC-gKu" kind="relationship" relationship="viewControllers" id="SEi-ab-sX3"/>
                     </connections>
                 </tabBarController>
@@ -988,7 +989,7 @@
                 <navigationController storyboardIdentifier="profile" automaticallyAdjustsScrollViewInsets="NO" id="Ecj-FC-gKu" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Profile" image="profile" id="TBz-uk-c6o"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Lwq-I7-5ed">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Lwq-I7-5ed">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1006,7 +1007,7 @@
             <objects>
                 <navigationController storyboardIdentifier="leftMenu" automaticallyAdjustsScrollViewInsets="NO" id="Hxr-dS-bep" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="EYW-wV-eVF">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="EYW-wV-eVF">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1027,7 +1028,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Df-0d-1yw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2283" y="-870"/>
+            <point key="canvasLocation" x="2627" y="-152"/>
         </scene>
         <!--My routes-->
         <scene sceneID="xew-sc-pHI">
@@ -1035,7 +1036,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ktq-J6-13a" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="My routes" image="route" id="e4T-SY-2mf"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="api-RL-Niq">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="api-RL-Niq">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1046,7 +1047,17 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gXE-na-IO1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2682.5" y="-900"/>
+            <point key="canvasLocation" x="3564" y="-945"/>
+        </scene>
+        <!--Care-->
+        <scene sceneID="EZs-rG-LXb">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Care" id="m4C-hb-aaS" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="Yes-x2-h0m"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SkF-vH-FqP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2482" y="-573"/>
         </scene>
     </scenes>
     <resources>
