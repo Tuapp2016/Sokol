@@ -284,6 +284,37 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         location = locations.last
         if is3D {
+            let activeRoute = self.ref.child("logs")
+            let activeRouteById = activeRoute.child(route!.id)
+            if let user = FIRAuth.auth()?.currentUser {
+                let activeRouteByIdByUser = activeRouteById.child(user.uid)
+                activeRouteByIdByUser.observeSingleEventOfType(.Value, withBlock: {(snapshot) in
+                    if !(snapshot.value is NSNull){
+                        let values = snapshot.value as! NSDictionary
+                        var coor = [String]()
+                        let dateFormater = NSDateFormatter()
+                        dateFormater.dateFormat = "yyyy-MM-dd, HH:mm:ss"
+                        dateFormater.timeZone = NSTimeZone(name: "COT")
+                        let str = dateFormater.stringFromDate(NSDate())
+                        var coordinates = values["coordiantes"] as? [String]
+                        if var c = coordinates{
+                            c.append(String(self.location!.coordinate.latitude) + "+" + String(self.location!.coordinate.longitude) + "+" + str)
+                            coor = c
+                        }else{
+                            var c = [String]()
+                            c.append(String(self.location!.coordinate.latitude) + "+" + String(self.location!.coordinate.longitude) + "+" + str)
+                            coor = c
+                        }
+                        
+                        NSOperationQueue.mainQueue().addOperationWithBlock({()
+                            activeRouteByIdByUser.updateChildValues(["coordinates":coor])
+                        })
+                        
+                    }
+                })
+                
+            }
+
             if checkCount < 21 {
                 for a in route!.annotations {
                     if a.checkPoint {
@@ -455,6 +486,12 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
             dateFormater.dateFormat = "yyyy-MM-dd, HH:mm:ss"
             dateFormater.timeZone = NSTimeZone(name: "COT")
             let str = dateFormater.stringFromDate(NSDate())
+            let activeRoute = self.ref.child("logs")
+            let activeRouteById = activeRoute.child(route!.id)
+            if let user = FIRAuth.auth()?.currentUser {
+                let activeRouteByIdByUser = activeRouteById.child(user.uid)
+                activeRouteByIdByUser.updateChildValues(["startRoute":str,"finishRoute":"No time","coordinates":[]])
+            }
             if reachability?.currentReachabilityStatus == .ReachableViaWiFi || reachability?.currentReachabilityStatus == .ReachableViaWWAN {
                 let strategy:SendTopic = SendTopic()
                 let sendMessageClient:SendMessageClient = SendMessageClient(strategy: strategy)
@@ -503,6 +540,12 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
             dateFormater.dateFormat = "yyyy-MM-dd, HH:mm:ss"
             dateFormater.timeZone = NSTimeZone(name: "COT")
             let str = dateFormater.stringFromDate(NSDate())
+            let activeRoute = self.ref.child("logs")
+            let activeRouteById = activeRoute.child(route!.id)
+            if let user = FIRAuth.auth()?.currentUser {
+                let activeRouteByIdByUser = activeRouteById.child(user.uid)
+                activeRouteByIdByUser.updateChildValues(["finishRoute":str])
+            }
             
             if reachability?.currentReachabilityStatus == .ReachableViaWiFi || reachability?.currentReachabilityStatus == .ReachableViaWWAN {
                 let strategy:SendTopic = SendTopic()

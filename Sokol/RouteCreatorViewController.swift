@@ -18,7 +18,7 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
     var isRouteCalculated = false
     var annotations = [SokolAnnotation]()
     var locationManager = CLLocationManager()
-    var nameText: UITextField? = UITextField()
+    var nameText: UITextField?
     var checkPoint:UISwitch?
     var addPin:UIAlertController?
     var point:CGPoint?
@@ -68,7 +68,7 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
         nameText = UITextField(frame: nameTextFrame)
         nameText?.borderStyle = .None
         nameText?.placeholder = "Enter the name of the location"
-        nameText!.delegate = self
+        //nameText!.delegate = self
         
         let checkPointLabelFrame =  CGRectMake(5.0, 110.0, 240.0, 40.0)
         let checkPointLabel =  UILabel(frame: checkPointLabelFrame)
@@ -323,10 +323,7 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
             i += 1
         }
         
-        
-        
     }
-    
     
     @IBAction func saveRoute(sender: AnyObject) {
         if annotations.count >= 2 && isRouteCalculated {
@@ -340,13 +337,13 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
             nameRouteText =  UITextField(frame: nameRouteFrame)
             nameRouteText?.borderStyle = .None
             nameRouteText?.placeholder = "Enter the name of the route"
-            nameRouteText?.delegate = self
+            //nameRouteText?.delegate = self
             
             let descriptionRouteFrame = CGRectMake(5.0, 100.0, 240.0, 50.0)
             descriptionRouteText = UITextField(frame: descriptionRouteFrame)
             descriptionRouteText?.borderStyle = .None
             descriptionRouteText?.placeholder = "Enter the description of the route"
-            descriptionRouteText?.delegate = self
+            //descriptionRouteText?.delegate = self
             
             let cancelButtonFrame = CGRectMake(5.0, 160.0, 100.0, 40.0)
             let cancelButton = UIButton(frame: cancelButtonFrame)
@@ -364,6 +361,9 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
             saveRouteAlert?.view.addSubview(descriptionRouteText!)
             saveRouteAlert?.view.addSubview(cancelButton)
             saveRouteAlert?.view.addSubview(saveButton)
+            nameRouteText!.delegate = self
+            descriptionRouteText!.delegate = self
+
             
             self.presentViewController(saveRouteAlert!, animated: true, completion: nil)
             
@@ -467,9 +467,10 @@ class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MK
         return newLength <= 15
     }
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        self.view.endEditing(true)
-        return false
+        textField.resignFirstResponder()
+        return true
     }
+
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         switch status {
         case .AuthorizedAlways:

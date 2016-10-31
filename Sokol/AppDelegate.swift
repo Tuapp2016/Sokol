@@ -201,7 +201,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
             let authentication = user.authentication
             let credential = FIRGoogleAuthProvider.credentialWithIDToken(authentication.idToken,
                                                                          accessToken: authentication.accessToken)
-            if Utilities.linking == false {
+            if !Utilities.linking {
                 
                 FIRAuth.auth()?.signInWithCredential(credential, completion:{(user,error) in
                     //Here we need to save the data about the user
@@ -221,7 +221,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate,GIDSignInDelegate,CLLocati
                         let userIdRef = userRef.child((user?.uid)!)
                         userIdRef.observeEventType(.Value, withBlock: {snapshot in
                             if snapshot.value is NSNull{
-                                userIdRef.setValue(["login":"google.com"])
+                                userIdRef.setValue(["login":"google.com","name":(user?.displayName)!])
+                            }else{
+                                let values = snapshot.value as! NSDictionary
+                                let name =  values["name"] as? String
+                                if let _ = name{
+                                    
+                                }else{
+                                    userIdRef.updateChildValues(["name":(user?.displayName)!])
+                                }
                             }
                             
                         })

@@ -436,12 +436,9 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
             if let indexPath = tableView.indexPathForSelectedRow {
                 let destinationController = segue.destinationViewController as! DetailRouteTableViewController
                 if searchController.active {
-                    print(indexPath.row)
                     destinationController.route = routesSearch[indexPath.row]
                 }else{
                     if let routesTemp = routesBySection[routesSectionTitles[indexPath.section]]{
-                        print(indexPath.row)
-                        print(routesTemp)
                         destinationController.route = routesTemp[indexPath.row]
 
                     }
@@ -458,6 +455,7 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
             return nil
         }
         let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("informationRoute") as! DetailRouteTableViewController
+        
         if let r = routesBySection[routesSectionTitles[indexPath.section]]{
             viewController.route = r[indexPath.row]
         }else{

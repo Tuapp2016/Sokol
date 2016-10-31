@@ -13,7 +13,7 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 import FBSDKShareKit
 
-class CareTableViewController: UITableViewController, UISearchResultsUpdating,UITextFieldDelegate {
+class CareTableViewController: UITableViewController, UISearchResultsUpdating,UITextFieldDelegate,UIViewControllerPreviewingDelegate {
     var addAlertController:UIAlertController?
     var routeIdText:UITextField?
     var routesSectionTitles = [String]()
@@ -36,6 +36,9 @@ class CareTableViewController: UITableViewController, UISearchResultsUpdating,UI
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.separatorStyle = .SingleLine
         tableView.tableFooterView = UIView()
+        if traitCollection.forceTouchCapability == .Available{
+            registerForPreviewingWithDelegate(self, sourceView: view)
+        }
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -74,10 +77,14 @@ class CareTableViewController: UITableViewController, UISearchResultsUpdating,UI
             careRouteUserRef.removeAllObservers()
         }
         let usersRouteRef = ref.child("usersByFollowRoute")
+        let activeRoute = self.ref.child("logs")
         
         for r in routes{
             let usersFollowRouteRef = usersRouteRef.child(r.id)
+            let activeRouteById = activeRoute.child(r.id)
+
             usersFollowRouteRef.removeAllObservers()
+            activeRouteById.removeAllObservers()
         }
       
     }
@@ -413,6 +420,29 @@ class CareTableViewController: UITableViewController, UISearchResultsUpdating,UI
                 })
             }
         })
+        let activeRoute = self.ref.child("logs")
+        let activeRouteById = activeRoute.child(r!.id)
+        activeRouteById.observeEventType(.Value, withBlock: {(snapshot) in
+            if !(snapshot.value is NSNull) {
+                let values = snapshot.value as! NSDictionary
+                var count = 0
+                for (key,_) in values{
+                    let v = values[key as! String] as! NSDictionary
+                    let finishRoute = v["finishRoute"] as! String
+                    if finishRoute == "No time"{
+                        count += 1
+                    }
+                }
+                NSOperationQueue.mainQueue().addOperationWithBlock({() in
+                    cell.activeRoutesText.text = "There are " + String(count) + " active routes at the moment, Please you can check the logs to know more about them"
+                })
+            }else{
+                NSOperationQueue.mainQueue().addOperationWithBlock({() in
+                    cell.activeRoutesText.text = "There are no active routes at the moment but you can check the logs to know more about the routes have finished"
+                })
+            }
+        })
+        
         
         return cell
     }
@@ -431,5 +461,42 @@ class CareTableViewController: UITableViewController, UISearchResultsUpdating,UI
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "logsByRoute" {
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let destinationController = segue.destinationViewController as! LogByRouteTableViewController
+                if searchController.active {
+                    destinationController.route = routesSearch[indexPath.row]
+                }else{
+                    if let routesTemp = routesBySection[routesSectionTitles[indexPath.section]]{
+                        destinationController.route = routesTemp[indexPath.row]
+                        
+                    }
+                }
+                
+            }
+        }
+
+    }
+    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = tableView.indexPathForRowAtPoint(location) else{
+            return nil
+        }
+        guard let cell = tableView.cellForRowAtIndexPath(indexPath) else{
+            return nil
+        }
+        let viewController = UIStoryboard.init(name: "Care", bundle: nil).instantiateViewControllerWithIdentifier("LogRoute") as! LogByRouteTableViewController
+        if let r = routesBySection[routesSectionTitles[indexPath.section]]{
+            viewController.route = r[indexPath.row]
+        }else{
+            return nil
+        }
+        viewController.preferredContentSize = CGSize(width: 0.0, height: 450.0)
+        return viewController
+    }
+    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+        showViewController(viewControllerToCommit, sender: self)
     }
 }

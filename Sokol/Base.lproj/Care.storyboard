@@ -73,6 +73,7 @@
                                     <outlet property="descriptionText" destination="gDO-tT-FQa" id="CIP-p5-GsC"/>
                                     <outlet property="followerText" destination="Q8B-Av-EvO" id="ISD-Wh-IOp"/>
                                     <outlet property="nameText" destination="UwM-bf-sQ5" id="QmF-SR-lEd"/>
+                                    <segue destination="fEe-O4-I1P" kind="show" identifier="logsByRoute" id="4X8-6c-cnW"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -96,7 +97,74 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zkI-8e-zyn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1340" y="-859.07046476761627"/>
+            <point key="canvasLocation" x="1381" y="-299"/>
+        </scene>
+        <!--Log By Route Table View Controller-->
+        <scene sceneID="9mX-My-l4h">
+            <objects>
+                <tableViewController storyboardIdentifier="LogRoute" id="fEe-O4-I1P" customClass="LogByRouteTableViewController" customModule="Sokol" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="110" sectionHeaderHeight="28" sectionFooterHeight="28" id="Rfa-me-w0U">
+                        <rect key="frame" x="0.0" y="0.0" width="315" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="logByRoute" rowHeight="110" id="Fbk-EH-2Uy" customClass="LogTableViewCell" customModule="Sokol" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="92" width="315" height="110"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Fbk-EH-2Uy" id="R5l-w2-zDy">
+                                    <frame key="frameInset" width="315" height="109"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vjr-zO-htQ">
+                                            <frame key="frameInset" minX="8" minY="8" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cJ8-C6-1UL">
+                                            <frame key="frameInset" minX="8" minY="37" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uFl-qb-tu8">
+                                            <frame key="frameInset" minX="8" minY="66" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="cJ8-C6-1UL" firstAttribute="top" secondItem="vjr-zO-htQ" secondAttribute="bottom" constant="10" id="6ep-nI-sy9"/>
+                                        <constraint firstItem="vjr-zO-htQ" firstAttribute="top" secondItem="R5l-w2-zDy" secondAttribute="topMargin" constant="10" id="836-k7-oZL"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="uFl-qb-tu8" secondAttribute="bottom" constant="10" id="CBX-nZ-X3a"/>
+                                        <constraint firstItem="cJ8-C6-1UL" firstAttribute="top" secondItem="vjr-zO-htQ" secondAttribute="bottom" constant="10" id="UFx-iQ-ZBc"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="cJ8-C6-1UL" secondAttribute="trailing" constant="10" id="Y5d-gi-jLq"/>
+                                        <constraint firstItem="uFl-qb-tu8" firstAttribute="leading" secondItem="R5l-w2-zDy" secondAttribute="leadingMargin" constant="10" id="YTQ-5O-9Xe"/>
+                                        <constraint firstItem="vjr-zO-htQ" firstAttribute="leading" secondItem="R5l-w2-zDy" secondAttribute="leadingMargin" constant="10" id="cKH-ts-6Gd"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="vjr-zO-htQ" secondAttribute="trailing" constant="10" id="fxj-1C-zOo"/>
+                                        <constraint firstItem="uFl-qb-tu8" firstAttribute="top" secondItem="cJ8-C6-1UL" secondAttribute="bottom" constant="10" id="hcg-gy-p2q"/>
+                                        <constraint firstItem="cJ8-C6-1UL" firstAttribute="leading" secondItem="R5l-w2-zDy" secondAttribute="leadingMargin" constant="10" id="u35-yd-Tt0"/>
+                                        <constraint firstItem="uFl-qb-tu8" firstAttribute="top" secondItem="cJ8-C6-1UL" secondAttribute="bottom" constant="10" id="vjB-69-WhX"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="uFl-qb-tu8" secondAttribute="trailing" constant="10" id="xRf-gl-pUe"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="finishTimeText" destination="uFl-qb-tu8" id="FL8-dd-p4h"/>
+                                    <outlet property="startTimeText" destination="cJ8-C6-1UL" id="Qt4-Ni-d2u"/>
+                                    <outlet property="userIdText" destination="vjr-zO-htQ" id="bf9-md-Mgh"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="fEe-O4-I1P" id="ogh-4D-Grf"/>
+                            <outlet property="delegate" destination="fEe-O4-I1P" id="lTO-1D-wbf"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qsR-me-Q4B" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2466.5625" y="-300"/>
         </scene>
         <!--Care-->
         <scene sceneID="Ufk-1V-lnE">
@@ -109,7 +177,7 @@
                         <size key="portraitSize" width="315" height="568"/>
                         <size key="landscapeSize" width="568" height="315"/>
                     </fixedSimulatedSizeMetrics>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="WQT-BC-QgL">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="WQT-BC-QgL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

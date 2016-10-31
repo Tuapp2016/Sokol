@@ -79,7 +79,15 @@ class ViewController: UIViewController,GIDSignInUIDelegate{
                             let userIdRef = userRef.child((user?.uid)!)
                             userIdRef.observeEventType(.Value, withBlock: {snapshot in
                                 if snapshot.value is NSNull{
-                                    userIdRef.setValue(["login":"twitter.com"])
+                                    userIdRef.setValue(["login":"twitter.com","name":(user?.displayName)!])
+                                }else{
+                                    let values = snapshot.value as! NSDictionary
+                                    let name =  values["name"] as? String
+                                    if let _ = name{
+                                        
+                                    }else{
+                                        userIdRef.updateChildValues(["name":(user?.displayName)!])
+                                    }
                                 }
                                 
                             })
@@ -198,7 +206,15 @@ class ViewController: UIViewController,GIDSignInUIDelegate{
                             let userIdRef = userRef.child((user?.uid)!)
                             userIdRef.observeEventType(.Value, withBlock: {snapshot in
                                 if snapshot.value is NSNull {
-                                    userIdRef.setValue(["login":"facebook.com"])
+                                    userIdRef.setValue(["login":"facebook.com","name":(user?.displayName)!])
+                                }else{
+                                    let values = snapshot.value as! NSDictionary
+                                    let name = values["name"] as? String
+                                    if let _ = name {
+                                        
+                                    }else{
+                                        userIdRef.updateChildValues(["name":(user?.displayName)!])
+                                    }
                                 }
                                 
                             })
