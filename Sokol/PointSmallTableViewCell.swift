@@ -1,22 +1,22 @@
 //
-//  PointTableViewCell.swift
+//  PointSmallTableViewCell.swift
 //  Sokol
 //
-//  Created by Andres Rene Gutierrez on 04/07/2016.
+//  Created by Andres Rene Gutierrez on 06/11/2016.
 //  Copyright © 2016 Andres Rene Gutierrez. All rights reserved.
 //
 
 import UIKit
 
-class PointTableViewCell: UITableViewCell {
+class PointSmallTableViewCell: UITableViewCell {
 
-    
-    @IBOutlet weak var showLess: UIButton!
-    @IBOutlet weak var addressText: UILabel!
     @IBOutlet weak var pointNameText: UILabel!
+    
+    @IBOutlet weak var addressText: UILabel!
+    
     @IBOutlet weak var checkpoint: UISwitch!
-    @IBOutlet weak var longitudeText: UILabel!
-    @IBOutlet weak var latitudeText: UILabel!
+    
+    @IBOutlet weak var showMore: UIButton!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

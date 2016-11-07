@@ -14,6 +14,7 @@ class DetailRouteTableViewController: UITableViewController {
     var route:Route?
     let ref  = FIRDatabase.database().reference()
     var routeTemp:Route?
+    var details:[Bool] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +40,7 @@ class DetailRouteTableViewController: UITableViewController {
         if let route = route {
             routeTemp = route.copy() as! Route
         }
+        details = Array(count: self.route!.annotations.count, repeatedValue: false)
     }
 
     override func didReceiveMemoryWarning() {
@@ -64,18 +66,33 @@ class DetailRouteTableViewController: UITableViewController {
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("pointCell", forIndexPath: indexPath) as! PointTableViewCell
+        var cell:PointTableViewCell?
+        var cellSmall:PointSmallTableViewCell?
         let lat = route!.annotations[indexPath.row].coordinate.latitude
         let lng = route!.annotations[indexPath.row].coordinate.longitude
         let check = route!.annotations[indexPath.row].checkPoint
-        cell.latitudeText.text = "Lat: " + String(lat)
-        cell.longitudeText.text = "Lng " + String(lng)
-        cell.checkpoint.on = check
-        cell.pointNameText.text = route?.annotations[indexPath.row].title
-        cell.checkpoint.tag = indexPath.row
-        cell.checkpoint.addTarget(self, action: #selector(DetailRouteTableViewController.changeCheckpoint(_:)), forControlEvents: .ValueChanged)
-        cell.addressText.text = "We are looking for the direction of the point, this task can take a while .."
-        // Configure the cell...
+        if !details[indexPath.row]{
+            cellSmall = tableView.dequeueReusableCellWithIdentifier("pointCellSmall", forIndexPath: indexPath) as! PointSmallTableViewCell
+            cellSmall!.pointNameText.text = route?.annotations[indexPath.row].title
+            cellSmall!.addressText.text = "We are looking for the direction of the point, this task can take a while ..\n"
+            cellSmall!.checkpoint.on = check
+            cellSmall!.showMore.tag = indexPath.row
+            cellSmall!.showMore.addTarget(self, action: #selector(DetailRouteTableViewController.showMore(_:)), forControlEvents: .TouchUpInside)
+        }else{
+            cell = tableView.dequeueReusableCellWithIdentifier("pointCell", forIndexPath: indexPath) as! PointTableViewCell
+            cell!.latitudeText.text = "Lat: " + String(lat)
+            cell!.longitudeText.text = "Lng " + String(lng)
+            cell!.checkpoint.on = check
+            cell!.pointNameText.text = route?.annotations[indexPath.row].title
+            cell!.checkpoint.tag = indexPath.row
+            cell!.checkpoint.addTarget(self, action: #selector(DetailRouteTableViewController.changeCheckpoint(_:)), forControlEvents: .ValueChanged)
+            cell!.addressText.text = "We are looking for the direction of the point, this task can take a while ..\n"
+            cell!.showLess.tag = indexPath.row
+            cell!.showLess.addTarget(self, action: #selector(DetailRouteTableViewController.showMore(_:)), forControlEvents: .TouchUpInside)
+        }
+        
+        
+               // Configure the cell...
 
         let urlString = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+String(lat)+","+String(lng)+"&key="+Constants.DIRECTION_KEY
         let request = NSURLRequest(URL: NSURL(string: urlString)!)
@@ -93,29 +110,43 @@ class DetailRouteTableViewController: UITableViewController {
                             let results = jsonResult["results"] as! NSArray
                             let result = results[0] as! NSDictionary
                             let formatted_address = result["formatted_address"] as! String
-                            cell.addressText.text = "Calculated address: \(formatted_address)"
+                            if let c = cell{
+                                cell!.addressText.text = "Calculated address: \(formatted_address)"
+                            }else{
+                                cellSmall!.addressText.text = "Calculated address: \(formatted_address)"
+                            }
                             
                         })
                     }else{
                         NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                            cell.addressText.text = "We can't find any directions"
+                            if let c = cell {
+                                cell!.addressText.text = "We can't find any directions"
+                            }else{
+                                cellSmall!.addressText.text = "We can't find any directions"
+
+                            }
                         })
                     
             
                     }
-            
-            
-                    }catch {
-                        print (error)
-                    }
+                }catch {
+                    print (error)
                 }
-            })
-
-        
+            }
+        })
         
         task.resume()
-
-        return cell
+        if details[indexPath.row]{
+           return cell!
+        }else{
+            return cellSmall!
+        }
+    }
+    func showMore(sender:AnyObject?){
+        details[sender!.tag] = !details[sender!.tag]
+        var indexs = [NSIndexPath]()
+        indexs.append(NSIndexPath(forRow: sender!.tag, inSection: 0))
+        tableView.reloadRowsAtIndexPaths(indexs, withRowAnimation: .Fade)
     }
     func changeCheckpoint(sender:UISwitch){
         route?.annotations[sender.tag].checkPoint = sender.on
@@ -134,7 +165,7 @@ class DetailRouteTableViewController: UITableViewController {
         headerCell.nameText.text =  route!.name
         headerCell.descriptionText.text = route!.descriptionRoute
         
-        return headerCell
+        return headerCell.contentView
         
     }
     override func willMoveToParentViewController(parent: UIViewController?) {
@@ -215,6 +246,7 @@ class DetailRouteTableViewController: UITableViewController {
                 MyCell.cellSnapshot!.center =  center
                 if indexPath != nil && indexPath !=  Path.initialIndexPath! {
                     self.route!.annotations.insert(self.route!.annotations.removeAtIndex(Path.initialIndexPath!.row), atIndex: indexPath!.row)
+                    self.details.insert(details.removeAtIndex(Path.initialIndexPath!.row), atIndex: indexPath!.row)
                     
                     tableView.moveRowAtIndexPath(Path.initialIndexPath!, toIndexPath: indexPath!)
                     Path.initialIndexPath =  indexPath!

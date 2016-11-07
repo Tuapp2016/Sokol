@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class LogByRouteTableViewController: UITableViewController {
+class LogByRouteTableViewController: UITableViewController, UIViewControllerPreviewingDelegate {
     var route:Route?
     let ref = FIRDatabase.database().reference()
     struct Log{
@@ -25,6 +25,9 @@ class LogByRouteTableViewController: UITableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.separatorStyle = .SingleLine
         tableView.tableFooterView =  UIView()
+        if traitCollection.forceTouchCapability == .Available {
+            registerForPreviewingWithDelegate(self, sourceView: view)
+        }
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -112,6 +115,32 @@ class LogByRouteTableViewController: UITableViewController {
     }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
+    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "logsByRouteByUser" {
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let destinationController = segue.destinationViewController as! LogByRouteByUserTableViewController
+                destinationController.routeId = route!.id
+                destinationController.userId = logs[indexPath.row].userId!
+            }
+        }
+    }
+    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = tableView.indexPathForRowAtPoint(location) else{
+            return nil
+        }
+        guard let cell = tableView.cellForRowAtIndexPath(indexPath) else{
+            return nil
+        }
+        let viewController = UIStoryboard.init(name: "Care", bundle: nil).instantiateViewControllerWithIdentifier("LogRouteUser") as! LogByRouteByUserTableViewController
+        viewController.routeId =  route!.id
+        viewController.userId = logs[indexPath.row].userId!
+        viewController.preferredContentSize =  CGSize(width: 0.0, height: 450.0)
+        return viewController
+        
+    }
+    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+        showViewController(viewControllerToCommit, sender: self)
     }
 
 }
