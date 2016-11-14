@@ -85,7 +85,7 @@
                                 <rect key="frame" x="0.0" y="92" width="768" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GqI-bz-4W0" id="R0M-jD-jru">
-                                    <frame key="frameInset" width="768" height="49"/>
+                                    <frame key="frameInset" width="768" height="49.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X90-jL-hnj">
@@ -131,7 +131,7 @@
                                 <rect key="frame" x="0.0" y="72" width="324" height="150"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ats-Iu-ReM" id="ucx-Dr-3s8">
-                                    <frame key="frameInset" width="324" height="149"/>
+                                    <frame key="frameInset" width="324" height="149.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zUl-m9-jwP">
@@ -213,7 +213,7 @@
                         <size key="portraitSize" width="324" height="568"/>
                         <size key="landscapeSize" width="568" height="324"/>
                     </fixedSimulatedSizeMetrics>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="KjT-Gf-7Xx">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="KjT-Gf-7Xx">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

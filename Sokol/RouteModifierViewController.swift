@@ -91,9 +91,9 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
         addPin!.view.addSubview(checkPoint!)
         addPin!.view.addSubview(cancelButton)
         addPin!.view.addSubview(addButton)
+        nameText!.delegate = self
         
         point = sender.locationInView(mapView)
-        nameText?.delegate = self
         
         self.presentViewController(addPin!, animated: true, completion: nil)
         
@@ -202,8 +202,9 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
                         }else{
                             NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
                                 self.confirm.hidden = true
+                                self.presentViewController(Utilities.alertMessage("Error", message: "We can't find any route.\n Please try to move or add more points"), animated: true, completion: nil)
                             })
-                            self.presentViewController(Utilities.alertMessage("Error", message: "We can't find any route.\n Please try to move or add more points"), animated: true, completion: nil)
+                            
                         }
                     }catch {
                         print (error)
@@ -334,7 +335,7 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
         let polyline = MKPolyline(coordinates: &coordinates, count: coordinates.count)
         mapView.addOverlay(polyline)
         
-     }
+    }
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         guard let text = textField.text else{
             return true
@@ -342,6 +343,11 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
         let newLength = text.characters.count + string.characters.count - range.length
         return newLength <= 15
     }
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
+    
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         switch status {
         case .AuthorizedAlways:

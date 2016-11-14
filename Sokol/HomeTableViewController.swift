@@ -48,6 +48,7 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
         
         NSNotificationCenter.defaultCenter().addObserver(self,selector: #selector(HomeTableViewController.switchTabRoutes), name: "switchTabRoutes", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeTableViewController.switchTabProfile), name: "switchTabProfile", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeTableViewController.switchTabCare), name: "switchTabCare", object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(HomeTableViewController.switchTabFollow), name: "switchTabFollow", object: nil)
         // Do any additional setup after loading the view.
@@ -139,7 +140,7 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     func switchTabProfile(){
-        tabBarController?.selectedIndex = 2
+        tabBarController?.selectedIndex = 3
         
     }
     func switchTabRoutes() {
@@ -147,6 +148,9 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
     }
     func switchTabFollow(){
         tabBarController?.selectedIndex = 1
+    }
+    func switchTabCare(){
+        tabBarController?.selectedIndex = 2
     }
     @IBAction func toggleMenu(sender:AnyObject){
         NSNotificationCenter.defaultCenter().postNotificationName("toggleMenu",object:nil)
@@ -432,12 +436,9 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
             if let indexPath = tableView.indexPathForSelectedRow {
                 let destinationController = segue.destinationViewController as! DetailRouteTableViewController
                 if searchController.active {
-                    print(indexPath.row)
                     destinationController.route = routesSearch[indexPath.row]
                 }else{
                     if let routesTemp = routesBySection[routesSectionTitles[indexPath.section]]{
-                        print(indexPath.row)
-                        print(routesTemp)
                         destinationController.route = routesTemp[indexPath.row]
 
                     }
@@ -454,6 +455,7 @@ class HomeTableViewController: UITableViewController,UIViewControllerPreviewingD
             return nil
         }
         let viewController = UIStoryboard(name: "Home", bundle: nil).instantiateViewControllerWithIdentifier("informationRoute") as! DetailRouteTableViewController
+        
         if let r = routesBySection[routesSectionTitles[indexPath.section]]{
             viewController.route = r[indexPath.row]
         }else{
