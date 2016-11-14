@@ -14,7 +14,7 @@ import Firebase
 class RouteCreatorViewController: UIViewController, CLLocationManagerDelegate,MKMapViewDelegate,UITextFieldDelegate{
     
     @IBOutlet weak var calculateRoute: UIButton!
-    @IBOutlet var mapView:MKMapView!
+    @IBOutlet weak var mapView:MKMapView!
     var isRouteCalculated = false
     var annotations = [SokolAnnotation]()
     var locationManager = CLLocationManager()

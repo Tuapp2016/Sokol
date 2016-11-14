@@ -202,8 +202,9 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
                         }else{
                             NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
                                 self.confirm.hidden = true
+                                self.presentViewController(Utilities.alertMessage("Error", message: "We can't find any route.\n Please try to move or add more points"), animated: true, completion: nil)
                             })
-                            self.presentViewController(Utilities.alertMessage("Error", message: "We can't find any route.\n Please try to move or add more points"), animated: true, completion: nil)
+                            
                         }
                     }catch {
                         print (error)
@@ -334,7 +335,7 @@ class RouteModifierViewController: UIViewController,CLLocationManagerDelegate,MK
         let polyline = MKPolyline(coordinates: &coordinates, count: coordinates.count)
         mapView.addOverlay(polyline)
         
-     }
+    }
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         guard let text = textField.text else{
             return true

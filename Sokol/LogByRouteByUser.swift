@@ -13,4 +13,5 @@ struct LogByRouteByUser {
     var lng:String
     var date:String
     var details:Bool
+    var lifespan:String
 }

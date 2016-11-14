@@ -14,7 +14,9 @@ class LogByUserTableViewCell: UITableViewCell {
     
     @IBOutlet weak var latitudeText: UILabel!
     
+    @IBOutlet weak var lifespanText: UILabel!
     @IBOutlet weak var longitudeText: UILabel!
+    
     
     @IBOutlet weak var showLess: UIButton!
     @IBOutlet weak var dateText: UILabel!

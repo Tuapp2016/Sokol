@@ -43,7 +43,7 @@ class LogByRouteByUserTableViewController: UITableViewController {
                 if let c = coordinates {
                     for v in c{
                         let valuesCoordinates = v.componentsSeparatedByString("+")
-                        self.logsByRouteByUserArray.append(LogByRouteByUser(lat: valuesCoordinates[0], lng: valuesCoordinates[1], date: valuesCoordinates[2],details:false))
+                        self.logsByRouteByUserArray.append(LogByRouteByUser(lat: valuesCoordinates[0], lng: valuesCoordinates[1], date: valuesCoordinates[2],details:false,lifespan:valuesCoordinates[3]))
                         
                     }
                 }
@@ -82,7 +82,11 @@ class LogByRouteByUserTableViewController: UITableViewController {
         return logsByRouteByUserArray.count
     }
     func openMap(selector:AnyObject?){
-        //Here I have to think opening the map in order the user can show a review of the route for an especific user.
+        let viewController = UIStoryboard.init(name: "Care", bundle: nil).instantiateViewControllerWithIdentifier("logMap") as! LogByRouteByUserMapViewController
+        viewController.userId = userId!
+        viewController.routeId = routeId!
+        self.presentViewController(viewController, animated: true, completion: nil)
+        
     }
 
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -116,6 +120,7 @@ class LogByRouteByUserTableViewController: UITableViewController {
             cell!.latitudeText.text = "Lat: " + logsByRouteByUserArray[indexPath.row].lat
             cell!.longitudeText.text = "Lng: " + logsByRouteByUserArray[indexPath.row].lng
             cell!.showLess.tag = indexPath.row
+            cell!.lifespanText.text = "Lifespan: " + logsByRouteByUserArray[indexPath.row].lifespan
             cell!.showLess.addTarget(self, action: #selector(LogByRouteByUserTableViewController.showMore(_:)), forControlEvents: .TouchUpInside)
 
         }

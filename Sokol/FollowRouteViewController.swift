@@ -296,13 +296,39 @@ class FollowRouteViewController: UIViewController,CLLocationManagerDelegate,MKMa
                         dateFormater.dateFormat = "yyyy-MM-dd, HH:mm:ss"
                         dateFormater.timeZone = NSTimeZone(name: "COT")
                         let str = dateFormater.stringFromDate(NSDate())
-                        var coordinates = values["coordiantes"] as? [String]
-                        if var c = coordinates{
-                            c.append(String(self.location!.coordinate.latitude) + "+" + String(self.location!.coordinate.longitude) + "+" + str)
-                            coor = c
+                        var coordinates = values["coordinates"] as? [String]
+                        if coordinates != nil{
+                            var i = 0
+                            var modified = false
+                            for v in coordinates! {
+                                let a = v.componentsSeparatedByString("+")
+                                let oldLocation = CLLocation(latitude: Double(a[0])!, longitude: Double(a[1])!)
+                                let meters = self.location!.distanceFromLocation(oldLocation)
+                                
+                                if meters < 30 {
+                                    modified = true
+                                    break
+                                }
+                                i += 1
+                                
+                            }
+                            if modified {
+                                let e = coordinates!.removeAtIndex(i).componentsSeparatedByString("+")
+                                let oldDate = dateFormater.dateFromString(e[2])?.timeIntervalSince1970
+                                let newDate = dateFormater.dateFromString(str)?.timeIntervalSince1970
+                                let seconds = newDate! - oldDate!
+                                let newE = String(self.location!.coordinate.latitude) + "+" + String(self.location!.coordinate.longitude) + "+" + e[2] + "+" + String(seconds)
+                                coordinates!.insert(newE, atIndex: i)
+                                coor = coordinates!
+                                
+                            }else{
+                                coordinates!.append(String(self.location!.coordinate.latitude) + "+" + String(self.location!.coordinate.longitude) + "+" + str + "+" + "0")
+                                coor = coordinates!
+
+                            }
                         }else{
                             var c = [String]()
-                            c.append(String(self.location!.coordinate.latitude) + "+" + String(self.location!.coordinate.longitude) + "+" + str)
+                            c.append(String(self.location!.coordinate.latitude) + "+" + String(self.location!.coordinate.longitude) + "+" + str + "+" + "0")
                             coor = c
                         }
                         

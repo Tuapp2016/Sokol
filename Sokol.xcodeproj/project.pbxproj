@@ -12,6 +12,8 @@
 		B52812C51DCFD3C400812D12 /* HeaderLogTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52812C41DCFD3C400812D12 /* HeaderLogTableViewCell.swift */; };
 		B52A675C1D10CA3A0062980F /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52A675B1D10CA3A0062980F /* ProfileTableViewCell.swift */; };
 		B52A675E1D10EC1C0062980F /* ProfileImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52A675D1D10EC1C0062980F /* ProfileImageTableViewCell.swift */; };
+		B53BFDCA1DDA51ED007A299E /* LogByRouteByUserMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53BFDC91DDA51ED007A299E /* LogByRouteByUserMapViewController.swift */; };
+		B53BFDCC1DDA58D8007A299E /* CareAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53BFDCB1DDA58D8007A299E /* CareAnnotation.swift */; };
 		B540F9E21DCFE72B005ADBFF /* LogByUserSmallTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B540F9E11DCFE72B005ADBFF /* LogByUserSmallTableViewCell.swift */; };
 		B540F9E41DCFFD1B005ADBFF /* PointSmallTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B540F9E31DCFFD1B005ADBFF /* PointSmallTableViewCell.swift */; };
 		B56A73FA1D0B908F00DF1F9B /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56A73F71D0B908F00DF1F9B /* FBSDKCoreKit.framework */; };
@@ -90,6 +92,8 @@
 		B52812C41DCFD3C400812D12 /* HeaderLogTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderLogTableViewCell.swift; sourceTree = "<group>"; };
 		B52A675B1D10CA3A0062980F /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
 		B52A675D1D10EC1C0062980F /* ProfileImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileImageTableViewCell.swift; sourceTree = "<group>"; };
+		B53BFDC91DDA51ED007A299E /* LogByRouteByUserMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogByRouteByUserMapViewController.swift; sourceTree = "<group>"; };
+		B53BFDCB1DDA58D8007A299E /* CareAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CareAnnotation.swift; sourceTree = "<group>"; };
 		B540F9E11DCFE72B005ADBFF /* LogByUserSmallTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogByUserSmallTableViewCell.swift; sourceTree = "<group>"; };
 		B540F9E31DCFFD1B005ADBFF /* PointSmallTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointSmallTableViewCell.swift; sourceTree = "<group>"; };
 		B56A73F71D0B908F00DF1F9B /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
@@ -271,6 +275,8 @@
 				B52812C41DCFD3C400812D12 /* HeaderLogTableViewCell.swift */,
 				B540F9E11DCFE72B005ADBFF /* LogByUserSmallTableViewCell.swift */,
 				B540F9E31DCFFD1B005ADBFF /* PointSmallTableViewCell.swift */,
+				B53BFDC91DDA51ED007A299E /* LogByRouteByUserMapViewController.swift */,
+				B53BFDCB1DDA58D8007A299E /* CareAnnotation.swift */,
 			);
 			path = Sokol;
 			sourceTree = "<group>";
@@ -552,6 +558,7 @@
 				B577CF301D332E70004FA827 /* RouteModifierViewController.swift in Sources */,
 				B58E4E401D13B13B00D5527A /* LeftMenuTableViewCell.swift in Sources */,
 				B58E4E3C1D1376DC00D5527A /* ContainerViewController.swift in Sources */,
+				B53BFDCA1DDA51ED007A299E /* LogByRouteByUserMapViewController.swift in Sources */,
 				B57714EC1D0272470020E856 /* AppDelegate.swift in Sources */,
 				B5C36A411DC7AC08001EDBDB /* LogByRouteByUserTableViewController.swift in Sources */,
 				B5A3C6F41D2AD6D3009DBF2E /* RouteTableViewCell.swift in Sources */,
@@ -564,6 +571,7 @@
 				B5A3C6F21D29BCBD009DBF2E /* SokolAnnotation.swift in Sources */,
 				B5C36A3B1DC672BE001EDBDB /* LogTableViewCell.swift in Sources */,
 				B5E36C531D414CF200C70C29 /* FollowTableViewController.swift in Sources */,
+				B53BFDCC1DDA58D8007A299E /* CareAnnotation.swift in Sources */,
 				B5EF2C971D5CD5520027D8E1 /* DirectionsTableViewController.swift in Sources */,
 				B52812C11DCFCEE800812D12 /* LogByRouteByUser.swift in Sources */,
 				B5EA15A31D21E854004CC7E8 /* LinkAccountsViewController.swift in Sources */,
